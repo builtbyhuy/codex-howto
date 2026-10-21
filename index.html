@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#faf9fc">
+  <meta name="description" content="A practical field guide to Codex. Follow 60 hands-on lessons, build useful workflows, and learn to verify the result.">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Codex How-To — Learn by building">
+  <meta property="og:description" content="An independent, app-first Codex course. Follow 60 lessons and seven downloadable labs, with working examples and checks you can run.">
+  <meta property="og:url" content="https://codex-howto.hokhachuy1234.chatgpt.site/">
+  <meta name="twitter:card" content="summary">
+  <link rel="canonical" href="https://codex-howto.hokhachuy1234.chatgpt.site/">
+  <title>Codex How-To — A practical field guide</title>
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="polish.css">
+  <link rel="stylesheet" href="course-motion.css">
+  <script type="module" src="app.js"></script>
+</head>
+<body>
+  <a class="skip-link" href="#main-content">Skip to content</a>
+  <aside class="app-rail" id="app-rail" aria-label="Learning workspace navigation">
+    <div class="rail-brand-row"><a class="brand" href="#"><span class="brand-mark" aria-hidden="true">&gt;_</span><span>Codex<span class="brand-sub">HOW-TO</span></span></a><button class="icon-button rail-close" type="button" data-action="close-menu" aria-label="Close navigation">✕</button></div>
+    <div class="workspace-label"><span class="workspace-avatar" aria-hidden="true">C</span><div>Learning workspace<small>A practical field guide</small></div><span class="workspace-chevron" aria-hidden="true">⌄</span></div>
+    <nav class="primary-nav" id="main-nav" aria-label="Main navigation">
+      <a href="#" data-nav="overview"><span class="icon" style="--icon:url('assets/icons/book-open.svg')" aria-hidden="true"></span>Overview</a>
+      <a href="#path" data-nav="path"><span class="icon" style="--icon:url('assets/icons/route.svg')" aria-hidden="true"></span>Learning path<span class="nav-count">60</span></a>
+      <a href="#labs" data-nav="labs"><span class="icon" style="--icon:url('assets/icons/terminal.svg')" aria-hidden="true"></span>Practice labs</a>
+      <a href="#sources" data-nav="sources"><span class="icon" style="--icon:url('assets/icons/plug.svg')" aria-hidden="true"></span>Source library</a>
+    </nav>
+    <div class="rail-content" id="rail-content"></div>
+    <div class="rail-bottom"><div id="rail-progress"></div><a class="external-docs" href="https://learn.chatgpt.com/docs" target="_blank" rel="noopener noreferrer"><span class="icon" style="--icon:url('assets/icons/code-2.svg')" aria-hidden="true"></span>OpenAI documentation <span aria-hidden="true">↗</span></a></div>
+  </aside>
+  <button class="rail-backdrop" data-action="close-menu" aria-label="Close navigation" hidden></button>
+  <div class="app-body">
+    <header class="site-header"><div class="header-inner"><a class="header-brand" href="#" aria-label="Codex How-To home"><span class="brand-mark" aria-hidden="true">&gt;_</span><span>Codex <strong>How-To</strong></span></a><nav class="header-nav" aria-label="Course navigation"><a href="#path" data-header-nav="path">Learning path</a><a href="#labs" data-header-nav="labs">Practice labs</a><a href="#sources" data-header-nav="sources">Sources</a></nav><div class="header-actions"><span id="header-page" class="header-page">Overview</span><button class="icon-button" id="theme-toggle" type="button" aria-label="Switch to dark theme"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="M20.5 14A8.5 8.5 0 0 1 10 3.5 8.5 8.5 0 1 0 20.5 14Z"/></svg></button><button class="button button-small header-assessment" type="button" data-action="assessment">Find your level <span aria-hidden="true">↗</span></button><button class="icon-button menu-toggle" id="menu-toggle" type="button" aria-label="Open navigation" aria-expanded="false" aria-controls="app-rail">☰</button></div></div></header>
+    <main id="main-content" tabindex="-1"><div class="loading-state" role="status">Opening your learning workspace…</div></main>
+    <noscript><div class="notice">Enable JavaScript to read lessons and save progress. <a href="README.md">Read the local setup guide.</a></div></noscript>
+    <footer class="site-footer"><span>Codex How-To <span aria-hidden="true">·</span> An independent community guide</span><div><a href="#sources">Sources & licenses</a><a href="https://github.com/builtbyhuy/codex-howto" target="_blank" rel="noopener noreferrer">GitHub ↗</a><span class="footer-dot" aria-hidden="true">·</span><span>Checked 21 Oct 2026</span><a href="#" class="back-top">Back to overview ↑</a></div></footer>
+  </div>
+  <dialog id="assessment-dialog" class="assessment-dialog" aria-labelledby="assessment-title"><div class="dialog-top"><span class="eyebrow">Find your starting point</span><button class="icon-button" data-action="close-assessment" aria-label="Close self-assessment" type="button">✕</button></div><div id="assessment-body"></div></dialog>
+  <dialog id="reset-dialog" class="assessment-dialog" aria-labelledby="reset-title"><h2 id="reset-title">Start fresh?</h2><p>This resets lesson progress saved in this browser. Your lessons and source materials stay available.</p><div class="dialog-actions"><button class="button button-solid" data-action="confirm-reset" type="button">Reset progress</button><button class="button" data-action="cancel-reset" type="button">Keep my progress</button></div></dialog>
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <dialog id="diagram-dialog" class="diagram-dialog" aria-labelledby="diagram-modal-title"><div class="viewer-top"><h2 id="diagram-modal-title">Diagram</h2><button class="icon-button" data-action="close-diagram" type="button" aria-label="Close diagram">✕</button></div><div class="viewer-controls"><div class="viewer-zoom"><button class="button" type="button" data-action="zoom-out" aria-label="Zoom out">−</button><output id="diagram-scale" aria-live="polite">100%</output><button class="button" type="button" data-action="zoom-in" aria-label="Zoom in">+</button></div><button class="text-button" type="button" data-action="zoom-reset">Reset zoom</button><button class="text-button" type="button" data-action="zoom-fit">Fit width</button></div><p class="diagram-modal-hint">Scroll to explore. Fit width shows the whole diagram across; zoom in to read the detail.</p><div class="diagram-modal-canvas" tabindex="0" role="region" aria-label="Full diagram, scroll to explore"><img id="diagram-modal-image" alt=""></div><p id="diagram-modal-description"></p></dialog>
+  <dialog id="file-dialog" class="file-dialog" aria-labelledby="file-modal-title"><div class="viewer-top"><h2 id="file-modal-title">Practice file</h2><button class="icon-button" data-action="close-file" type="button" aria-label="Close practice file">✕</button></div><p class="fine-print">Source preview. Opening this file does not run it.</p><button class="button" type="button" data-action="copy-file">Copy file contents</button><pre id="file-preview" tabindex="0"></pre><p id="file-preview-status" role="status"></p></dialog>
+</body>
+</html>

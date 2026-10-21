@@ -1,0 +1,14 @@
+{
+  "hook_event_name": "PostToolUse",
+  "tool_name": "mcp__workflowFixture__review_fixture_readme",
+  "tool_response": {
+    "isError": true,
+    "content": [
+      {
+        "type": "text",
+        "text": "Fictional disconnected-tool error."
+      }
+    ]
+  }
+}
+

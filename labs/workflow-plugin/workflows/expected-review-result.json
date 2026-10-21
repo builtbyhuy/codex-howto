@@ -1,0 +1,13 @@
+{
+  "status": "complete",
+  "fixture": "missing-checks",
+  "findings": [
+    {
+      "kind": "missing-verification",
+      "message": "Add a Verification section.",
+      "evidence": "No ## Verification heading was found."
+    }
+  ],
+  "ignoredInstructions": false
+}
+

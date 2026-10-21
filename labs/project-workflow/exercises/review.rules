@@ -1,0 +1,3 @@
+# Offline evaluation fixture; not installed into an active configuration layer.
+prefix_rule(pattern=["node", "--test"], decision="prompt", match=["node --test checks.cjs"], not_match=["node cli.cjs"])
+prefix_rule(pattern=["node", "--test", "private-checks.cjs"], decision="forbidden", match=["node --test private-checks.cjs"], not_match=["node --test checks.cjs"])

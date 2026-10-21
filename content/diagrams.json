@@ -1,0 +1,550 @@
+{
+  "renderer": {
+    "name": "Mermaid",
+    "version": "12.2.0",
+    "license": "MIT",
+    "checkedAt": "2026-10-21"
+  },
+  "lessons": {
+    "s01-01": {
+      "kind": "decision",
+      "title": "Choose a surface, then verify the same project",
+      "text": "Choose the app, CLI, or IDE according to where you work. Each route converges on inspecting the actual folder and comparing README facts with the answer. Signing in alone does not prove project access.",
+      "source": "flowchart TB\n A{Where will you work?} -->|Projects and chats| B[Codex app]\n A -->|Terminal| C[Codex CLI]\n A -->|Editor workspace| D[IDE extension]\n B --> E[Open the intended folder]\n C --> E\n D --> E\n E --> F[Read README and verify facts]\n F --> G{Folder and answer match?}\n G -->|Yes| H[Continue with a small task]\n G -->|No| E",
+      "asset": "assets/diagrams/s01-01.svg",
+      "width": 552,
+      "height": 956
+    },
+    "s01-02": {
+      "kind": "comparison",
+      "title": "A composer control and a shell command take different paths",
+      "text": "Slash commands are handled by the Codex client. Shell commands are handled by the terminal process. A client diff helps inspect changes; a test process provides separate behavioral evidence.",
+      "source": "flowchart TB\n A[What do you need?] --> B{Control the session?}\n B -->|Yes| C[Codex composer or client menu]\n C --> D[Status, plan, diff, or review]\n B -->|Run a program| E[Project terminal]\n E --> F[Run the documented test command]\n D --> G[Inspect the resulting state]\n F --> G",
+      "asset": "assets/diagrams/s01-02.svg",
+      "width": 360,
+      "height": 697.5999755859375
+    },
+    "s01-03": {
+      "kind": "hierarchy",
+      "title": "A reusable skill has a discoverable boundary",
+      "text": "A reusable request becomes a skill with metadata and instructions. References, scripts, and fixtures are supporting files, not text that must all be loaded for every request.",
+      "source": "flowchart TB\n A[Repeated, bounded task] --> B[Skill directory]\n B --> C[SKILL.md]\n C --> D[Name and description]\n C --> E[Procedure and completion criteria]\n B --> F[Optional references]\n B --> G[Optional scripts and fixtures]\n D --> H[Discover when relevant]\n E --> I[Execute and verify the procedure]",
+      "asset": "assets/diagrams/s01-03.svg",
+      "width": 648,
+      "height": 506.5999755859375
+    },
+    "s01-04": {
+      "kind": "sequence",
+      "title": "A connected-tool request must return evidence",
+      "text": "The user gives a bounded request. Codex discovers an available tool and calls the connected server. The answer must be grounded in the returned source; a missing capability ends with an explicit gap, not an invented command.",
+      "source": "sequenceDiagram\n participant U as User\n participant C as Codex\n participant M as Connected server\n U->>C: Find a documented fact\n C->>M: Discover available capability\n alt Capability available\n C->>M: Call with bounded input\n M-->>C: Source result or explicit error\n C-->>U: Evidence-backed answer and gaps\n else Capability missing\n C-->>U: Explain the missing access\n end",
+      "asset": "assets/diagrams/s01-04.svg",
+      "width": 509,
+      "height": 798
+    },
+    "s01-05": {
+      "kind": "cycle",
+      "title": "Test a skill against relevant and irrelevant requests",
+      "text": "Create the skill, invoke it on a relevant fixture, and compare its result with the rubric. An irrelevant request is a separate test of the skill's boundary. Failures return to the instructions rather than being hidden by a passing example.",
+      "source": "flowchart TB\n A[Write SKILL.md] --> B[Run a relevant request]\n B --> C[Run an irrelevant request]\n C --> D{Both match the rubric?}\n D -->|No| A\n D -->|Yes| E[Keep the smallest useful skill]\n E --> F[Retest after an instruction change]\n F --> B",
+      "asset": "assets/diagrams/s01-05.svg",
+      "width": 288.8293151855469,
+      "height": 800.2000122070312
+    },
+    "s01-06": {
+      "kind": "flow",
+      "title": "A useful task has an acceptance loop",
+      "text": "Define the outcome, scope and acceptance before editing. Inspect relevant files, make a focused change, run the checks, and open the output and diff before deciding. Return to inspection for failed or unverified criteria; record success and limits only after the evidence satisfies the brief.",
+      "source": "flowchart TB\n A[Outcome, scope, and acceptance] --> B[Inspect relevant files]\n B --> C[Make a focused change]\n C --> D[Run the relevant checks]\n D --> E[Open the output and review the diff]\n E --> F{Evidence satisfies acceptance?}\n F -->|No or not verified| B\n F -->|Yes| G[Record the checked result and limits]",
+      "asset": "assets/diagrams/s01-06.svg",
+      "width": 337.4375,
+      "height": 938
+    },
+    "s02-01": {
+      "kind": "comparison",
+      "title": "Instructions, working evidence, and memory are distinct inputs",
+      "text": "AGENTS.md supplies project guidance, current files supply evidence, and eligible memory may help retrieve context. These inputs meet at the task, but a remembered claim still needs checking against its current source.",
+      "source": "flowchart TB\n A[AGENTS.md guidance] --> D[Current task]\n B[Current project files] --> D\n C[Eligible remembered context] --> E[Verify its source and freshness]\n E --> D\n D --> F[Scoped action and checked result]",
+      "asset": "assets/diagrams/s02-01.svg",
+      "width": 552,
+      "height": 404
+    },
+    "s02-02": {
+      "kind": "cycle",
+      "title": "Generate guidance, review it, then test discovery",
+      "text": "Inspect the repository before drafting guidance. Review generated claims, start a fresh session, and check which instructions apply. Incorrect run commands or vague guidance lead back to the file, not to a claim that initialization proved correctness.",
+      "source": "flowchart TB\n A[Inspect real run and test scripts] --> B[Draft AGENTS.md]\n B --> C[Review scope and factual commands]\n C --> D[Start a fresh project session]\n D --> E{Correct guidance discovered?}\n E -->|No| B\n E -->|Yes| F[Use and maintain the file]",
+      "asset": "assets/diagrams/s02-02.svg",
+      "width": 260.1000061035156,
+      "height": 817.7999877929688
+    },
+    "s02-03": {
+      "kind": "hierarchy",
+      "title": "Instruction discovery follows the working-directory path",
+      "text": "The global layer precedes repository guidance, followed by directories along the path to the working directory. At each directory, an override replaces the ordinary file selected at that same level. An unrelated sibling does not join the chain.",
+      "source": "flowchart TB\n A[Global selected instruction file] --> B[Repository-root selected file]\n B --> C[Intermediate-directory selected file]\n C --> D[Working-directory selected file]\n E[Unrelated sibling folder] -. Not in this path .-> X[Excluded]\n F{At one directory} -->|Override exists| G[Select AGENTS.override.md]\n F -->|Otherwise| H[Select AGENTS.md or configured fallback]\n G -. One selected file .-> D\n H -. One selected file .-> D",
+      "asset": "assets/diagrams/s02-03.svg",
+      "width": 744.28125,
+      "height": 650.2000732421875
+    },
+    "s02-04": {
+      "kind": "comparison",
+      "title": "Prose guidance and command rules solve different problems",
+      "text": "Nested AGENTS.md and explicit reference documents describe the work. Command rules evaluate execution-policy decisions. Neither is a mechanical substitute for the other, and discovery and policy need different tests.",
+      "source": "flowchart TB\n A{What must be expressed?} -->|How to work| B[Nested guidance and references]\n A -->|Command policy| C[Documented execution rules]\n B --> D[Check applicable instructions]\n C --> E[Check command matching and decision]\n D --> F[Confirm observed behavior]\n E --> F",
+      "asset": "assets/diagrams/s02-04.svg",
+      "width": 360,
+      "height": 612.6000366210938
+    },
+    "s02-05": {
+      "kind": "decision",
+      "title": "Use memory only after checking its applicability",
+      "text": "If local memories are unavailable or disabled, use explicit project records. If a memory is available, verify its scope and current source before relying on it. A closed chat is not proof that memory generation completed.",
+      "source": "flowchart TB\n A{Local memories enabled and available?} -->|No| B[Use explicit project records]\n A -->|Yes| C[Retrieve eligible context]\n C --> D{Current and applicable?}\n D -->|No or uncertain| B\n D -->|Verified| E[Use as task context]\n B --> E\n E --> F[Keep canonical decisions in the project]",
+      "asset": "assets/diagrams/s02-05.svg",
+      "width": 290.4140625,
+      "height": 1008.800048828125
+    },
+    "s08-01": {
+      "kind": "comparison",
+      "title": "Different kinds of state need different recovery",
+      "text": "Saved chat history helps recover conversation context. A Git baseline or a verified copy helps restore files. External side effects require the affected service's recovery procedure. Recovering one kind does not automatically undo the others.",
+      "source": "flowchart TB\n A[What state changed?] --> B[Conversation]\n A --> C[Local files]\n A --> D[External system]\n B --> E[Saved chat or factual handoff]\n C --> F[Git baseline or verified copy]\n D --> G[Service-specific correction]\n E --> H[Verify the recovered state]\n F --> H\n G --> H",
+      "asset": "assets/diagrams/s08-01.svg",
+      "width": 552,
+      "height": 368.8000183105469
+    },
+    "s08-02": {
+      "kind": "flow",
+      "title": "Inspect both the change and its baseline",
+      "text": "A working-tree diff shows current edits. The baseline establishes the desired earlier content. Compare both, preserve unrelated work, and choose a named-file or targeted correction.",
+      "source": "flowchart TB\n A[Current file and working diff] --> C[Compare intended and unrelated edits]\n B[Verified baseline content] --> C\n C --> D[Preserve unrelated work]\n D --> E[Propose a bounded correction]\n E --> F[Review the intended final diff]",
+      "asset": "assets/diagrams/s08-02.svg",
+      "width": 360,
+      "height": 541.7999877929688
+    },
+    "s08-03": {
+      "kind": "decision",
+      "title": "Choose chat recovery or file correction deliberately",
+      "text": "Confused conversation context can be replaced by a factual handoff. Incorrect file content needs a scoped correction. If a file contains both useful and rejected changes, correct the rejected part rather than restoring the whole file.",
+      "source": "flowchart TB\n A{What is incorrect?} -->|Chat context| B[Fresh chat with a factual handoff]\n A -->|File content| C[Inspect the file diff]\n C --> D{Useful edits must survive?}\n D -->|Yes| E[Correct only the rejected change]\n D -->|No| F[Review a named-file restoration]\n B --> G[Verify context and files separately]\n E --> G\n F --> G",
+      "asset": "assets/diagrams/s08-03.svg",
+      "width": 499.6000061035156,
+      "height": 906.2000122070312
+    },
+    "s08-04": {
+      "kind": "branch",
+      "title": "Compare isolated experiments against one baseline",
+      "text": "Two candidates start from the same baseline and remain separate. Their checks are compared before choosing one. An unsuccessful candidate is discarded without replacing unrelated work.",
+      "source": "flowchart TB\n A[Verified baseline] --> B[Candidate A]\n A --> C[Candidate B]\n B --> D[Checks for A]\n C --> E[Checks for B]\n D --> F[Compare evidence]\n E --> F\n F --> G[Integrate the chosen change]\n F --> H[Discard the rejected experiment]",
+      "asset": "assets/diagrams/s08-04.svg",
+      "width": 360,
+      "height": 453.79998779296875
+    },
+    "s08-05": {
+      "kind": "cycle",
+      "title": "Git records file evidence, not every effect of a task",
+      "text": "Inspect the starting state, record a local baseline when appropriate, make a bounded change, and inspect the resulting diff and tests. An accepted change can become a new checkpoint; external effects remain separate.",
+      "source": "flowchart TB\n A[Inspect status and existing work] --> B[Record a reviewed local baseline]\n B --> C[Change one behavior]\n C --> D[Inspect diff and tests]\n D --> E{Keep this change?}\n E -->|Yes| F[Record the next checkpoint]\n E -->|No| G[Recover the intended file state]\n G --> D\n F --> C",
+      "asset": "assets/diagrams/s08-05.svg",
+      "width": 360,
+      "height": 835.4000244140625
+    },
+    "s10-01": {
+      "kind": "decision",
+      "title": "Interactive work and scripted work have different interfaces",
+      "text": "Use the interactive CLI for an ongoing conversation. Use codex exec for a bounded non-interactive task with an explicit output contract. Both require the correct project scope and result verification.",
+      "source": "flowchart TB\n A[Confirm the project directory] --> B{Need an ongoing conversation?}\n B -->|Yes| C[Interactive codex session]\n B -->|No| D[Bounded codex exec task]\n C --> E[Inspect session and changes]\n D --> F[Capture output and process status]\n E --> G[Verify the actual result]\n F --> G",
+      "asset": "assets/diagrams/s10-01.svg",
+      "width": 360.46875,
+      "height": 715.199951171875
+    },
+    "s10-02": {
+      "kind": "hierarchy",
+      "title": "Find a CLI command by the job it performs",
+      "text": "The executable's help lists command families. Starting or resuming a chat, running a task, reviewing changes, and inspecting MCP configuration are different jobs. Check the selected subcommand's help before using its options.",
+      "source": "flowchart TB\n A[codex --help] --> B[Interactive session controls]\n A --> C[Bounded execution]\n A --> D[Review changes]\n A --> E[MCP configuration controls]\n B --> F[Inspect the selected command help]\n C --> F\n D --> F\n E --> F\n F --> G[Confirm scope and observed behavior]",
+      "asset": "assets/diagrams/s10-02.svg",
+      "width": 744,
+      "height": 461.5999755859375
+    },
+    "s10-03": {
+      "kind": "comparison",
+      "title": "Scope, review, and output are separate choices",
+      "text": "Directory options define workspace context; sandbox and approval settings define execution boundaries; output options define how results are captured. Setting one category does not establish the others.",
+      "source": "flowchart TB\n A[Task requirements] --> B[Project-directory scope]\n A --> C[Sandbox and approval boundaries]\n A --> D[Output contract]\n B --> E[Effective invocation]\n C --> E\n D --> E\n E --> F[Inspect settings and result]",
+      "asset": "assets/diagrams/s10-03.svg",
+      "width": 552,
+      "height": 404
+    },
+    "s10-04": {
+      "kind": "sequence",
+      "title": "Consume events and final output without confusing them",
+      "text": "The parent starts the CLI and passes captured JSONL plus the actual child exit or signal to the report consumer. The final-answer artifact is separate. A report is accepted only when process outcome, terminal event and report data all pass; malformed, incomplete and failed runs return distinct non-zero outcomes.",
+      "source": "sequenceDiagram\n participant P as Parent process\n participant C as Codex CLI\n participant R as Report consumer\n P->>C: Start bounded task\n C-->>R: JSONL events on stdout\n C-->>P: Final-answer file and process exit\n P->>R: Actual child exit or signal plus captured events\n R->>R: Validate event termination and process outcome\n alt Run and report valid\n R-->>P: Structured checked report\n else Failed, incomplete, or malformed\n R-->>P: Diagnostic and non-zero exit\n end",
+      "asset": "assets/diagrams/s10-04.svg",
+      "width": 503,
+      "height": 838
+    },
+    "s10-05": {
+      "kind": "cycle",
+      "title": "Prove a small repeatable task before scripting it",
+      "text": "Select a bounded useful task, run it manually, validate its inputs and output, and only then reuse it in a script. A regression or a missing input returns to the tested task definition.",
+      "source": "flowchart TB\n A[Choose a bounded useful task] --> B[Run it manually]\n B --> C[Check facts, output, and failures]\n C --> D{Repeatable contract?}\n D -->|No| A\n D -->|Yes| E[Wrap it in a small script]\n E --> F[Test a changed or missing input]\n F --> C",
+      "asset": "assets/diagrams/s10-05.svg",
+      "width": 286.04376220703125,
+      "height": 800.2000122070312
+    },
+    "s03-01": {
+      "kind": "decision",
+      "title": "Choose a skill only when the task benefits from reuse",
+      "text": "A one-off request may need only a clear brief. A recurring task with a stable procedure and useful boundary is a candidate for a skill. Evaluate the skill against both relevant and irrelevant requests.",
+      "source": "flowchart TB\n A{Will this procedure recur?} -->|No| B[Write a clear one-off brief]\n A -->|Yes| C{Stable scope and useful procedure?}\n C -->|No| D[Clarify the task first]\n C -->|Yes| E[Package a small skill]\n E --> F[Test positive and negative cases]",
+      "asset": "assets/diagrams/s03-01.svg",
+      "width": 483.1000061035156,
+      "height": 803.5999755859375
+    },
+    "s03-02": {
+      "kind": "hierarchy",
+      "title": "Progressive disclosure loads detail as the task needs it",
+      "text": "Metadata supports discovery. The selected SKILL.md provides the procedure. Supporting references or scripts are consulted only when needed. This is conditional discovery, not a requirement to load every file sequentially.",
+      "source": "flowchart TB\n A[Name and description available for discovery] --> B{Relevant skill selected?}\n B -->|No| C[Continue without this skill]\n B -->|Yes| D[Read SKILL.md procedure]\n D --> E{More detail needed?}\n E -->|Reference| F[Read the named reference]\n E -->|Runnable check| G[Inspect and run the permitted script]\n E -->|No| H[Perform the bounded task]\n F --> H\n G --> H",
+      "asset": "assets/diagrams/s03-02.svg",
+      "width": 394.1281433105469,
+      "height": 1026.4000244140625
+    },
+    "s03-03": {
+      "kind": "hierarchy",
+      "title": "A project skill is a small package with an executable test boundary",
+      "text": "The project skill directory contains required metadata and instructions, plus optional supporting files. A fixture and rubric let you check actual output rather than accepting discovery alone as success.",
+      "source": "flowchart TB\n A[Project skill directory] --> B[SKILL.md metadata]\n A --> C[SKILL.md procedure]\n A --> D[Supporting fixture or reference]\n B --> E[Discover and select]\n C --> F[Execute bounded instructions]\n D --> F\n E --> F\n F --> G[Compare output with the rubric]",
+      "asset": "assets/diagrams/s03-03.svg",
+      "width": 457,
+      "height": 524.2000122070312
+    },
+    "s03-04": {
+      "kind": "decision",
+      "title": "Invocation policy and authorization are different checks",
+      "text": "A skill may be selected explicitly or, when allowed and relevant, implicitly. Selection supplies instructions; it does not grant permission to perform every action those instructions mention.",
+      "source": "flowchart TB\n A{How is the skill selected?} -->|Explicit request| B[Load selected skill]\n A -->|Implicit selection allowed and relevant| B\n A -->|Not selected| C[Do not run this skill]\n B --> D[Read scope and procedure]\n D --> E{Action allowed in this task?}\n E -->|Yes| F[Perform and verify]\n E -->|No| G[Prepare a bounded proposal or explain the gap]",
+      "asset": "assets/diagrams/s03-04.svg",
+      "width": 511.01171875,
+      "height": 923.7999877929688
+    },
+    "s03-05": {
+      "kind": "sequence",
+      "title": "Delegated skill use needs a returned artifact and evidence",
+      "text": "The parent defines a bounded task and relevant skill. The child performs its task within inherited limits and returns evidence. The parent checks the result before synthesis; mentioning a skill does not prove the child actually used it.",
+      "source": "sequenceDiagram\n participant P as Parent\n participant C as Child agent\n participant W as Workspace\n P->>C: Task, skill, scope, and expected artifact\n C->>W: Inspect relevant guidance and inputs\n C->>W: Perform the permitted procedure\n W-->>C: Artifact and check results\n C-->>P: Evidence, limits, and changed paths\n P->>W: Verify before integrating",
+      "asset": "assets/diagrams/s03-05.svg",
+      "width": 505,
+      "height": 633
+    },
+    "s03-06": {
+      "kind": "cycle",
+      "title": "A skill revision must earn its place through regression checks",
+      "text": "Observe actual failure cases, change the smallest instruction or resource, and rerun the relevant and irrelevant requests. Keep a revision only when it improves the targeted behavior without breaking the boundary.",
+      "source": "flowchart TB\n A[Versioned skill and fixtures] --> B[Observe a specific failure]\n B --> C[Make a focused revision]\n C --> D[Run positive and negative cases]\n D --> E{Improved without regression?}\n E -->|No| B\n E -->|Yes| F[Retain and record the revision]\n F --> A",
+      "asset": "assets/diagrams/s03-06.svg",
+      "width": 294.04998779296875,
+      "height": 817.800048828125
+    },
+    "s05-01": {
+      "kind": "sequence",
+      "title": "The MCP server supplies tools; the client decides how to use them",
+      "text": "Codex discovers a server's capabilities, calls a tool for the bounded user task, and receives a structured result or error. The server's source data and the client's final answer are separate stages that both need checking.",
+      "source": "sequenceDiagram\n participant C as Codex client\n participant M as MCP server\n participant D as Source data\n C->>M: Initialize and discover tools\n M-->>C: Supported capabilities\n C->>M: Call a selected tool\n M->>D: Read the permitted data\n D-->>M: Result or missing record\n M-->>C: Structured content or error\n C->>C: Reconcile evidence for the answer",
+      "asset": "assets/diagrams/s05-01.svg",
+      "width": 505,
+      "height": 715
+    },
+    "s05-02": {
+      "kind": "decision",
+      "title": "Choose the transport before diagnosing the connection",
+      "text": "Choose stdio for a local subprocess or supported HTTP for a hosted endpoint. A local service may require credentials in its startup environment. Protected HTTP requests require authorization at the transport layer, so a 401 can prevent initialization; authorize and retry, or stop. After successful initialization, discover and call a real capability.",
+      "source": "flowchart TB\n A{Where does the server run?} -->|Local process| B[stdio command and arguments]\n A -->|Hosted endpoint| C[Supported HTTP endpoint]\n B --> D[Provide required environment credentials at startup]\n D --> E[Start process and initialize]\n C --> F{Protected HTTP request authorized?}\n F -->|401 or missing credentials| G[Obtain required authorization or stop]\n G -->|Authorized retry| F\n F -->|Authorized or public endpoint| H[Initialize protocol]\n E --> I[List and call a real capability]\n H --> I\n I --> J[Check output and failure behavior]",
+      "asset": "assets/diagrams/s05-02.svg",
+      "width": 647.7734375,
+      "height": 1044
+    },
+    "s05-03": {
+      "kind": "comparison",
+      "title": "Configuration does not define the entire access boundary",
+      "text": "Configuration selects a server definition. Identity determines its account access; exposed tools determine possible operations; the current user task determines what is authorized now. The permitted action is the intersection, not the union, of those limits.",
+      "source": "flowchart TB\n A[Selected configuration] --> E[Effective permitted action]\n B[Authenticated identity and source access] --> E\n C[Exposed tool capabilities] --> E\n D[Current task authorization] --> E\n E --> F[Use the narrowest fitting operation]",
+      "asset": "assets/diagrams/s05-03.svg",
+      "width": 744,
+      "height": 339
+    },
+    "s05-04": {
+      "kind": "sequence",
+      "title": "A resource URI and a tool result are different contracts",
+      "text": "The client may read an advertised MCP resource or call a tool that returns source content. Either route must preserve source identity and missing-data behavior. A workspace-file mention is not evidence that a resource-mention syntax is supported.",
+      "source": "sequenceDiagram\n participant C as Client\n participant S as MCP server\n alt Advertised resource\n C->>S: resources/list\n S-->>C: Resource URIs and metadata\n C->>S: resources/read with one URI\n else Tool-based retrieval\n C->>S: tools/call with bounded input\n end\n S-->>C: Content, source identity, or explicit error\n C->>C: Ground the answer in the returned content",
+      "asset": "assets/diagrams/s05-04.svg",
+      "width": 333,
+      "height": 849
+    },
+    "s05-05": {
+      "kind": "hierarchy",
+      "title": "Capability discovery and content retrieval are two searches",
+      "text": "Finding which tool can search a source is capability discovery. Calling that tool with a query retrieves content. The retrieved page must still be read before a conclusion is supported.",
+      "source": "flowchart TB\n A[Question needs source evidence] --> B{Which capability can retrieve it?}\n B --> C[Discover a relevant tool]\n C --> D[Search source content with bounded input]\n D --> E[Read the actual result]\n E --> F{Evidence sufficient?}\n F -->|No| D\n F -->|Yes| G[Answer with source and limits]",
+      "asset": "assets/diagrams/s05-05.svg",
+      "width": 251.30001831054688,
+      "height": 1028.800048828125
+    },
+    "s05-06": {
+      "kind": "decision",
+      "title": "Choose external tools, bounded execution, or application embedding",
+      "text": "Connecting external capabilities to Codex, running a one-shot Codex task, and embedding Codex in a custom application are different requirements. The experimental app-server protocol is not a drop-in MCP-server replacement.",
+      "source": "flowchart TB\n A{What must integrate?} -->|External tools into Codex| B[Configure a supported MCP server]\n A -->|One bounded Codex task| C[Use codex exec with checked output]\n A -->|Custom application controls Codex| D[Study the documented app-server interface]\n D --> E[Separate protocol prototype and compatibility review]\n B --> F[Verify the actual integration]\n C --> F\n E --> F",
+      "asset": "assets/diagrams/s05-06.svg",
+      "width": 623.25,
+      "height": 683
+    },
+    "s04-01": {
+      "kind": "branch",
+      "title": "Two independent work packages meet at one interface",
+      "text": "The parent supplies the frozen normalized-task interface. Owner A fixes status normalization while owner B fixes aggregation against that interface. Their code and evidence meet at integration, where the four learner candidate tests check the combined result.",
+      "source": "flowchart TB\n A[Parent: outcome and frozen interface] --> B[Owner A: normalize padded status]\n A --> C[Owner B: aggregate normalized tasks]\n B --> D[Normalization output and edge cases]\n C --> E[Aggregation output and edge cases]\n D --> F[Parent integrates both implementations]\n E --> F\n F --> G[Run the four combined candidate checks]",
+      "asset": "assets/diagrams/s04-01.svg",
+      "width": 360,
+      "height": 594.6000366210938
+    },
+    "s04-02": {
+      "kind": "hierarchy",
+      "title": "A role file specializes instructions within inherited boundaries",
+      "text": "The parent session supplies execution limits and connected capabilities. A TOML role supplies focused instructions. A particular delegated task narrows the immediate work further; the role description does not expand its permissions.",
+      "source": "flowchart TB\n A[Parent session boundaries] --> D[Child's effective task]\n B[Custom TOML role instructions] --> D\n C[Specific delegated scope and artifact] --> D\n D --> E[Observed files, output, and checks]\n E --> F[Parent acceptance review]",
+      "asset": "assets/diagrams/s04-02.svg",
+      "width": 552,
+      "height": 439.20001220703125
+    },
+    "s04-03": {
+      "kind": "decision",
+      "title": "Choose a role for the actual work",
+      "text": "Use an exploratory role for understanding, a worker for bounded changes, or an appropriate general role for a mixed task. Role choice is followed by explicit verification of the actual output and constraints.",
+      "source": "flowchart TB\n A{What is the next bounded job?} -->|Understand a path| B[Explorer-style investigation]\n A -->|Implement scoped changes| C[Worker-style task]\n A -->|General bounded reasoning| D[Default role]\n B --> E[Inspect returned evidence]\n C --> E\n D --> E\n E --> F[Accept, refine, or reassign]",
+      "asset": "assets/diagrams/s04-03.svg",
+      "width": 603.625,
+      "height": 577.3999633789062
+    },
+    "s04-04": {
+      "kind": "sequence",
+      "title": "A handoff carries evidence between stages",
+      "text": "Investigation produces a reproduction and relevant paths; review checks that evidence; implementation changes the chosen behavior; verification checks the final integrated version. A later stage must not silently turn an unverified report into a fact.",
+      "source": "sequenceDiagram\n participant I as Investigator\n participant P as Parent\n participant W as Worker\n I-->>P: Reproduction, paths, and uncertainty\n P->>P: Review the evidence\n P->>W: Bounded change and acceptance criteria\n W-->>P: Changed paths and check results\n P->>P: Verify the final integrated version",
+      "asset": "assets/diagrams/s04-04.svg",
+      "width": 502,
+      "height": 662
+    },
+    "s04-05": {
+      "kind": "state",
+      "title": "Background work keeps its identity until authoritative completion",
+      "text": "A dispatched task is running or waiting until its real handle reports completion, failure, or required input. A polling timeout is a reason to inspect or wait again, not evidence that a duplicate task should be started.",
+      "source": "stateDiagram-v2\n [*] --> Running: dispatch\n Running --> Waiting: inspect live handle\n Waiting --> Running: progress observed\n Waiting --> Waiting: observation timeout\n Running --> Complete: result delivered\n Waiting --> Complete: result delivered\n Running --> NeedsInput: actual missing decision\n Running --> Failed: terminal error\n Waiting --> Failed: terminal error\n Waiting --> NeedsInput: actual missing decision\n Complete --> Verified: parent checks artifact\n NeedsInput --> Running: required input supplied\n Verified --> [*]",
+      "asset": "assets/diagrams/s04-05.svg",
+      "width": 1049.5625,
+      "height": 752
+    },
+    "s04-06": {
+      "kind": "branch",
+      "title": "Separate contexts and separate file trees solve different conflicts",
+      "text": "Two agent contexts do not by themselves isolate files. Independent worktrees start from a chosen baseline, keep changes apart, and require checks and integration before the final result is accepted.",
+      "source": "flowchart TB\n A[Known Git baseline] --> B[Worktree A and worker A]\n A --> C[Worktree B and worker B]\n B --> D[Review A's files and tests]\n C --> E[Review B's files and tests]\n D --> F[Integrate intended changes]\n E --> F\n F --> G[Resolve conflicts and rerun affected checks]",
+      "asset": "assets/diagrams/s04-06.svg",
+      "width": 360,
+      "height": 524.2000122070312
+    },
+    "s04-07": {
+      "kind": "branch",
+      "title": "A normalizer, an aggregator, and one integration owner",
+      "text": "Two independent work packages implement the status normalizer and report aggregator against a frozen interface. The coordinator reviews both handoffs and runs the combined program plus candidate checks. Acceptance requires valid input behavior, preservation and the fixture report total4, done2, doneMinutes55; a correct-looking total alone cannot pass. A failed or unverified boundary returns to its owner.",
+      "source": "flowchart TB\n A[Coordinator: shared outcome and interface] --> B[A: status normalizer]\n A --> C[B: report aggregator]\n B --> D[Integration owner reviews both handoffs]\n C --> D\n D --> E[Run combined code and candidate checks]\n E --> F{Candidate contracts pass AND report is 4, 2, 55?}\n F -->|No or not verified| G[Return the failing boundary to its owner]\n F -->|Yes| H[Record the checked artifact and limits]\n G --> D",
+      "asset": "assets/diagrams/s04-07.svg",
+      "width": 387.98333740234375,
+      "height": 905.800048828125
+    },
+    "s06-01": {
+      "kind": "flow",
+      "title": "A hook is selected and interpreted at an event boundary",
+      "text": "A supported lifecycle event is matched against active definitions. Only eligible, trusted handlers execute. The event-specific result contract determines whether output adds context, provides feedback, or affects a pending operation.",
+      "source": "flowchart TB\n A[Supported lifecycle event] --> B[Match active definitions]\n B --> C{Definition eligible and trusted?}\n C -->|No| D[Do not execute that handler]\n C -->|Yes| E[Run the supported handler]\n E --> F[Interpret the event-specific result]\n F --> G[Observe context, feedback, or control]",
+      "asset": "assets/diagrams/s06-01.svg",
+      "width": 360,
+      "height": 853
+    },
+    "s06-02": {
+      "kind": "hierarchy",
+      "title": "Active hook sources are additive",
+      "text": "User, trusted project, plugin, and managed sources can contribute definitions. A project definition does not automatically erase lower-level definitions. Source loading, matching, and handler trust are separate checks.",
+      "source": "flowchart TB\n A[User hook source] --> E[Active definition inventory]\n B[Trusted project source] --> E\n C[Active plugin source] --> E\n D[Managed policy source] --> E\n E --> F[Event and matcher selection]\n F --> G[Definition trust and supported handler]\n G --> H[Execute eligible definitions]",
+      "asset": "assets/diagrams/s06-02.svg",
+      "width": 744,
+      "height": 544.2000122070312
+    },
+    "s06-03": {
+      "kind": "decision",
+      "title": "Choose between a local command and an existing MCP tool",
+      "text": "A deterministic local check can use a command handler. A check that needs an already connected capability may use a supported MCP tool handler. These are alternatives. Both need explicit failure tests, and a preventive gate needs a synchronous supported decision path.",
+      "source": "flowchart TB\n A[Required check and effect] --> B{Needs an existing server capability?}\n B -->|No: local computation| C[Command handler]\n B -->|Yes: connected tool available| D[MCP-tool handler]\n C --> E[Test input, result, and failure contract]\n D --> E\n E --> F{Must prevent the pending action?}\n F -->|Yes| G[Use a supported synchronous decision]\n F -->|No| H[Advisory output may be sufficient]",
+      "asset": "assets/diagrams/s06-03.svg",
+      "width": 364.5,
+      "height": 1061.5999755859375
+    },
+    "s06-04": {
+      "kind": "sequence",
+      "title": "A preventive decision must precede execution",
+      "text": "PreToolUse occurs before the operation. A denial prevents the pending action. An approval request occurs only on paths that require one. PostToolUse observes a completed operation and cannot undo it.",
+      "source": "sequenceDiagram\n participant C as Codex\n participant H as Hook handler\n participant T as Tool\n C->>H: Supported PreToolUse event\n alt Denied\n H-->>C: Deny with reason\n Note over C,T: Pending tool does not run\n else Permitted path\n H-->>C: Advisory or supported decision\n opt Review needed\n C->>C: Request approval\n end\n C->>T: Execute operation\n T-->>C: Output or failure\n C->>H: PostToolUse observation\n end",
+      "asset": "assets/diagrams/s06-04.svg",
+      "width": 521,
+      "height": 937
+    },
+    "s06-05": {
+      "kind": "decision",
+      "title": "A handler must distinguish a valid request from malformed input",
+      "text": "A launch failure produces no handler decision. Once started, malformed input is handled as a denial at exit zero. A valid but out-of-scope event or tool produces an empty response with no policy decision. A matched valid patch is denied when a protected target matches, or produces no objection otherwise. Exit zero means the handler produced its response; the JSON and client policy determine the effect.",
+      "source": "flowchart TB\n A[Launch the handler] --> B{Program started?}\n B -->|No| C[Launch failure: no handler decision]\n B -->|Yes| D{Event JSON valid?}\n D -->|No| F[Handled invalid input: deny response]\n D -->|Yes| E{Matched event and tool?}\n E -->|No| L[Irrelevant: empty response, no policy decision]\n E -->|Yes| M{Patch input valid?}\n M -->|No| F\n M -->|Yes| G{Protected operation matches?}\n G -->|Yes| H[Deny response with reason]\n G -->|No| I[No policy objection]\n F --> J[Exit zero: client interprets valid JSON]\n H --> J\n I --> J\n L --> J\n C --> K[Check the client's failure behavior]",
+      "asset": "assets/diagrams/s06-05.svg",
+      "width": 764.355224609375,
+      "height": 1862.199951171875
+    },
+    "s06-06": {
+      "kind": "decision",
+      "title": "An explicit review can return pass, fail, or not verified",
+      "text": "Review criteria are matched to current evidence. A demonstrated failed criterion needs repair and a new check. Missing evidence is reported as not verified, with the smallest required handoff; retry only when new evidence or access arrives. A structural pass alone does not establish the quality judgment.",
+      "source": "flowchart TB\n A[Acceptance criteria and final artifact] --> B[Collect current evidence]\n B --> C{Evidence sufficient?}\n C -->|No| D[Not verified: report the gap]\n D --> H{New evidence or access supplied?}\n H -->|No| I[Stop this check with a clear handoff]\n H -->|Yes| B\n C -->|Yes| E{Criterion satisfied?}\n E -->|No| F[Fail: repair and recheck]\n E -->|Yes| G[Pass with supporting evidence]\n F --> B",
+      "asset": "assets/diagrams/s06-06.svg",
+      "width": 577.5,
+      "height": 1190
+    },
+    "s06-07": {
+      "kind": "decision",
+      "title": "Debug the first failing boundary",
+      "text": "Check discovery, trust and event matching, interpreter startup, then the output contract. Repair the earliest demonstrated failure before changing later stages. A valid JSON response is not proof that the event was delivered by a real client.",
+      "source": "flowchart TB\n A{Definition discovered?} -->|No| B[Correct source location]\n A -->|Yes| C{Trusted and event matches?}\n C -->|No| D[Inspect trust and matcher]\n C -->|Yes| E{Program starts?}\n E -->|No| F[Correct interpreter and path]\n E -->|Yes| G{Output matches event contract?}\n G -->|No| H[Repair response or exit behavior]\n G -->|Yes| I[Observe the intended client effect]",
+      "asset": "assets/diagrams/s06-07.svg",
+      "width": 680.2000122070312,
+      "height": 1253
+    },
+    "s09-01": {
+      "kind": "decision",
+      "title": "Choose the smallest workflow that meets the outcome",
+      "text": "Start from the required outcome, not a feature checklist. Complex decisions may need a plan; independent tasks may benefit from delegation; repeatable bounded tasks may use scripted execution. Every path returns to the same acceptance evidence.",
+      "source": "flowchart TB\n A[Required outcome and acceptance] --> B{What adds useful control?}\n B -->|Unresolved design decisions| C[Inspect and plan]\n B -->|Independent bounded tasks| D[Delegate with ownership]\n B -->|Repeatable input and output| E[Script a proven task]\n B -->|Simple local change| F[Work directly]\n C --> G[Verify the delivered outcome]\n D --> G\n E --> G\n F --> G",
+      "asset": "assets/diagrams/s09-01.svg",
+      "width": 750.375,
+      "height": 670.2000122070312
+    },
+    "s09-02": {
+      "kind": "cycle",
+      "title": "Planning resolves decisions before implementation",
+      "text": "Inspect constraints, compare options, and make a concrete plan with acceptance checks. Resolve a material missing decision before implementation. Check the implemented result against the plan and update it when evidence changes.",
+      "source": "flowchart TB\n A[Inspect repository and constraints] --> B[Compare fitting approaches]\n B --> C[Concrete plan and acceptance checks]\n C --> D{Material decision unresolved?}\n D -->|Yes| B\n D -->|No| E[Implement within scope]\n E --> F[Check outcome against the plan]\n F -->|New evidence| C",
+      "asset": "assets/diagrams/s09-02.svg",
+      "width": 297.70001220703125,
+      "height": 835.3999633789062
+    },
+    "s09-03": {
+      "kind": "comparison",
+      "title": "A fair reasoning comparison changes one variable",
+      "text": "The baseline and candidate use the same task, fixtures, and success criteria. Compare observable correctness and effort, then retain or revert the supported setting. Do not infer correctness from longer output or a model label.",
+      "source": "flowchart TB\n A[Same task and acceptance cases] --> B[Baseline run]\n A --> C[One supported setting changed]\n C --> D[Candidate run]\n B --> E[Compare results and effort]\n D --> E\n E --> F[Keep or revert with evidence]",
+      "asset": "assets/diagrams/s09-03.svg",
+      "width": 360,
+      "height": 489
+    },
+    "s09-04": {
+      "kind": "decision",
+      "title": "Automatic review operates at a permission boundary",
+      "text": "An operation within current scope may proceed under effective policy. An operation needing review follows the selected review path, if available. Rejection requires a materially safer alternative or the required user decision, not repeating the same action.",
+      "source": "flowchart TB\n A[Proposed operation] --> B{Within effective execution policy?}\n B -->|Yes| C[Run and inspect the result]\n B -->|Review needed| D[Selected available review path]\n D --> E{Approved?}\n E -->|Yes| C\n E -->|No| F[Find a materially safer approach or required input]\n F --> G[Reassess the changed operation]",
+      "asset": "assets/diagrams/s09-04.svg",
+      "width": 360,
+      "height": 1044
+    },
+    "s09-05": {
+      "kind": "cycle",
+      "title": "Create a recurring task, inspect a real run, then manage its state",
+      "text": "Prove the prompt manually, then use Scheduled to choose the project, prompt, cadence, time zone and environment. After saving the intended task, inspect its actual first run. Edit or pause it as needed; removal must be confirmed by its inactive state. Local execution needs the configured computer, app and project to remain available.",
+      "source": "flowchart TB\n A[Verify a useful manual result] --> B[Scheduled: project and prompt]\n B --> C[Choose cadence, time zone and environment]\n C --> D[Save the intended recurring task]\n D --> E[Inspect the actual first run]\n E --> F{Does the result match the task?}\n F -->|No| G[Inspect failure, edit and test again]\n G --> E\n F -->|Yes| H[Keep the schedule or pause it]\n H --> I[Verify the current task state]\n I -->|Remove when finished| J[Confirm the task is inactive]",
+      "asset": "assets/diagrams/s09-05.svg",
+      "width": 365.40625,
+      "height": 1243.39990234375
+    },
+    "s09-06": {
+      "kind": "comparison",
+      "title": "Effective access is constrained by several boundaries",
+      "text": "Filesystem scope, network access, approval policy, and organization controls jointly constrain execution. Changing a setting label does not prove broader access or success. The task's own authorization remains an additional limit.",
+      "source": "flowchart TB\n A[Filesystem boundary] --> F[Effective allowed operation]\n B[Network boundary] --> F\n C[Approval policy] --> F\n D[Organization controls] --> F\n E[Current task authorization] --> F\n F --> G[Observe the actual result]",
+      "asset": "assets/diagrams/s09-06.svg",
+      "width": 936,
+      "height": 303.79998779296875
+    },
+    "s09-07": {
+      "kind": "flow",
+      "title": "Headless success needs process and artifact checks",
+      "text": "Provide bounded inputs and scope, run the non-interactive task, capture process status and outputs, and verify the report's structure and facts. A zero exit code and a saved file are necessary evidence in some workflows but are not sufficient acceptance by themselves.",
+      "source": "flowchart TB\n A[Bounded inputs and scope] --> B[codex exec]\n B --> C[Capture process exit and chosen output]\n C --> E{Completed without runtime failure?}\n E -->|No| F[Report failed or incomplete run]\n E -->|Yes| D[Read the final-answer artifact]\n D --> G[Validate structure and factual values]\n G --> H{Acceptance criteria satisfied?}\n H -->|No or not verified| J[Report the failed check or evidence gap]\n H -->|Yes| K[Accept the checked result]",
+      "asset": "assets/diagrams/s09-07.svg",
+      "width": 456,
+      "height": 1249.199951171875
+    },
+    "s07-01": {
+      "kind": "hierarchy",
+      "title": "A plugin packages capabilities with separate setup boundaries",
+      "text": "A plugin may package skills and optional MCP, hooks, or UI components. Package discovery does not prove each component is connected, trusted, or working. Verify the components actually included in the chosen package.",
+      "source": "flowchart TB\n A[Plugin package] --> B[Skills]\n A --> C[Optional MCP definitions]\n A --> D[Optional hook definitions]\n A --> E[Optional UI components]\n B --> F[Discovery and activation checks]\n C --> G[Connection and tool-contract checks]\n D --> H[Trust and event-contract checks]\n E --> I[Supported-client behavior checks]",
+      "asset": "assets/diagrams/s07-01.svg",
+      "width": 744,
+      "height": 303.79998779296875
+    },
+    "s07-02": {
+      "kind": "sequence",
+      "title": "A multicomponent workflow still has one user outcome",
+      "text": "The user selects a fictional fixture. A skill supplies the procedure; the local MCP tool reviews only permitted fixture IDs and returns evidence or an explicit error. Applicable informational hooks have separate event and trust checks. The final explanation distinguishes observed local evidence from unverified client activation.",
+      "source": "sequenceDiagram\n participant U as User\n participant C as Codex with skill\n participant M as Local MCP tool\n U->>C: Review this selected fixture\n C->>C: Apply the selected procedure\n C->>M: Request a permitted fixture review\n M-->>C: Fixture evidence or explicit error\n Note over C,M: Applicable hooks have separate event and trust checks\n C-->>U: Findings, evidence, and unverified stages",
+      "asset": "assets/diagrams/s07-02.svg",
+      "width": 502,
+      "height": 729
+    },
+    "s07-03": {
+      "kind": "hierarchy",
+      "title": "The manifest identifies a package; components have their own files",
+      "text": "The portable package root contains its manifest and components. Skill metadata lives in SKILL.md; optional MCP and hook configuration use their documented files. Validate the package and each referenced path rather than assuming a manifest makes every component executable.",
+      "source": "flowchart TB\n A[Portable package root] --> B[plugin.json identity]\n A --> C[skills directory]\n A --> D[Optional MCP configuration]\n A --> E[Optional hooks directory]\n C --> F[SKILL.md metadata and procedure]\n D --> G[Server command, arguments, or URL]\n E --> H[Supported handler and fixtures]\n B --> I[Validate identity and paths]\n F --> I\n G --> I\n H --> I",
+      "asset": "assets/diagrams/s07-03.svg",
+      "width": 744,
+      "height": 461.6000061035156
+    },
+    "s07-04": {
+      "kind": "hierarchy",
+      "title": "A catalog points to packages without proving their setup",
+      "text": "A marketplace source supplies catalog entries. Each entry identifies a package location and policy. The client chooses an entry, then installation, authentication, hook trust, and behavior require their own applicable checks.",
+      "source": "flowchart TB\n A[Marketplace source] --> B[Catalog entry A]\n A --> C[Catalog entry B]\n B --> D[Package location and policy]\n C --> E[Another package location and policy]\n D --> F[Inspect and intentionally select]\n F --> G[Install and complete applicable setup]\n G --> H[Verify actual behavior]",
+      "asset": "assets/diagrams/s07-04.svg",
+      "width": 360,
+      "height": 626.7999877929688
+    },
+    "s07-05": {
+      "kind": "cycle",
+      "title": "Package, protocol, client, and outcome are distinct tests",
+      "text": "Offline structural checks, executable protocol tests, and real client discovery support different claims. Combine actual output with the acceptance rubric. A changed package returns to the affected tests before release readiness is assessed again.",
+      "source": "flowchart TB\n A[Manifest and path checks] --> B[Runnable handler and protocol tests]\n B --> C[Optional real client discovery and activation]\n C --> D[Representative task and failure cases]\n D --> E{Acceptance supported by evidence?}\n E -->|No| F[Repair the failing boundary]\n F --> A\n E -->|Yes| G[Record versioned results and limits]",
+      "asset": "assets/diagrams/s07-05.svg",
+      "width": 360,
+      "height": 870.6000366210938
+    },
+    "s07-06": {
+      "kind": "decision",
+      "title": "Choose a plugin release channel and verify consumer use",
+      "text": "Test the exact package version and rehearse local installation, listing and removal. A repository marketplace is published as a reviewed commit and tag; workspace publishing has its own roles, and public-directory publication has separate eligibility and review. Verify the consumer's installed version and actual workflow, then retain a tested update, rollback and removal path. This hook-bearing lab is not public-directory eligible unchanged.",
+      "source": "flowchart TB\n A[Test the exact package version] --> B[Rehearse local install, list and remove]\n B --> C{Choose the distribution channel}\n C -->|Repository marketplace| D[Publish the reviewed catalog commit and tag]\n C -->|Workspace| E[Publish to the intended workspace roles]\n C -->|Public directory| F[Check eligibility, upload and complete review]\n D --> G[Consumer adds the tested ref and installs]\n E --> H[Verify an eligible member can install]\n F --> I[Publish the approved eligible version]\n G --> J[Check installed version and actual workflow]\n H --> J\n I --> J\n J --> K[Verify update, known-good rollback and removal]",
+      "asset": "assets/diagrams/s07-06.svg",
+      "width": 561,
+      "height": 1008.3999633789062
+    }
+  }
+}

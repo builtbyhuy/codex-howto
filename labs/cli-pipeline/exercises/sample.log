@@ -1,0 +1,4 @@
+SYNTHETIC LOCAL LOG — no service was contacted
+10:01 search query="REVIEW" expected=2 actual=0
+10:02 search query="  Review  " expected=2 actual=0
+10:03 input note identities unchanged=true

@@ -1,0 +1,149 @@
+[
+  {
+    "id": "project-workflow",
+    "title": "A first project you can verify",
+    "level": "beginner",
+    "summary": "Inspect Orbit Notes, migrate a saved prompt into a skill, test project guidance, compare search fixes, and practice targeted recovery plus durable Git checkpoints.",
+    "outcome": "The starter moves from four passing/two failing checks to six passing checks. Compare a plausible 5/6 alternative, preserve unrelated edits, and inspect the separate real two-commit demonstration.",
+    "testCommand": "node --test labs/project-workflow/workflow.test.cjs",
+    "demoCommand": "node labs/project-workflow/verify-depth.cjs",
+    "expected": "Four integration tests pass when Git is installed. The depth demo checks nine distinct artifacts and counterexamples. Run verify-commit.cjs separately for actual commit coverage and HEAD evidence.",
+    "entryLesson": "s01-01",
+    "files": [
+      "README.md",
+      "exercises/control-notebook.md",
+      "exercises/migration.md",
+      "exercises/context.md",
+      "exercises/hierarchy/README.md",
+      "exercises/guidance.md",
+      "exercises/recovery.md",
+      "solution/DEPTH-ANSWERS.md",
+      "verify-depth.cjs",
+      "verify-commit.cjs"
+    ]
+  },
+  {
+    "id": "cli-pipeline",
+    "title": "Turn an event stream into a checked report",
+    "level": "beginner",
+    "summary": "Separate process/event completion from final-answer validity. Compare two actual source folders and reject wrong-directory output or schema-shaped fabrication.",
+    "outcome": "Accept source-correct red/blue reports; reject invented commands/URLs, missing fields, crossed sources, malformed events and failed processes. Native capture starts in dry-run mode.",
+    "testCommand": "node --test labs/cli-pipeline/pipeline.test.cjs labs/cli-pipeline/extraction.test.cjs",
+    "demoCommand": "node labs/cli-pipeline/verify-extraction.cjs",
+    "expected": "Thirty-two event, subprocess and final-extraction checks pass. The demo checks nine source, plan and failure cases without launching an authenticated Codex task.",
+    "entryLesson": "s10-04",
+    "files": [
+      "README.md",
+      "exercises/README.md",
+      "exercises/control-matrix.md",
+      "exercises/report-schema.json",
+      "capture-codex.cjs",
+      "validate-extraction.cjs",
+      "verify-extraction.cjs",
+      "report.cjs",
+      "SOLUTION.md"
+    ]
+  },
+  {
+    "id": "skill-workflow",
+    "title": "A reusable review skill with a test boundary",
+    "level": "intermediate",
+    "summary": "Inspect a complete skill, compare relevant and irrelevant requests, and review real fixture files without inventing missing facts.",
+    "outcome": "The helper returns source-grounded findings and explicit unknowns. The rubric separates deterministic helper results from actual skill invocation in a client.",
+    "testCommand": "node --test labs/skill-workflow/review.test.cjs labs/skill-workflow/native-setup.test.cjs",
+    "demoCommand": "node labs/skill-workflow/skill/scripts/review.cjs labs/skill-workflow/fixtures/broken",
+    "expected": "Eighteen package, helper and scratch-setup checks pass. Native skill selection and answer accuracy are separate client exercises, not inferred from helper output.",
+    "entryLesson": "s03-03",
+    "files": [
+      "README.md",
+      "native-client.md",
+      "prepare-scratch.cjs",
+      "skill/SKILL.md",
+      "skill/references/rubric.md"
+    ]
+  },
+  {
+    "id": "mcp-workbench",
+    "title": "A local MCP server you can inspect",
+    "level": "intermediate",
+    "summary": "Exchange real newline-delimited JSON-RPC messages with a read-only subprocess server, then inspect tools, resources and failure responses.",
+    "outcome": "Initialization, discovery, tool calls and resource reads return the supplied fictional tasks. Invalid requests, unknown IDs and missing sources remain explicit.",
+    "testCommand": "node --test labs/mcp-workbench/workbench.test.cjs labs/mcp-workbench/native-setup.test.cjs labs/mcp-workbench/app-server.test.cjs",
+    "demoCommand": "node labs/mcp-workbench/demo.cjs",
+    "expected": "Twenty local protocol, setup and replacement-client checks pass, including stale-turn, malformed-tail and process-failure cases. Native no-turn MCP discovery was separately checked on the documented author CLI; model-selected invocation remains a learner exercise.",
+    "entryLesson": "s05-02",
+    "files": [
+      "README.md",
+      "native-client.md",
+      "prepare-connection.cjs",
+      "server.cjs",
+      "app-server-migration.md",
+      "app-server-client.cjs"
+    ]
+  },
+  {
+    "id": "delegation-capstone",
+    "title": "Two work packages, one integrated result",
+    "level": "intermediate",
+    "summary": "Give separate ownership of normalization and reporting, enforce the interface contract, and integrate the two actual code changes.",
+    "outcome": "The reference returns total = 4, done = 2, doneMinutes = 55 and satisfies five integration predicates. The learner starter intentionally fails four candidate tests until repaired.",
+    "testCommand": "node --test labs/delegation-capstone/capstone.test.cjs labs/delegation-capstone/worktree.test.cjs",
+    "demoCommand": "node labs/delegation-capstone/run.cjs solution",
+    "expected": "Nine baseline, reference and actual Git-worktree checks pass when Git is installed. The separate learner candidate starts red. Worktrees isolate files; they do not prove agents were spawned.",
+    "entryLesson": "s04-07",
+    "files": [
+      "README.md",
+      "CONTRACT.md",
+      "work-packages.json",
+      "native-agent-guide.md",
+      "role-draft.toml",
+      "worktree-demo.cjs"
+    ]
+  },
+  {
+    "id": "hook-policy",
+    "title": "A preventive hook with an observable decision",
+    "level": "intermediate",
+    "summary": "Build a preventive patch guard and an artifact-linked Stop check, then prepare a complete disposable project for a deliberate native observation.",
+    "outcome": "Distinguish allowed, denied, malformed and irrelevant events. Reject stale or missing artifact evidence, allow a complete result, and bound repeated Stop continuation.",
+    "testCommand": "node --test labs/hook-policy/test.cjs labs/hook-policy/depth.test.cjs",
+    "demoCommand": "node labs/hook-policy/demo.cjs",
+    "expected": "Eighteen handler, artifact and workspace checks pass. The demo replays fictional events; native hook trust and interception remain a separate documented learner track.",
+    "entryLesson": "s06-05",
+    "files": [
+      "README.md",
+      "guard.cjs",
+      "stop-demo.cjs",
+      "stop-review.cjs",
+      "create-workspace.cjs",
+      "NATIVE-CLIENT.md",
+      "depth.test.cjs",
+      "EXPECTED.md"
+    ]
+  },
+  {
+    "id": "workflow-plugin",
+    "title": "A complete multicomponent workflow package",
+    "level": "advanced",
+    "summary": "Build and extend an actual skill/tool/MCP package, rehearse isolated native installation, and learn versioned release, update, rollback and removal.",
+    "outcome": "The missing-both extension produces two grounded findings through direct and stdio checks. Inspect the actual installed version separately from native chat selection and hook trust.",
+    "testCommand": "node --test labs/workflow-plugin/test.cjs labs/workflow-plugin/depth.test.cjs",
+    "demoCommand": "node labs/workflow-plugin/demo.cjs",
+    "expected": "Twenty-four structural, behavioral, extension and subprocess checks pass. Two native metadata lifecycle versions were separately rehearsed on the documented author CLI; no authenticated model run or owner installation is implied.",
+    "entryLesson": "s07-05",
+    "files": [
+      "README.md",
+      "NATIVE-CLIENT.md",
+      "native-workspace.cjs",
+      "create-workspace.cjs",
+      "native-client.cjs",
+      "extension/README.md",
+      "extension/check.cjs",
+      "extension/solution.cjs",
+      "workflows/NATIVE-WORKFLOWS.md",
+      "workflows/review-prompt.txt",
+      "RELEASE.md",
+      "depth.test.cjs"
+    ]
+  }
+]

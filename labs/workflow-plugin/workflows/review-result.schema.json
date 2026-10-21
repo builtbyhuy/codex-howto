@@ -1,0 +1,54 @@
+{
+  "type": "object",
+  "properties": {
+    "status": {
+      "type": "string",
+      "enum": [
+        "complete",
+        "not-verified"
+      ]
+    },
+    "fixture": {
+      "type": "string",
+      "enum": [
+        "complete",
+        "missing-checks",
+        "injected"
+      ]
+    },
+    "findings": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "kind": {
+            "type": "string"
+          },
+          "message": {
+            "type": "string"
+          },
+          "evidence": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "kind",
+          "message",
+          "evidence"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "ignoredInstructions": {
+      "type": "boolean"
+    }
+  },
+  "required": [
+    "status",
+    "fixture",
+    "findings",
+    "ignoredInstructions"
+  ],
+  "additionalProperties": false
+}
+

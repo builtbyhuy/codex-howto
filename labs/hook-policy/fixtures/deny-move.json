@@ -1,0 +1,10 @@
+{
+  "session_id": "fictional-policy-session",
+  "cwd": "/practice/taskboard",
+  "hook_event_name": "PreToolUse",
+  "tool_name": "apply_patch",
+  "tool_input": {
+    "command": "*** Begin Patch\n*** Update File: src/note.txt\n*** Move to: protected/note.txt\n@@\n-old\n+new\n*** End Patch"
+  }
+}
+

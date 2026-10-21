@@ -1,0 +1,11 @@
+'use strict';
+const { test } = require('node:test');
+const assert = require('node:assert/strict');
+const { searchNotes } = require('./notes.cjs');
+const notes = require('./notes.json');
+test('blank query returns every note in its original order', () => assert.deepEqual(searchNotes(notes, '').map(n=>n.id), ['n1','n2','n3','n4']));
+test('matching ignores letter case', () => assert.deepEqual(searchNotes(notes, 'REVIEW').map(n=>n.id), ['n1','n3']));
+test('matching ignores surrounding whitespace', () => assert.deepEqual(searchNotes(notes, '  Review  ').map(n=>n.id), ['n1','n3']));
+test('substring matching remains available', () => assert.deepEqual(searchNotes(notes, 'workshop').map(n=>n.id), ['n2']));
+test('an absent term returns no notes', () => assert.deepEqual(searchNotes(notes, 'invoice'), []));
+test('input objects and order are preserved', () => { const before=JSON.stringify(notes); const result=searchNotes(notes,''); assert.equal(JSON.stringify(notes),before); assert.equal(result[0],notes[0]); });

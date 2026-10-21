@@ -1,0 +1,7 @@
+{
+  "hook_event_name": "SessionStart",
+  "source": "startup",
+  "session_id": "fictional-plugin-session",
+  "cwd": "/practice/workflow-plugin"
+}
+

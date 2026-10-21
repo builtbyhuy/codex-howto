@@ -1,0 +1,24 @@
+[
+  {
+    "id": "T-101",
+    "title": "Write README run instructions",
+    "status": "open",
+    "owner": "Ari",
+    "minutes": 20
+  },
+  {
+    "id": "T-102",
+    "title": "Review filter tests",
+    "status": "done",
+    "owner": "Bo",
+    "minutes": 35
+  },
+  {
+    "id": "T-103",
+    "title": "Record missing-input behavior",
+    "status": "blocked",
+    "owner": "Ari",
+    "minutes": 15
+  }
+]
+

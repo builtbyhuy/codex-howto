@@ -1,0 +1,3 @@
+# Inactive policy example: copy only into a deliberately chosen skill package.
+policy:
+  allow_implicit_invocation: false
