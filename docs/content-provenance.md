@@ -1,6 +1,6 @@
 # Content provenance
 
-The course adapts every original roadmap topic from [Claude How-To](https://github.com/luongnv89/claude-howto) at commit 188f468893231cbe4525f45e657d554746232072. Commands, configuration and exercises are authored for Codex rather than renamed mechanically. A different or unsupported source mechanism is identified explicitly; offline checks do not prove native-client activation.
+The course adapts every original roadmap topic from [Claude How-To](https://github.com/luongnv89/claude-howto) at commit 188f468893231cbe4525f45e657d554746232072. Commands, configuration and exercises are authored for Codex rather than renamed mechanically. A different or unsupported source mechanism is identified explicitly; offline checks do not prove native-client activation. The landing stylesheet is an unchanged copy from the same pinned MIT source, with separate integration overrides, derived markup and lifecycle-aware interactions. See [design provenance](design-sources.md) and the [source notice](../assets/reference/SOURCE-NOTICE.md). The five getting-started guides are translations of the introduction only; the detailed curriculum, quizzes and practice source remain in English.
 
 | Codex lesson | Source topic | Adaptation |
 | --- | --- | --- |

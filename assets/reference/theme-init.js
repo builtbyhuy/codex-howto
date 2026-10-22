@@ -1,0 +1,2 @@
+// Apply the retained theme before styles paint. No account or Codex settings.
+(()=>{let dark=false;try{const saved=localStorage.getItem('codex-howto-theme-v1');dark=saved?saved==='dark':matchMedia('(prefers-color-scheme: dark)').matches;}catch{}document.documentElement.dataset.theme=dark?'dark':'light';document.documentElement.classList.toggle('dark',dark);document.documentElement.classList.add('js');})();

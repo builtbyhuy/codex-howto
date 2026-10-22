@@ -1,6 +1,8 @@
 # Codex How-To — learn by doing
 
-An independent English, app-first Codex course: **10 modules, 60 lessons and 7 runnable practice packages**. Start with a small search bug; work toward project guidance, skills, MCP, delegation, hooks and plugins. CLI and IDE differences are stated where they matter.
+An independent app-first Codex course: **10 modules, 60 detailed English lessons and 7 runnable practice packages**. Start with a small search bug; work toward project guidance, skills, MCP, delegation, hooks and plugins. CLI and IDE differences are stated where they matter.
+
+**Getting-started guides:** [English](docs/guides/en/README.md), [Tiếng Việt](docs/guides/vi/README.md), [中文](docs/guides/zh/README.md), [日本語](docs/guides/ja/README.md), [Українська](docs/guides/uk/README.md). These introductory guides are translated; the 60 detailed lessons, quizzes and executable practice files remain in English. [Choose a guide on the website](https://codex-howto.hokhachuy1234.chatgpt.site/#languages).
 
 **[Start the course](https://codex-howto.hokhachuy1234.chatgpt.site/)** · [First lesson](https://codex-howto.hokhachuy1234.chatgpt.site/#lesson/s01-01) · [Practice labs](https://codex-howto.hokhachuy1234.chatgpt.site/#labs) · [Report a lesson problem](https://github.com/builtbyhuy/codex-howto/issues/new)
 
@@ -24,6 +26,6 @@ Open http://127.0.0.1:4173/ and keep that terminal running. No package installat
 
 ## Scope and sources
 
-All 60 original roadmap topics were adapted from [Claude How-To](https://luongnv.com/claude-howto/); Codex commands, configuration and exercises were researched and rewritten. Official documentation was checked on **21 October 2026**. Availability can vary by client, platform, account and policy. This is a community guide, with no OpenAI affiliation, certification or guaranteed learning outcome.
+All 60 original roadmap topics were adapted from [Claude How-To](https://luongnv.com/claude-howto/); Codex commands, configuration and exercises were researched and rewritten. The landing now reuses the pinned MIT stylesheet and adapts its station roadmap, markup and interactions. Source attribution and the complete original license are retained; separate integration files connect that design to the Codex reader and existing progress. Official documentation was checked on **21 October 2026**. Availability can vary by client, platform, account and policy. This is a community guide, with no OpenAI affiliation, certification or guaranteed learning outcome.
 
 Read [content provenance](docs/content-provenance.md), [verification and limits](docs/verification.md), [contributing](CONTRIBUTING.md) and [third-party notices](THIRD-PARTY-NOTICES.md). The original Claude source retains its MIT notice, copyright 2024 luongnv89; other bundled resources retain their own licenses. Public availability does not grant a new blanket license over newly authored course content.

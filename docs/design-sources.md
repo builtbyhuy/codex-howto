@@ -1,7 +1,9 @@
-# Design and licenses
+# Design, source reuse and languages
 
-The violet editorial composition and course interactions were developed with Claude How-To as the primary reference. Linear Docs informed reading navigation; Boot.dev informed the staged curriculum. Their proprietary logos and artwork are not included.
+The landing reuses the actual MIT-licensed Claude How-To implementation from [luongnv89/claude-howto](https://github.com/luongnv89/claude-howto) at commit 188f468893231cbe4525f45e657d554746232072. The stylesheet in assets/reference/landing.css is byte-for-byte upstream source. The hero, feature/comparison sections, subway track, station cards, progress ring and footer follow its template. Codex-specific text, commands and counts are supplied by the course model. No Claude logo or brand artwork is included.
 
-Fraunces, Manrope and JetBrains Mono are self-hosted under the SIL Open Font License. Lucide icons retain ISC/MIT notices. The detailed static graphs were built with MIT-licensed Mermaid; compact desktop/mobile summaries are original course artwork. Complete third-party notices and license texts are included.
+Separate reference-fidelity.css, home-render.mjs and reference-motion.mjs adapt the template to the existing reader, progress-v2 store and route lifecycle. Motion preserves the source timing and track behavior while adding cancellation, pause/replay, focus visibility and reduced-motion handling. See [the retained source notice and full MIT permission](../assets/reference/SOURCE-NOTICE.md) and [third-party notices](../THIRD-PARTY-NOTICES.md). Copyright (c) 2024 luongnv89.
 
-See [third-party notices](../THIRD-PARTY-NOTICES.md).
+The five getting-started guides are real introductory translations: English, Vietnamese, Chinese, Japanese and Ukrainian. They explain the first project, practice, client distinctions and progress. The 60 detailed lessons, quizzes, source previews and executable practice files remain in English; no full-course translation or human language certification is claimed.
+
+Fraunces, Manrope and JetBrains Mono are self-hosted under the SIL Open Font License. Lucide icons retain ISC/MIT notices. Detailed static diagrams were built with MIT-licensed Mermaid; compact desktop/mobile summaries are original course artwork. Complete third-party notices and license texts are included. Linear Docs and Boot.dev informed an earlier reader/curriculum iteration; they are historical visual references, not a source of proprietary code or artwork in this release.

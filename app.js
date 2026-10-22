@@ -1,5 +1,8 @@
 import {validateCourse, sanitizeProgress, EDITION, PARTS} from './content-model.mjs';
 import {mountCourseMotion,disposeCourseMotion} from './course-motion.mjs';
+import {referenceHome,referenceModule,referenceProgress,continueLabel} from './assets/reference/home-render.mjs';
+import {guidePage} from './assets/reference/guide-render.mjs';
+import {mountReferenceMotion,disposeReferenceMotion,animateReferenceTheme} from './assets/reference/reference-motion.mjs';
 const $ = (selector, parent = document) => parent.querySelector(selector);
 const esc = value => String(value ?? '').replace(/[&<>"']/g, char => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char]));
 const inline = value => esc(value).replace(/`([^`]+)`/g, '<code>$1</code>');
@@ -21,6 +24,7 @@ let diagramZoom=1, viewerFileText='', viewerRequest=0;
 let state = {lessons:{},last:null};
 let toastTimer;
 let drawerOpen = false;
+let homeMenuOpen=false,guideRequest=0;
 let contentReady = false;
 
 try { if (localStorage.getItem(THEME_KEY) === 'dark') document.documentElement.dataset.theme = 'dark'; } catch {}
@@ -28,6 +32,7 @@ updateThemeLabel();
 
 function updateThemeLabel() {
   const dark = document.documentElement.dataset.theme === 'dark';
+  document.documentElement.classList.toggle('dark',dark);
   $('#theme-toggle').setAttribute('aria-label', `Switch to ${dark ? 'light' : 'dark'} theme`);
   $('#theme-toggle').setAttribute('aria-pressed', String(dark));
 }
@@ -79,41 +84,39 @@ function continueLesson() {
 }
 function lessonURL(id) { return `#lesson/${id}`; }
 function statusLabel(id) { return {new:'Not started',started:'In progress',done:'Completed'}[status(id)]; }
-function progressMarkup() {
-  const c=counts(),next=continueLesson();
-  return `<section class="progress-panel" aria-labelledby="progress-title"><div class="progress-ring" style="--progress:${c.percent};--target-progress:${c.percent}" role="progressbar" aria-label="Course progress" aria-valuemin="0" aria-valuemax="100" aria-valuenow="${c.percent}"><span>${c.percent}<small>%</small></span></div><div class="progress-copy"><h2 id="progress-title">Your progress, at your pace.</h2><strong>${c.done} <span>/ ${c.total} lessons complete</span></strong><div class="progress-counts"><span>${c.done} done</span><span>${c.started} in progress</span><span>${c.left} to explore</span></div></div><div class="progress-actions"><a class="text-link" id="continue-learning" href="${lessonURL(next.id)}">${c.done===c.total?'Revisit the course':c.done||c.started?'Continue learning':'Start your first lesson'} ${icon('arrow-right')}</a><button class="text-button" data-action="reset" type="button">Reset progress</button></div></section>`;
+function homeContext(){return {modules,lessons,levels,status,counts,continueLesson,openModules,icon};}
+function progressMarkup(){return referenceProgress(homeContext());}
+function paintRoadmap(){
+ const c=counts(),next=continueLesson(),names={new:'not-started',started:'in-progress',done:'done'};
+ const ring=$('#ring-fg');if(ring){ring.dataset.progress=String(c.percent);ring.style.strokeDashoffset=String(2*Math.PI*52*(1-c.percent/100));$('.ring-wrap').setAttribute('aria-valuenow',c.percent);$('#ring-pct').textContent=c.percent+'%';$('#c-done').textContent=c.done;$('#c-prog').textContent=c.started;$('#c-todo').textContent=c.left;const link=$('#continue-learning');link.href=lessonURL(next.id);link.textContent=continueLabel(homeContext());}
+ for(const m of modules){const station=$('.station[data-module="'+m.id+'"]');if(!station)continue;const p=counts(m.lessons),s=p.done===p.total?'done':p.done||p.started?'started':'new';station.dataset.status=names[s];$('[data-pill]',station).textContent={new:'Not started',started:'In progress',done:'Completed'}[s];$('[data-bar]',station).style.width=p.percent+'%';$('[data-count]',station).textContent=p.done+'/'+p.total;
+  for(const l of m.lessons){const row=$('.lesson[data-lesson="'+l.id+'"]',station),state=status(l.id);row.dataset.status=names[state];$('.check',row).setAttribute('aria-checked',state==='done'?'true':state==='started'?'mixed':'false');$('.check',row).setAttribute('aria-label',"Mark '"+l.title+"' "+(state==='done'?'as in progress':'as done'));$('[data-lstatus]',row).textContent=statusLabel(l.id);}}
+ const featured=$('#featured-continue');if(featured){featured.href=c.done||c.started?lessonURL(next.id):'#roadmap';featured.textContent=c.done||c.started?'Continue learning':'Start the roadmap';}
+ main.dispatchEvent(new CustomEvent('reference-progress'));renderRail();
 }
 function renderRail() {
   const scroll = $('#rail-content').scrollTop;
   const lessonView = byId.has(view);
   document.body.dataset.page=lessonView?'lesson':view;
-  for(const link of document.querySelectorAll('[data-header-nav]')){const selected=link.dataset.headerNav===(lessonView?'path':view==='home'&&location.hash.includes('path')?'path':view);link.classList.toggle('active',selected);selected?link.setAttribute('aria-current','page'):link.removeAttribute('aria-current');}
+  for(const link of document.querySelectorAll('[data-header-nav]')){const selected=link.dataset.headerNav===(lessonView?'path':view==='home'&&/(?:path|roadmap)/.test(location.hash)?'path':view);link.classList.toggle('active',selected);selected?link.setAttribute('aria-current','page'):link.removeAttribute('aria-current');}
   $('#rail-content').innerHTML = lessonView ? sidebar(view) : `<div class="rail-label">Course modules</div><div class="rail-modules">${modules.map(m=>`<a class="rail-module" href="${lessonURL(m.lessons[0].id)}"><span>${m.id}</span><span>${esc(m.title)}</span>${counts(m.lessons).done===m.lessons.length?icon('check'):''}</a>`).join('')}</div><div class="rail-help"><span class="rail-help-icon">${icon('sparkles')}</span><strong>Make it practical.</strong><p>Every lesson ends with something you can try and check.</p><button type="button" data-action="assessment">Find your starting point ↗</button></div>`;
   $('#rail-content').scrollTop = scroll;
   const c = counts();
   $('#rail-progress').innerHTML = `<div class="rail-progress-heading"><span>Your progress</span><strong>${c.percent}%</strong></div><div class="rail-progress-track"><span style="width:${c.percent}%"></span></div><span class="rail-progress-caption">${c.done} of ${c.total} lessons completed</span>`;
-  $('[data-nav="overview"]').classList.toggle('active', view==='home' && !location.hash.includes('path'));
-  $('[data-nav="path"]').classList.toggle('active', lessonView || location.hash.includes('path'));
+  $('[data-nav="overview"]').classList.toggle('active', view==='home' && !/(?:path|roadmap)/.test(location.hash));
+  $('[data-nav="path"]').classList.toggle('active', lessonView || /(?:path|roadmap)/.test(location.hash));
   $('[data-nav="sources"]').classList.toggle('active', view==='sources');
   $('[data-nav="labs"]').classList.toggle('active',view==='labs');
   $('#header-page').textContent = lessonView ? `Module ${view.slice(1,3)}` : view==='sources'?'Source library':view==='labs'?'Practice labs':'Overview';
   $('.nav-count').textContent=lessons.length;
 }
-function moduleMarkup(m) {
- const c=counts(m.lessons),stateName=c.done===c.total?'done':c.done||c.started?'started':'new',expanded=openModules.has(m.id);
- return `<article class="module module-card" id="module-${m.id}"><div class="module-main"><span class="module-number">${m.id}</span><div class="module-copy"><h3><a class="module-title" href="${lessonURL(m.lessons[0].id)}">${esc(m.title)}</a></h3><p class="module-description">${esc(m.description)}</p><div class="module-meta"><span>${m.lessons.length} lessons</span><span>${m.minutes} min estimated</span><span class="module-status ${stateName}">${{done:'Completed',started:'In progress',new:'Not started'}[stateName]}</span></div></div><div class="module-actions"><a class="module-open" href="${lessonURL(m.lessons[0].id)}">${c.done||c.started?'Continue':'Explore'} ${icon('arrow-right')}</a><button class="lesson-disclosure" type="button" data-action="expand" data-module="${m.id}" aria-expanded="${expanded}" aria-controls="lessons-${m.id}">View ${m.lessons.length} lessons ${icon('chevron-down')}</button></div></div><div class="module-meter" role="progressbar" aria-label="Module ${m.id} progress" aria-valuemin="0" aria-valuemax="${c.total}" aria-valuenow="${c.done}">${m.lessons.map(l=>`<span class="${status(l.id)}"></span>`).join('')}</div><div class="lesson-list" id="lessons-${m.id}" ${expanded?'':'hidden'}>${m.lessons.map(l=>`<div class="lesson-row"><span class="lesson-check ${status(l.id)}" aria-label="${statusLabel(l.id)}">${status(l.id)==='done'?'✓':''}</span><a href="${lessonURL(l.id)}">${esc(l.title)}</a><span class="lesson-duration">${l.minutes} min</span></div>`).join('')}</div></article>`;
-}
-function sessionDemoMarkup(){
- const prompt='Fix the note search. Match case and surrounding spaces. Keep the existing checks.';
- return `<div class="session-demo" data-demo role="region" aria-label="Illustrative Codex session"><div class="session-bar"><span class="session-window-dots" aria-hidden="true">● ● ●</span><span>Codex / Orbit Notes</span><span class="session-local">Local project</span></div><div class="session-body"><div class="session-you"><span class="session-avatar" aria-hidden="true">You</span><p data-demo-input data-text="${esc(prompt)}">${esc(prompt)}</p></div><div class="session-work"><span class="session-codex-mark" aria-hidden="true">&gt;_</span><div><p class="session-intro">A small change. A result you can check.</p><ol class="session-activity"><li data-demo-step>${icon('book-open')}<span>Read the project guidance<small>README.md · AGENTS.md</small></span><span class="activity-check" aria-hidden="true">✓</span></li><li data-demo-step>${icon('code-2')}<span>Make a focused change<small>notes.cjs · case and whitespace</small></span><span class="activity-check" aria-hidden="true">✓</span></li><li data-demo-step>${icon('check')}<span>Check the result<small>Six behavioral checks</small></span><span class="activity-check" aria-hidden="true">✓</span></li></ol><div class="session-result" data-demo-result><span class="result-dot" aria-hidden="true"></span><p>Search fixed. All six checks pass.<small>Review the diff before accepting the change.</small></p></div></div></div></div><p class="sr-only" data-demo-transcript>Illustration of the fictional Orbit Notes exercise: read the project, fix search matching and verify the six checks. This is an illustration, not a recorded Codex execution.</p><div class="session-footer"><span>Illustration · no commands run</span><button type="button" data-demo-control>Pause illustration</button></div></div>`;
-}
-function renderHome(){
- const c=counts(),next=continueLesson(),minutes=lessons.reduce((n,l)=>n+l.minutes,0),sources=new Set(lessons.flatMap(l=>l.sources.map(s=>s.url))).size;
- return `<div class="dashboard"><section class="course-hero" aria-labelledby="hero-title"><div class="hero-copy"><span class="eyebrow"><span class="eyebrow-line" aria-hidden="true"></span>A practical field guide</span><h1 id="hero-title">Learn Codex.<br><em>Make it your craft.</em></h1><p class="welcome-copy">Go from your first prompt to a workflow you can trust. Learn in the app, build with real files, and know how to check the result.</p><div class="feature-actions"><a class="button button-solid" id="featured-continue" href="${lessonURL(next.id)}">${c.done||c.started?'Resume learning':'Start learning'} ${icon('arrow-right')}</a><a class="text-link" href="#path">Explore the curriculum <span aria-hidden="true">↗</span></a></div><div class="course-facts"><span><strong>${modules.length}</strong> modules</span><span><strong>${lessons.length}</strong> hands-on lessons</span><span><strong>${Math.floor(minutes/60)}h ${minutes%60}m</strong> estimated</span></div><p class="hero-edition">English edition · Codex app first · Beginner to advanced</p></div><div class="hero-demonstration">${sessionDemoMarkup()}<p class="demo-caption">A preview of the habit you will practise: brief, build, verify.</p></div></section>
-<section class="course-intro" data-reveal aria-labelledby="intro-title"><div><span class="eyebrow">Learn by doing</span><h2 id="intro-title">Less guessing.<br><em>More understanding.</em></h2></div><div class="intro-points"><p>One useful idea at a time. Every lesson connects a clear explanation with something you can try, inspect and improve.</p><div class="intro-features"><span>${icon('code-2')} Real practice files</span><span>${icon('check')} Answers & checks</span><span>${icon('route')} A guided path</span></div></div></section>
-<section class="learning-path" id="path" aria-labelledby="path-title"><div class="section-heading" data-reveal><div><span class="eyebrow">The curriculum</span><h2 id="path-title">A path worth following.</h2><p>Three stages. ${modules.length} modules. Start at the beginning, or pick the skill you need.</p></div><button class="text-button assessment-inline" data-action="assessment" type="button">Find your starting point ${icon('arrow-right')}</button></div><div id="progress-container">${progressMarkup()}</div>${levels.map(level=>`<section class="stage-section ${level.id}" aria-labelledby="level-${level.id}" data-reveal><div class="stage-heading"><span class="stage-index">${level.label}</span><div><h3 id="level-${level.id}">${level.title}</h3><p>${level.text}</p></div></div><div class="curriculum-grid">${modules.filter(m=>m.level===level.id).map(moduleMarkup).join('')}</div></section>`).join('')}</section>
-<section class="practice-section" id="practice" data-reveal aria-labelledby="practice-title"><div class="practice-intro"><span class="eyebrow">Your first useful habit</span><h2 id="practice-title">Ask clearly.<br><em>Check what changed.</em></h2><p>Begin with a read-only task. Give Codex the context it needs, then compare its answer with the actual files.</p></div><div class="practice-start"><div class="copy-snippet"><code>Read this project and explain how to run it. Do not change files yet.</code><button class="copy-button" type="button" data-copy="Read this project and explain how to run it. Do not change files yet." aria-label="Copy the read-only task prompt">Copy</button></div><a class="text-link" href="${lessonURL('s01-06')}">Learn to brief and verify a task ${icon('arrow-right')}</a></div></section>
-<section class="resource-strip" id="resources" data-reveal><div><span class="eyebrow">Follow the evidence</span><h2>Grounded in the docs.</h2><p>${sources} official sources. All 60 original topics mapped, with differences explained.</p></div><a class="text-link" href="#sources">Sources & what was adapted ${icon('arrow-right')}</a></section></div>`;
+function moduleMarkup(m){return referenceModule(m,homeContext());}
+function renderHome(){return referenceHome(homeContext());}
+async function renderTranslatedGuide(lang){
+ const request=++guideRequest;stopTerminal();view='guide';renderRail();document.documentElement.lang=lang;
+ main.innerHTML='<div class="loading-state" role="status">Opening the getting-started guide…</div>';
+ try{const response=await fetch('docs/guides/'+lang+'/README.md');if(!response.ok)throw Error('Guide unavailable');const text=await response.text();if(request!==guideRequest||view!=='guide')return;main.innerHTML=guidePage(lang,text);document.title='Getting started · '+lang+' — Codex How-To';scrollToPart();}
+ catch{if(request!==guideRequest)return;main.innerHTML='<div class="error-state" role="alert"><h1>This guide could not be opened.</h1><p>Try another language or return to the learning path. Your progress is unchanged.</p><a class="button" href="#languages">Guide languages</a></div>';}
 }
 function sidebar(current) {
   return `<div class="guide-sidebar" id="guide-sidebar"><a class="back-roadmap" href="#path">← All modules</a><label class="sidebar-label" for="lesson-search">Find a lesson</label><div class="sidebar-search-wrap">${icon('search')}<input class="sidebar-search" id="lesson-search" type="search" placeholder="Search lessons…" autocomplete="off"></div><div id="sidebar-groups">${modules.map(m=>`<section class="sidebar-group" data-search-group><h2>${m.id}. ${esc(m.title)}</h2>${m.lessons.map(l=>`<a class="sidebar-link" data-search-title="${esc(m.title+' '+l.title)}" href="${lessonURL(l.id)}" ${current===l.id?'aria-current="page"':''}><span class="lesson-check ${status(l.id)}" aria-hidden="true">${status(l.id)==='done'?'✓':''}</span><span>${esc(l.title)}</span></a>`).join('')}</section>`).join('')}</div><p class="sidebar-empty" id="sidebar-empty" role="status" aria-live="polite" hidden>No matching lessons. Try a topic such as “Git” or “context”.</p></div>`;
@@ -188,7 +191,7 @@ function renderSources() {
 <h2>The 60-topic coverage map</h2><p>Reference snapshot <code>${esc(catalog.reference.commit.slice(0,7))}</code>, checked 21 October 2026. Open a source topic to compare its purpose; open the Codex lesson to learn the adapted workflow.</p>
 <div class="coverage-list">${modules.map(m=>`<section><h3>${m.id}. ${esc(m.title)} <small>${m.lessons.length} lessons</small></h3>${m.lessons.map(l=>{const s=sourceLessons.find(s=>s.key===l.sourceKey);return `<div class="coverage-row"><div><span class="mapping-label">${esc(l.equivalence.status)}</span><a href="${lessonURL(l.id)}">${esc(l.title)}</a><p>${esc(l.equivalence.summary)}</p></div><a class="coverage-original" href="${esc(s.originalUrl)}" target="_blank" rel="noopener noreferrer">${esc(s.title)} ↗</a></div>`;}).join('')}</section>`).join('')}</div>
 <h2>Product names and current documentation</h2><p>Older Codex links may redirect to ChatGPT Learn. Codex in the desktop app, Codex CLI and an IDE extension have different surfaces. Account, platform, organization policy and version can affect availability. Follow the environment note in each lesson; a documented feature is not a promise that it is enabled in your installation.</p>
-<h2>Design references and licensed materials</h2><p>Claude How-To informs the course's reading rhythm and learning navigation. <a href="https://linear.app/docs" target="_blank" rel="noopener noreferrer">Linear Docs</a> also informed navigation, and <a href="https://www.boot.dev/paths/backend?tech=python-typescript" target="_blank" rel="noopener noreferrer">Boot.dev</a> informed staged curriculum organization. Their logos and artwork are not included.</p><p>Learning topic organization was adapted from <a href="https://luongnv.com/claude-howto/" target="_blank" rel="noopener noreferrer">Claude How-To by luongnv89</a>, MIT © 2024 luongnv89. The original license is included. Fraunces, Manrope and JetBrains Mono are self-hosted under OFL; Lucide SVG icons retain ISC/MIT notices. Semantic diagrams were compiled with MIT-licensed Mermaid; the course serves static SVGs. No paid resource or runtime account is needed to read this course.</p><p><a href="THIRD-PARTY-NOTICES.md">Third-party notices</a> · <a href="docs/design-sources.md">Design reference notes</a> · <a href="docs/verification.md">Verification report</a></p>
+<h2>Design references and licensed materials</h2><p>The landing page directly adapts Claude How-To’s MIT-licensed templates at commit 188f468. Its warm grid, green palette, typography, continuous roadmap, progress ring and motion timings are reused with Codex-specific content. The original stylesheet and full copyright notice ship in assets/reference/. The lesson reader retains its own navigation and practice controls. <a href="https://linear.app/docs" target="_blank" rel="noopener noreferrer">Linear Docs</a> also informed navigation, and <a href="https://www.boot.dev/paths/backend?tech=python-typescript" target="_blank" rel="noopener noreferrer">Boot.dev</a> informed staged curriculum organization. Their logos and artwork are not included.</p><p>Learning topic organization was adapted from <a href="https://luongnv.com/claude-howto/" target="_blank" rel="noopener noreferrer">Claude How-To by luongnv89</a>, MIT © 2024 luongnv89. The original license is included. Fraunces, Manrope and JetBrains Mono are self-hosted under OFL; Lucide SVG icons retain ISC/MIT notices. Semantic diagrams were compiled with MIT-licensed Mermaid; the course serves static SVGs. No paid resource or runtime account is needed to read this course.</p><p><a href="THIRD-PARTY-NOTICES.md">Third-party notices</a> · <a href="docs/design-sources.md">Design reference notes</a> · <a href="docs/verification.md">Verification report</a></p>
 <h2>Official documentation used</h2><ul class="source-links">${[...sources.values()].map(s=>`<li><a href="${esc(s.url)}" target="_blank" rel="noopener noreferrer">${esc(s.title)} ↗</a></li>`).join('')}</ul><h2>What completion means</h2><p>Times are practice estimates. Completion is your own assessment, not a certification. The website does not run Codex, execute the examples or inspect your local project. Check the actual result before marking a lesson complete.</p><a class="button button-solid" href="#path">Explore the learning path ${icon('arrow-right')}</a></article>`;
 }
 
@@ -196,6 +199,8 @@ function renderLabLibrary(){
   return `<article class="lab-library source-page"><span class="eyebrow">A path from reading to doing</span><h1>Practice with real files.</h1><p class="source-lead">Seven small labs, from your first project to a connected workflow. Each has runnable checks, expected results and inspectable reference files.</p><div class="lab-library-intro"><strong>Start in the Codex app</strong><p>Download a lab into a new folder, open that folder as your practice project, and follow its lesson. The local checks use Node.js and fictional inputs. Actual client activation is a separate optional step where relevant.</p></div><div class="lab-library-grid">${labCatalog.map((lab,i)=>`<section class="lab-library-card"><div class="lab-card-meta"><span class="lab-index">${String(i+1).padStart(2,'0')}</span><span>${esc(lab.level)}</span></div><h2>${esc(lab.title)}</h2><p>${esc(lab.summary)}</p><div class="lab-outcome"><strong>The result to look for</strong><p>${esc(lab.outcome)}</p></div><details class="lab-library-commands"><summary>Run and inspect this lab</summary><p>From the course folder or the extraction root containing the labs folder:</p><div class="code-block"><div class="code-header"><span>Behavioral checks</span><button class="copy-button" data-copy="${esc(lab.testCommand)}" type="button" aria-label="Copy ${esc(lab.id)} checks">Copy</button></div><pre><code>${esc(lab.testCommand)}</code></pre></div><div class="code-block"><div class="code-header"><span>Worked demonstration</span><button class="copy-button" data-copy="${esc(lab.demoCommand)}" type="button" aria-label="Copy ${esc(lab.id)} demo">Copy</button></div><pre><code>${esc(lab.demoCommand)}</code></pre></div><p>${esc(lab.expected)}</p><div class="lab-files">${lab.files.map(file=>`<button type="button" class="file-link" data-action="lab-file" data-file="labs/${esc(lab.id)}/${esc(file)}">${esc(file)} ↗</button>`).join('')}</div></details><div class="lab-card-actions"><a class="button button-solid" href="${lessonURL(lab.entryLesson)}">Open the lesson ${icon('arrow-right')}</a><a class="text-link" href="labs/${esc(lab.id)}.zip" download>Download lab ↓</a></div></section>`).join('')}</div><p class="fine-print">A reference test passing proves only its stated cases. Follow each lab's rubric and label any client, account or workflow stage you have not actually run.</p></article>`;
 }
 
+function setHomeMenu(open){homeMenuOpen=open;$('#nav-menu').classList.toggle('open',open);$('#menu-toggle').setAttribute('aria-expanded',String(open));$('#menu-toggle').setAttribute('aria-label',open?'Close navigation':'Open navigation');if(open)$('#nav-menu a').focus();}
+function closeHomeMenu(restore=true){if(!homeMenuOpen)return;setHomeMenu(false);if(restore)$('#menu-toggle').focus();}
 function setDrawer(open, restoreFocus = true) {
   drawerOpen = open && narrow.matches;
   $('#app-rail').inert = narrow.matches && !drawerOpen;
@@ -210,7 +215,7 @@ function setDrawer(open, restoreFocus = true) {
   if (drawerOpen) $('.rail-close').focus();
   else if (restoreFocus && narrow.matches) $('#menu-toggle').focus({preventScroll:true});
 }
-function stopTerminal(){disposeCourseMotion();}
+function stopTerminal(){disposeCourseMotion();disposeReferenceMotion();}
 function enterView(){if(!motion.matches)main.animate([{opacity:.55},{opacity:1}],{duration:200,easing:'cubic-bezier(.2,.7,.3,1)'});}
 function positionDiagram(){
   requestAnimationFrame(()=>{
@@ -242,15 +247,17 @@ function scrollToPart(part, focus = false) {
 }
 function route(force = false, trackVisit = true) {
   if(!lessons.length) return;
-  viewerRequest++;
+  viewerRequest++;guideRequest++;document.documentElement.lang='en';
+  closeHomeMenu(false);
   for(const id of ['diagram-dialog','file-dialog'])if($('#'+id).open)$('#'+id).close();
   const [rawPath,query] = location.hash.slice(1).split('?');
-  const aliases={'lo-trinh':'path','nguon':'sources','vi-sao':'practice','tai-lieu':'resources','bat-dau':'practice','noi-dung':'main-content'};
+  const aliases={path:'roadmap',practice:'get-started',resources:'vs-docs','lo-trinh':'roadmap','nguon':'sources','vi-sao':'why','tai-lieu':'vs-docs','bat-dau':'get-started','noi-dung':'main-content'};
   const path=aliases[rawPath] || rawPath.replace(/^bai\//,'lesson/');
   const params=new URLSearchParams(query||'');
   const oldPart={'hieu':'understand','vi-du':'example','thuc-hanh':'practice','kiem-tra':'check'};
   const requestedPart=params.get('part')||params.get('phan'),part=oldPart[requestedPart]||requestedPart;
   if(drawerOpen) setDrawer(false,false);
+  if(/^guide\/(en|vi|zh|ja|uk)$/.test(path)){renderTranslatedGuide(path.split('/')[1]);return;}
   if(path.startsWith('lesson/')) {
     stopTerminal();
     const id=path.slice(7),l=byId.get(id);
@@ -261,8 +268,8 @@ function route(force = false, trackVisit = true) {
   }
   if(path==='sources'){disposeCourseMotion();stopTerminal();view='sources';main.innerHTML=renderSources();enterView();document.title='Source library — Codex How-To';renderRail();scrollToPart();return;}
   if(path==='labs'){disposeCourseMotion();stopTerminal();view='labs';main.innerHTML=renderLabLibrary();enterView();document.title='Practice labs — Codex How-To';renderRail();scrollToPart();return;}
-  if(!['','path','practice','resources','main-content'].includes(path)){stopTerminal();view='error';main.innerHTML='<div class="error-state"><h1>Page not found.</h1><p>The address may have changed.</p><a class="button" href="#path">Back to the learning path</a></div>';renderRail();return;}
-  if(view!=='home'||force){disposeCourseMotion();main.innerHTML=renderHome();view='home';mountCourseMotion(main);enterView();}
+  if(!['','roadmap','why','vs-docs','get-started','languages','main-content'].includes(path)){stopTerminal();view='error';main.innerHTML='<div class="error-state"><h1>Page not found.</h1><p>The address may have changed.</p><a class="button" href="#path">Back to the learning path</a></div>';renderRail();return;}
+  if(view!=='home'||force){stopTerminal();main.innerHTML=renderHome();view='home';renderRail();mountReferenceMotion(main);}
   document.title='Codex How-To — A practical field guide';renderRail();
   requestAnimationFrame(()=>{if(path==='main-content'){main.focus();return;}scrollToPart(path);});
 }
@@ -278,8 +285,10 @@ function normalizeText(text) {return text.normalize('NFD').replace(/[\u0300-\u03
 document.addEventListener('click',async event=>{
   const target=event.target.closest('button,a');if(!target)return;
   if(target.classList.contains('skip-link')){event.preventDefault();main.focus();main.scrollIntoView({behavior:'instant'});return;}
-  if(target.id==='theme-toggle'){const dark=document.documentElement.dataset.theme==='dark';document.documentElement.dataset.theme=dark?'light':'dark';try{localStorage.setItem(THEME_KEY,dark?'light':'dark');}catch{}updateThemeLabel();return;}
-  if(target.id==='menu-toggle'){setDrawer(!drawerOpen);return;}
+  if(homeMenuOpen&&target.closest('#nav-menu')&&target.tagName==='A')closeHomeMenu(false);
+  if(target.tagName==='A'&&target.getAttribute('href')===location.hash&&document.getElementById(location.hash.slice(1))){event.preventDefault();scrollToPart(location.hash.slice(1));return;}
+  if(target.id==='theme-toggle'){animateReferenceTheme(()=>{const dark=document.documentElement.dataset.theme==='dark';document.documentElement.dataset.theme=dark?'light':'dark';try{localStorage.setItem(THEME_KEY,dark?'light':'dark');}catch{}updateThemeLabel();});return;}
+  if(target.id==='menu-toggle'){if(byId.has(view))setDrawer(!drawerOpen);else setHomeMenu(!homeMenuOpen);return;}
   if(target.hasAttribute('data-copy')||target.hasAttribute('data-lesson-copy')||target.hasAttribute('data-example')||target.hasAttribute('data-worked')||target.hasAttribute('data-lab-copy')){
     const item=byId.get(target.dataset.example||target.dataset.lessonCopy);
     const text=target.hasAttribute('data-worked')?byId.get(target.dataset.worked)?.worked?.code:target.hasAttribute('data-lab-copy')?byId.get(target.dataset.labCopy)?.lab?.commands[Number(target.dataset.command)]?.command:target.dataset.copy??[item?.example,...(item?.examples||[])][Number(target.dataset.exampleIndex)||0]?.code;
@@ -316,7 +325,8 @@ document.addEventListener('click',async event=>{
       if(!viewerFileText){notify('Wait for the source file to load.');break;}try{await navigator.clipboard.writeText(viewerFileText);notify('File contents copied.');}catch{notify('Select the source text and copy it manually.');}break;
     }
     case 'close-menu':setDrawer(false);break;
-    case 'expand':{const id=target.dataset.module,expanded=target.getAttribute('aria-expanded')==='true';target.setAttribute('aria-expanded',String(!expanded));$(`#lessons-${id}`).hidden=expanded;expanded?openModules.delete(id):openModules.add(id);break;}
+    case 'expand':{const id=target.dataset.module,expanded=target.getAttribute('aria-expanded')==='true';target.setAttribute('aria-expanded',String(!expanded));$('#lessons-'+id).hidden=expanded;expanded?openModules.delete(id):openModules.add(id);main.dispatchEvent(new CustomEvent('reference-progress'));break;}
+    case 'roadmap-complete':{const id=target.dataset.lesson;if(!byId.has(id))break;state.lessons[id]={...state.lessons[id],status:status(id)==='done'?'started':'done',updated:Date.now()};saveProgress();paintRoadmap();break;}
     case 'assessment':showAssessment();break;
     case 'close-assessment':$('#assessment-dialog').close();break;
     case 'reset':$('#reset-dialog').showModal();break;
@@ -366,12 +376,13 @@ document.addEventListener('change',async event=>{
   event.target.value='';
 });
 document.addEventListener('keydown',event=>{
+  if(event.key==='Escape'&&homeMenuOpen){closeHomeMenu();return;}
   if(event.key==='Escape'&&drawerOpen){setDrawer(false);return;}
   if(event.key==='Tab'&&drawerOpen){const controls=[...$('#app-rail').querySelectorAll('a,button,input')].filter(el=>!el.hidden&&el.getClientRects().length);const first=controls[0],last=controls.at(-1);if(event.shiftKey&&document.activeElement===first){event.preventDefault();last.focus();}else if(!event.shiftKey&&document.activeElement===last){event.preventDefault();first.focus();}}
 });
 window.addEventListener('hashchange',()=>route());
 window.addEventListener('storage',event=>{if(event.key===STORAGE_KEY||event.key===null){readProgress();route(true,false);}});
-narrow.addEventListener('change',()=>setDrawer(false,false));
+narrow.addEventListener('change',()=>{setDrawer(false,false);closeHomeMenu(false);});
 
 async function boot() {
   try {
