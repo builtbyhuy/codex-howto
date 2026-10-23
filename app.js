@@ -1,13 +1,21 @@
+import {highlightView,highlightCode,renderReference,mountLearningTools} from './assets/atelier/learning-tools.mjs';
+import {mountStudy} from './assets/atelier/study.mjs';
+import {lessonOutline} from './assets/atelier/lesson-outline.mjs';
+import {showDialog,installInteractions,arrive,disposeReader,mountReader} from './assets/atelier/interactions.mjs';
 import {validateCourse, sanitizeProgress, EDITION, PARTS} from './content-model.mjs';
 import {mountCourseMotion,disposeCourseMotion} from './course-motion.mjs';
-import {referenceHome,referenceModule,referenceProgress,continueLabel} from './assets/reference/home-render.mjs';
-import {guidePage} from './assets/reference/guide-render.mjs';
-import {mountReferenceMotion,disposeReferenceMotion,animateReferenceTheme} from './assets/reference/reference-motion.mjs';
+import {referenceHome,referenceModule,referenceProgress,continueLabel,paintHomeDetails} from './assets/atelier/home.mjs';
+import {guidePage,guideMarkdown} from './assets/reference/guide-render.mjs';
+import {mountReferenceMotion,disposeReferenceMotion,animateReferenceTheme} from './assets/atelier/motion.mjs';
 const $ = (selector, parent = document) => parent.querySelector(selector);
 const esc = value => String(value ?? '').replace(/[&<>"']/g, char => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char]));
 const inline = value => esc(value).replace(/`([^`]+)`/g, '<code>$1</code>');
-const icon = (name, extra = '') => `<span class="icon ${extra}" style="--icon:url('assets/icons/${name}.svg')" aria-hidden="true"></span>`;
+const icon = (name, extra = '') => `<span class="icon ${extra}" style="--icon:url('${esc(new URL('assets/icons/'+name+'.svg',document.baseURI).href)}')" aria-hidden="true"></span>`;
 const main = $('#main-content');
+// Text enlargement can wrap navigation. Keep fixed reading rails below its real height.
+if(globalThis.ResizeObserver){new ResizeObserver(entries=>{const height=entries[0]?.target.getBoundingClientRect().height;if(height)document.documentElement.style.setProperty('--actual-header-height',height+'px');}).observe($('.site-header'));}
+// Native reading destinations remain useful before JavaScript boots.
+for(const link of document.querySelectorAll('[data-interactive-href]'))link.setAttribute('href',link.dataset.interactiveHref);
 const STORAGE_KEY = 'codex-howto-progress-v2';
 const THEME_KEY = 'codex-howto-theme-v1';
 const motion = matchMedia('(prefers-reduced-motion: reduce)');
@@ -20,15 +28,26 @@ const levels = [
 const topicIcons = ['terminal','sparkles','book-open','code-2','git-branch','sparkles','plug','shield','terminal','route'];
 const openModules = new Set();
 let modules = [], lessons = [], byId = new Map(), catalog, labCatalog=[], overviews={}, view = '';
-let diagramZoom=1, viewerFileText='', viewerRequest=0;
+let diagramZoom=1, viewerFileText='', viewerRequest=0, studyRequest=0;
+let viewerPath='',viewerHistory=[];
 let state = {lessons:{},last:null};
 let toastTimer;
+const copyRequests=new WeakMap();
 let drawerOpen = false;
 let homeMenuOpen=false,guideRequest=0;
 let contentReady = false;
+let learningTools;
+let restoringHomePreview=false;
+let storageAvailable=true;
+let progressReadBlocked=false;
+let progressWriteDenied=false;
+installInteractions();
 
-try { if (localStorage.getItem(THEME_KEY) === 'dark') document.documentElement.dataset.theme = 'dark'; } catch {}
-updateThemeLabel();
+const systemTheme=matchMedia('(prefers-color-scheme: dark)');
+let themeChoice=null;
+function applyThemeChoice(choice,animate=false){themeChoice=['light','dark'].includes(choice)?choice:null;const change=()=>{document.documentElement.dataset.theme=themeChoice||(systemTheme.matches?'dark':'light');updateThemeLabel();};animate?animateReferenceTheme(change):change();}
+try{applyThemeChoice(localStorage.getItem(THEME_KEY));}catch{applyThemeChoice(null);}
+systemTheme.addEventListener('change',()=>{if(themeChoice===null)applyThemeChoice(null,true);});
 
 function updateThemeLabel() {
   const dark = document.documentElement.dataset.theme === 'dark';
@@ -43,6 +62,7 @@ function notify(message) {
   toastTimer = setTimeout(() => $('#toast').classList.remove('show'), 3600);
 }
 function warnStorage(message) {
+  storageAvailable=false;
   let notice = $('#storage-notice');
   if (!notice) {
     notice = document.createElement('div');
@@ -51,8 +71,15 @@ function warnStorage(message) {
   }
   notice.textContent = message;
   const indicator=$('.local-indicator');if(indicator)indicator.innerHTML='<i aria-hidden="true"></i>Session-only progress';
+  syncStorageCopy();
+}
+function syncStorageCopy(){
+  if(storageAvailable)return;
+  const saved=$('.a-progress-bottom>span');if(saved)saved.textContent='Session-only progress';
+  const summary=$('.a-path-summary');if(summary)summary.textContent='Your place is kept for this open session only. Export a backup before closing.';
 }
 function readProgress() {
+  progressReadBlocked=false;
   try {
     const raw = localStorage.getItem(STORAGE_KEY);
     if (!raw) {
@@ -65,11 +92,28 @@ function readProgress() {
       return;
     }
     state = sanitizeProgress(JSON.parse(raw),lessons);
-  } catch { warnStorage('Saved progress could not be read. You can keep learning; check your browser storage settings before closing this page.'); }
+    // External recovery proves persisted data is valid, not that a denied writer can write.
+    if(!progressWriteDenied)restoreStorageStatus();
+    else warnStorage('Your browser is blocking saved progress. Changes will only last for this open session.');
+  } catch { state={lessons:{},last:null};progressReadBlocked=true;warnStorage('Saved progress could not be read and may be corrupt. The original record is preserved. You can learn for this session; explicitly import a valid backup or reset progress to replace it.'); }
 }
-function saveProgress() {
-  try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); }
-  catch { warnStorage('Your browser is blocking saved progress. Changes will only last for this open session.'); }
+function restoreStorageStatus(){
+  storageAvailable=true;
+  $('#storage-notice')?.remove();
+  const indicator=$('.local-indicator');if(indicator)indicator.innerHTML='<i aria-hidden="true"></i>Saved in this browser';
+  const saved=$('.a-progress-bottom>span');if(saved)saved.textContent='Saved in this browser';
+  const summary=$('.a-path-summary');if(summary)summary.textContent='One useful task at a time. Your place is saved.';
+}
+function saveProgress(replaceUnreadable=false) {
+  if(progressReadBlocked&&!replaceUnreadable)return false;
+  try {
+    const raw=JSON.stringify(state);
+    localStorage.setItem(STORAGE_KEY,raw);
+    if(localStorage.getItem(STORAGE_KEY)!==raw)throw new Error('Progress write could not be confirmed');
+    progressReadBlocked=false;progressWriteDenied=false;restoreStorageStatus();
+    return true;
+  }
+  catch { progressWriteDenied=true;warnStorage(progressReadBlocked?'Saved progress could not be read and may be corrupt. The original record is preserved; browser storage is also blocking recovery. Changes are session-only.':'Your browser is blocking saved progress. Changes will only last for this open session.'); return false; }
 }
 function status(id) { return state.lessons[id]?.status || 'new'; }
 function counts(items = lessons) {
@@ -84,19 +128,19 @@ function continueLesson() {
 }
 function lessonURL(id) { return `#lesson/${id}`; }
 function statusLabel(id) { return {new:'Not started',started:'In progress',done:'Completed'}[status(id)]; }
-function homeContext(){return {modules,lessons,levels,status,counts,continueLesson,openModules,icon};}
+function homeContext(){return {modules,lessons,levels,labs:labCatalog,status,counts,continueLesson,openModules,icon};}
 function progressMarkup(){return referenceProgress(homeContext());}
 function paintRoadmap(){
  const c=counts(),next=continueLesson(),names={new:'not-started',started:'in-progress',done:'done'};
- const ring=$('#ring-fg');if(ring){ring.dataset.progress=String(c.percent);ring.style.strokeDashoffset=String(2*Math.PI*52*(1-c.percent/100));$('.ring-wrap').setAttribute('aria-valuenow',c.percent);$('#ring-pct').textContent=c.percent+'%';$('#c-done').textContent=c.done;$('#c-prog').textContent=c.started;$('#c-todo').textContent=c.left;const link=$('#continue-learning');link.href=lessonURL(next.id);link.textContent=continueLabel(homeContext());}
+ const ring=$('#ring-fg');if(ring){ring.dataset.progress=String(c.percent);ring.style.strokeDashoffset=String(2*Math.PI*52*(1-c.percent/100));$('.ring-wrap').setAttribute('aria-valuenow',c.percent);$('#ring-pct').textContent=c.percent+'%';$('#c-done').textContent=c.done;$('#c-prog').textContent=c.started;$('#c-todo').textContent=c.left;}
  for(const m of modules){const station=$('.station[data-module="'+m.id+'"]');if(!station)continue;const p=counts(m.lessons),s=p.done===p.total?'done':p.done||p.started?'started':'new';station.dataset.status=names[s];$('[data-pill]',station).textContent={new:'Not started',started:'In progress',done:'Completed'}[s];$('[data-bar]',station).style.width=p.percent+'%';$('[data-count]',station).textContent=p.done+'/'+p.total;
   for(const l of m.lessons){const row=$('.lesson[data-lesson="'+l.id+'"]',station),state=status(l.id);row.dataset.status=names[state];$('.check',row).setAttribute('aria-checked',state==='done'?'true':state==='started'?'mixed':'false');$('.check',row).setAttribute('aria-label',"Mark '"+l.title+"' "+(state==='done'?'as in progress':'as done'));$('[data-lstatus]',row).textContent=statusLabel(l.id);}}
- const featured=$('#featured-continue');if(featured){featured.href=c.done||c.started?lessonURL(next.id):'#roadmap';featured.textContent=c.done||c.started?'Continue learning':'Start the roadmap';}
- main.dispatchEvent(new CustomEvent('reference-progress'));renderRail();
+ paintHomeDetails(homeContext());main.dispatchEvent(new CustomEvent('reference-progress'));renderRail();
 }
 function renderRail() {
   const scroll = $('#rail-content').scrollTop;
   const lessonView = byId.has(view);
+  if(lessons.length){const next=continueLesson(),c=counts(),link=$('.a-nav-actions>.a-button'),label=c.done===c.total?'Revisit the course':c.started||c.done?'Continue learning':'Start learning';link.href=lessonURL(next.id);link.textContent=label;link.setAttribute('aria-label',label+': '+next.title);}
   document.body.dataset.page=lessonView?'lesson':view;
   for(const link of document.querySelectorAll('[data-header-nav]')){const selected=link.dataset.headerNav===(lessonView?'path':view==='home'&&/(?:path|roadmap)/.test(location.hash)?'path':view);link.classList.toggle('active',selected);selected?link.setAttribute('aria-current','page'):link.removeAttribute('aria-current');}
   $('#rail-content').innerHTML = lessonView ? sidebar(view) : `<div class="rail-label">Course modules</div><div class="rail-modules">${modules.map(m=>`<a class="rail-module" href="${lessonURL(m.lessons[0].id)}"><span>${m.id}</span><span>${esc(m.title)}</span>${counts(m.lessons).done===m.lessons.length?icon('check'):''}</a>`).join('')}</div><div class="rail-help"><span class="rail-help-icon">${icon('sparkles')}</span><strong>Make it practical.</strong><p>Every lesson ends with something you can try and check.</p><button type="button" data-action="assessment">Find your starting point ↗</button></div>`;
@@ -107,22 +151,24 @@ function renderRail() {
   $('[data-nav="path"]').classList.toggle('active', lessonView || /(?:path|roadmap)/.test(location.hash));
   $('[data-nav="sources"]').classList.toggle('active', view==='sources');
   $('[data-nav="labs"]').classList.toggle('active',view==='labs');
-  $('#header-page').textContent = lessonView ? `Module ${view.slice(1,3)}` : view==='sources'?'Source library':view==='labs'?'Practice labs':'Overview';
+  $('[data-nav="study"]').classList.toggle('active',view==='study');
+  $('#header-page').textContent = lessonView ? `Module ${view.slice(1,3)}` : view==='sources'?'Source library':view==='labs'?'Practice labs':view==='study'?'Focused study':'Overview';
   $('.nav-count').textContent=lessons.length;
+  syncStorageCopy();
 }
 function moduleMarkup(m){return referenceModule(m,homeContext());}
-function renderHome(){return referenceHome(homeContext());}
+function renderHome(){const markup=referenceHome(homeContext());return storageAvailable?markup:markup.replace('Saved in this browser','Session-only progress').replace('One useful task at a time. Your place is saved.','Your place is kept for this open session only. Export a backup before closing.');}
 async function renderTranslatedGuide(lang){
  const request=++guideRequest;stopTerminal();view='guide';renderRail();document.documentElement.lang=lang;
  main.innerHTML='<div class="loading-state" role="status">Opening the getting-started guide…</div>';
- try{const response=await fetch('docs/guides/'+lang+'/README.md');if(!response.ok)throw Error('Guide unavailable');const text=await response.text();if(request!==guideRequest||view!=='guide')return;main.innerHTML=guidePage(lang,text);document.title='Getting started · '+lang+' — Codex How-To';scrollToPart();}
+ try{const response=await fetch('docs/guides/'+lang+'/README.md');if(!response.ok)throw Error('Guide unavailable');const text=await response.text();if(request!==guideRequest||view!=='guide')return;main.innerHTML=guidePage(lang,text);enterView();document.title='Getting started · '+lang+' — Howto codex';scrollToPart();}
  catch{if(request!==guideRequest)return;main.innerHTML='<div class="error-state" role="alert"><h1>This guide could not be opened.</h1><p>Try another language or return to the learning path. Your progress is unchanged.</p><a class="button" href="#languages">Guide languages</a></div>';}
 }
 function sidebar(current) {
   return `<div class="guide-sidebar" id="guide-sidebar"><a class="back-roadmap" href="#path">← All modules</a><label class="sidebar-label" for="lesson-search">Find a lesson</label><div class="sidebar-search-wrap">${icon('search')}<input class="sidebar-search" id="lesson-search" type="search" placeholder="Search lessons…" autocomplete="off"></div><div id="sidebar-groups">${modules.map(m=>`<section class="sidebar-group" data-search-group><h2>${m.id}. ${esc(m.title)}</h2>${m.lessons.map(l=>`<a class="sidebar-link" data-search-title="${esc(m.title+' '+l.title)}" href="${lessonURL(l.id)}" ${current===l.id?'aria-current="page"':''}><span class="lesson-check ${status(l.id)}" aria-hidden="true">${status(l.id)==='done'?'✓':''}</span><span>${esc(l.title)}</span></a>`).join('')}</section>`).join('')}</div><p class="sidebar-empty" id="sidebar-empty" role="status" aria-live="polite" hidden>No matching lessons. Try a topic such as “Git” or “context”.</p></div>`;
 }
 function exampleMarkup(example, id, index = 0) {
-  return `<div class="code-block"><div class="code-header"><span>${esc(example.label)} <small>${esc(example.language)}</small></span><button class="copy-button" type="button" data-example="${id}" data-example-index="${index}" aria-label="Copy ${esc(example.label)}">Copy</button></div><pre><code>${esc(example.code)}</code></pre></div>`;
+  return `<div class="code-block"><div class="code-header"><span>${esc(example.label)} <small>${esc(example.language)}</small></span><button class="copy-button" type="button" data-example="${id}" data-example-index="${index}" aria-label="Copy ${esc(example.label)}">Copy</button></div><pre><code data-language="${esc(example.language)}">${esc(example.code)}</code></pre></div>`;
 }
 function diagramMarkup(l){
  const preview=overviews[l.id];
@@ -131,7 +177,7 @@ function diagramMarkup(l){
 function workedMarkup(l){
   if(!l.worked)return '';
   const w=l.worked;
-  return `<section class="article-section worked-example" id="worked"><span class="eyebrow">From input to result</span><h2>${esc(w.title)}</h2><p>${inline(w.scenario)}</p><div class="code-block"><div class="code-header"><span>${esc(w.language)} · example</span><button class="copy-button" type="button" data-worked="${l.id}" aria-label="Copy the worked example">Copy</button></div><pre><code>${esc(w.code)}</code></pre></div><div class="expected-output"><span class="output-label">Expected result · compare with your run</span><pre><code>${esc(w.output)}</code></pre></div><p>${inline(w.explanation)}</p></section>`;
+  return `<section class="article-section worked-example" id="worked"><span class="eyebrow">From input to result</span><h2>${esc(w.title)}</h2><p>${inline(w.scenario)}</p><div class="code-block"><div class="code-header"><span>${esc(w.language)} · example</span><button class="copy-button" type="button" data-worked="${l.id}" aria-label="Copy the worked example">Copy</button></div><pre><code data-language="${esc(w.language)}">${esc(w.code)}</code></pre></div><div class="expected-output"><span class="output-label">Expected result · compare with your run</span><pre><code>${esc(w.output)}</code></pre></div><p>${inline(w.explanation)}</p></section>`;
 }
 function labMarkup(l){
   if(!l.lab)return '';
@@ -160,11 +206,11 @@ function renderLesson(l) {
   const source=catalog.modules.flatMap(m=>m.lessons).find(s=>s.key===l.sourceKey);
   const label={equivalent:'Equivalent capability',different:'Different in Codex',alternative:'Alternative workflow'}[l.equivalence.status];
   return `<div class="reader-layout"><article class="lesson-article" aria-labelledby="lesson-title">
-<header class="lesson-heading"><div class="breadcrumb"><a href="#path">← Learning path</a><span>Lesson ${String(index+1).padStart(2,'0')} / ${lessons.length}</span></div><h1 id="lesson-title" tabindex="-1">${esc(l.title)}</h1><div class="lesson-top-meta"><span>${esc(m.title)}</span><span>${l.minutes} min estimated</span><span class="surface-badge">${esc(l.surface)}</span><span id="lesson-state-label">${statusLabel(l.id)}</span></div><p class="lesson-goal">${inline(l.goal)}</p></header>
-<button class="toc-toggle" type="button" data-action="toc" aria-expanded="false" aria-controls="lesson-toc">In this lesson ${icon('chevron-down')}</button><nav class="lesson-toc" id="lesson-toc" aria-label="On this page"><span>In this lesson</span><a href="${lessonURL(l.id)}?part=understand">Understand</a><a href="${lessonURL(l.id)}?part=example">Example</a><a href="${lessonURL(l.id)}?part=practice">Practice</a><a href="${lessonURL(l.id)}?part=check">Check your result</a><a href="${lessonURL(l.id)}?part=quiz">Knowledge check</a></nav>
+<div class="reading-progress" aria-hidden="true"><i></i></div><header class="lesson-heading"><div class="breadcrumb"><a href="#path">← Learning path</a><span>Lesson ${String(index+1).padStart(2,'0')} / ${lessons.length}</span></div><h1 id="lesson-title" tabindex="-1">${esc(l.title)}</h1><div class="lesson-top-meta"><span>${esc(m.title)}</span><span>${l.minutes} min estimated</span><span class="surface-badge">${esc(l.surface)}</span><span id="lesson-state-label">${statusLabel(l.id)}</span></div><p class="lesson-goal">${inline(l.goal)}</p><div class="lesson-journey"><span>Module ${modules.indexOf(m)+1} of 10 · Lesson ${m.lessons.indexOf(l)+1} of ${m.lessons.length}</span><a href="#reference?part=ref-${m.id}">Open field reference ↗</a></div></header>
+<button class="toc-toggle" type="button" data-action="toc" aria-expanded="false" aria-controls="lesson-toc">In this lesson ${icon('chevron-down')}</button><nav class="lesson-toc" id="lesson-toc" aria-label="On this page"><span>In this lesson</span>${lessonOutline(l).map(([id,title])=>`<a href="${lessonURL(l.id)}?part=${id}">${esc(title)}</a>`).join('')}</nav>
 <section class="article-section" id="understand"><h2 class="sr-only">Understand the approach</h2>${l.body.map(p=>`<p>${inline(p)}</p>`).join('')}</section>
 ${diagramMarkup(l)}
-${(l.sections||[]).map(section=>`<section class="article-section"><h2>${esc(section.title)}</h2>${section.paragraphs.map(p=>`<p>${inline(p)}</p>`).join('')}</section>`).join('')}
+${(l.sections||[]).map((section,i)=>`<section class="article-section" id="section-${i}"><h2>${esc(section.title)}</h2>${section.paragraphs.map(p=>`<p>${inline(p)}</p>`).join('')}</section>`).join('')}
 <aside class="lesson-note"><strong>About your environment</strong><p>${inline(l.note)}</p></aside>
 <section class="article-section" id="steps"><h2>Try it step by step</h2><ol>${l.steps.map(step=>`<li>${inline(step)}</li>`).join('')}</ol></section>
 <section class="article-section" id="example"><div class="article-section-heading"><h2>A useful starting example</h2><span class="tiny-label">Illustration · adapt before use</span></div>${[l.example,...(l.examples||[])].map((ex,i)=>exampleMarkup(ex,l.id,i)).join('')}${workedMarkup(l)}</section>
@@ -174,9 +220,9 @@ ${labMarkup(l)}
 ${solutionMarkup(l)}
 ${quizMarkup(l)}
 ${troubleshootingMarkup(l)}
-<section class="article-section"><h2>Common mistakes</h2><ul>${l.mistakes.map(item=>`<li>${inline(item)}</li>`).join('')}</ul></section>
+<section class="article-section" id="mistakes"><h2>Common mistakes</h2><ul>${l.mistakes.map(item=>`<li>${inline(item)}</li>`).join('')}</ul></section>
 <details class="mapping-note ${l.equivalence.status}"><summary><span class="mapping-label">${label}</span><span>Source mapping & differences</span></summary><div><p>${inline(l.equivalence.summary)}</p><a href="${esc(source.originalUrl)}" target="_blank" rel="noopener noreferrer">Source topic: ${esc(source.title)} ↗</a></div></details>
-<section class="article-section article-sources"><h2>Go to the source</h2><p class="fine-print">Official documentation, checked 21 October 2026. Product names, controls, and availability may vary with your version, platform, or account.</p><ul class="source-links">${l.sources.map(s=>`<li><a href="${esc(s.url)}" target="_blank" rel="noopener noreferrer">${esc(s.title)} ↗</a></li>`).join('')}</ul></section>
+<section class="article-section article-sources" id="lesson-sources"><h2>Go to the source</h2><p class="fine-print">Official documentation, checked 21 October 2026. Product names, controls, and availability may vary with your version, platform, or account.</p><ul class="source-links">${l.sources.map(s=>`<li><a href="${esc(s.url)}" target="_blank" rel="noopener noreferrer">${esc(s.title)} ↗</a></li>`).join('')}</ul></section>
 <div class="lesson-completion"><button class="button ${done?'button-success':'button-solid'}" id="complete-lesson" type="button" data-action="complete" data-lesson="${l.id}" aria-pressed="${done}">${done?'✓ Completed · Study again':'Mark lesson complete'}</button><p>Complete it after you have<br>practiced and checked the result.</p></div>
 <nav class="lesson-navigation" aria-label="Previous and next lessons">${previous?`<a href="${lessonURL(previous.id)}"><span>← Previous lesson</span><strong>${esc(previous.title)}</strong></a>`:'<a href="#path"><span>← Back to</span><strong>Learning path</strong></a>'}${next?`<a href="${lessonURL(next.id)}"><span>Next lesson →</span><strong>${esc(next.title)}</strong></a>`:'<a href="#path"><span>You reached the end →</span><strong>Review your progress</strong></a>'}</nav></article></div>`;
 }
@@ -191,7 +237,7 @@ function renderSources() {
 <h2>The 60-topic coverage map</h2><p>Reference snapshot <code>${esc(catalog.reference.commit.slice(0,7))}</code>, checked 21 October 2026. Open a source topic to compare its purpose; open the Codex lesson to learn the adapted workflow.</p>
 <div class="coverage-list">${modules.map(m=>`<section><h3>${m.id}. ${esc(m.title)} <small>${m.lessons.length} lessons</small></h3>${m.lessons.map(l=>{const s=sourceLessons.find(s=>s.key===l.sourceKey);return `<div class="coverage-row"><div><span class="mapping-label">${esc(l.equivalence.status)}</span><a href="${lessonURL(l.id)}">${esc(l.title)}</a><p>${esc(l.equivalence.summary)}</p></div><a class="coverage-original" href="${esc(s.originalUrl)}" target="_blank" rel="noopener noreferrer">${esc(s.title)} ↗</a></div>`;}).join('')}</section>`).join('')}</div>
 <h2>Product names and current documentation</h2><p>Older Codex links may redirect to ChatGPT Learn. Codex in the desktop app, Codex CLI and an IDE extension have different surfaces. Account, platform, organization policy and version can affect availability. Follow the environment note in each lesson; a documented feature is not a promise that it is enabled in your installation.</p>
-<h2>Design references and licensed materials</h2><p>The landing page directly adapts Claude How-To’s MIT-licensed templates at commit 188f468. Its warm grid, green palette, typography, continuous roadmap, progress ring and motion timings are reused with Codex-specific content. The original stylesheet and full copyright notice ship in assets/reference/. The lesson reader retains its own navigation and practice controls. <a href="https://linear.app/docs" target="_blank" rel="noopener noreferrer">Linear Docs</a> also informed navigation, and <a href="https://www.boot.dev/paths/backend?tech=python-typescript" target="_blank" rel="noopener noreferrer">Boot.dev</a> informed staged curriculum organization. Their logos and artwork are not included.</p><p>Learning topic organization was adapted from <a href="https://luongnv.com/claude-howto/" target="_blank" rel="noopener noreferrer">Claude How-To by luongnv89</a>, MIT © 2024 luongnv89. The original license is included. Fraunces, Manrope and JetBrains Mono are self-hosted under OFL; Lucide SVG icons retain ISC/MIT notices. Semantic diagrams were compiled with MIT-licensed Mermaid; the course serves static SVGs. No paid resource or runtime account is needed to read this course.</p><p><a href="THIRD-PARTY-NOTICES.md">Third-party notices</a> · <a href="docs/design-sources.md">Design reference notes</a> · <a href="docs/verification.md">Verification report</a></p>
+<h2>Design references and licensed materials</h2><p>The current field-guide design uses an original cool-white layout, Fraunces display headings and Manrope body text, restrained cobalt accents and an illustrative Task → Change → Check workbench. <a href="https://linear.app/method" target="_blank" rel="noopener noreferrer">Linear Method</a> informed editorial hierarchy, <a href="https://www.framer.com/academy/" target="_blank" rel="noopener noreferrer">Framer Academy</a> informed course navigation, and <a href="https://codecrafters.io/" target="_blank" rel="noopener noreferrer">CodeCrafters</a> informed the emphasis on inspectable practice. Their code, logos and artwork are not included.</p><p>Learning topic organization was adapted from <a href="https://luongnv.com/claude-howto/" target="_blank" rel="noopener noreferrer">Claude How-To by luongnv89</a>, MIT © 2024 luongnv89, at commit 188f468. The earlier source-derived presentation and its complete MIT notice remain in assets/reference/ for provenance; its landing stylesheet and typewriter motion are no longer loaded. The current presentation is maintained under assets/atelier/. Fraunces, Manrope and JetBrains Mono are self-hosted under OFL with their notices preserved. Lucide SVG icons retain ISC/MIT notices. Semantic diagrams were compiled with MIT-licensed Mermaid; the course serves static SVGs. No paid resource or runtime account is needed to read this course.</p><p><a href="THIRD-PARTY-NOTICES.md">Third-party notices</a> · <a href="docs/design-sources.md">Design reference notes</a> · <a href="docs/verification.md">Verification report</a> · <a href="assets/reading/index.html">Read without JavaScript</a></p>
 <h2>Official documentation used</h2><ul class="source-links">${[...sources.values()].map(s=>`<li><a href="${esc(s.url)}" target="_blank" rel="noopener noreferrer">${esc(s.title)} ↗</a></li>`).join('')}</ul><h2>What completion means</h2><p>Times are practice estimates. Completion is your own assessment, not a certification. The website does not run Codex, execute the examples or inspect your local project. Check the actual result before marking a lesson complete.</p><a class="button button-solid" href="#path">Explore the learning path ${icon('arrow-right')}</a></article>`;
 }
 
@@ -215,8 +261,8 @@ function setDrawer(open, restoreFocus = true) {
   if (drawerOpen) $('.rail-close').focus();
   else if (restoreFocus && narrow.matches) $('#menu-toggle').focus({preventScroll:true});
 }
-function stopTerminal(){disposeCourseMotion();disposeReferenceMotion();}
-function enterView(){if(!motion.matches)main.animate([{opacity:.55},{opacity:1}],{duration:200,easing:'cubic-bezier(.2,.7,.3,1)'});}
+function stopTerminal(){disposeReader();disposeCourseMotion();disposeReferenceMotion();}
+function enterView(){arrive(main,{distance:0,duration:160});}
 function positionDiagram(){
   requestAnimationFrame(()=>{
     if(!$('#diagram-dialog').open)return;
@@ -239,17 +285,24 @@ function zoomDiagram(value,reset=false){
     canvas.scrollTop=centerY*canvas.scrollHeight-canvas.clientHeight/2;
   });
 }
+function fitDiagram(){
+  const canvas=$('.diagram-modal-canvas'),style=getComputedStyle(canvas);
+  const available=canvas.clientWidth-parseFloat(style.paddingLeft)-parseFloat(style.paddingRight);
+  zoomDiagram(Math.min(1,available/Number($('#diagram-modal-image').dataset.width)),true);
+}
 function scrollToPart(part, focus = false) {
   const element = part ? document.getElementById(part) : null;
-  if(element) element.scrollIntoView({behavior:motion.matches?'instant':'smooth',block:'start'});
+  if(element?.matches('details')) element.open=true;
+  if(element) window.scrollTo({top:Math.max(0,element.getBoundingClientRect().top+window.scrollY-$('.site-header').getBoundingClientRect().height-24),behavior:motion.matches?'instant':'smooth'});
   else window.scrollTo({top:0,behavior:'instant'});
   if(focus) ($('#lesson-title')||main).focus({preventScroll:true});
 }
 function route(force = false, trackVisit = true) {
   if(!lessons.length) return;
-  viewerRequest++;guideRequest++;document.documentElement.lang='en';
+  disposeReader();viewerRequest++;guideRequest++;const studyToken=++studyRequest;document.documentElement.lang='en';
   closeHomeMenu(false);
-  for(const id of ['diagram-dialog','file-dialog'])if($('#'+id).open)$('#'+id).close();
+  $('.a-guide-select')?.removeAttribute('open');
+  for(const id of ['diagram-dialog','file-dialog','assessment-dialog','search-dialog'])if($('#'+id)?.open)$('#'+id).close();
   const [rawPath,query] = location.hash.slice(1).split('?');
   const aliases={path:'roadmap',practice:'get-started',resources:'vs-docs','lo-trinh':'roadmap','nguon':'sources','vi-sao':'why','tai-lieu':'vs-docs','bat-dau':'get-started','noi-dung':'main-content'};
   const path=aliases[rawPath] || rawPath.replace(/^bai\//,'lesson/');
@@ -261,40 +314,70 @@ function route(force = false, trackVisit = true) {
   if(path.startsWith('lesson/')) {
     stopTerminal();
     const id=path.slice(7),l=byId.get(id);
-    if(!l){view='error';main.innerHTML='<div class="error-state"><span class="eyebrow">Lesson not found</span><h1>This lesson is not on the path.</h1><p>Choose a lesson from the curriculum to continue. Your saved progress is unchanged.</p><a class="button button-solid" href="#path">Open the learning path</a></div>';document.title='Lesson not found — Codex How-To';renderRail();scrollToPart();return;}
+    if(!l){view='error';main.innerHTML='<div class="error-state"><span class="eyebrow">Lesson not found</span><h1>This lesson is not on the path.</h1><p>Choose a lesson from the curriculum to continue. Your saved progress is unchanged.</p><a class="button button-solid" href="#path">Open the learning path</a></div>';document.title='Lesson not found — Howto codex';renderRail();scrollToPart();return;}
     const same=view===id&&!force;
-    if(!same){if(trackVisit){if(status(id)==='new')state.lessons[id]={status:'started',updated:Date.now()};state.last=id;saveProgress();}disposeCourseMotion();main.innerHTML=renderLesson(l);view=id;mountCourseMotion(main);enterView();document.title=l.title+' — Codex How-To';renderRail();}
-    requestAnimationFrame(()=>scrollToPart(part,!same));return;
+    if(!same){if(trackVisit){if(status(id)==='new')state.lessons[id]={status:'started',updated:Date.now()};state.last=id;saveProgress();}disposeCourseMotion();main.innerHTML=renderLesson(l);highlightView(main);view=id;mountCourseMotion(main);mountReader(main);enterView();document.title=l.title+' — Howto codex';renderRail();}
+    if(same)mountReader(main);requestAnimationFrame(()=>scrollToPart(part,!same));return;
   }
-  if(path==='sources'){disposeCourseMotion();stopTerminal();view='sources';main.innerHTML=renderSources();enterView();document.title='Source library — Codex How-To';renderRail();scrollToPart();return;}
-  if(path==='labs'){disposeCourseMotion();stopTerminal();view='labs';main.innerHTML=renderLabLibrary();enterView();document.title='Practice labs — Codex How-To';renderRail();scrollToPart();return;}
+  if(path==='reference'){stopTerminal();view='reference';main.innerHTML=renderReference(modules);highlightView(main);enterView();document.title='Field reference — Howto codex';renderRail();scrollToPart(part);return;}
+  if(path==='study'){disposeCourseMotion();stopTerminal();view='study';main.innerHTML='<p role="status">Loading focused study…</p>';document.title='Focused study — Howto codex';renderRail();mountStudy(main,modules,()=>studyToken===studyRequest).catch(()=>{if(studyToken===studyRequest)main.innerHTML='<h1>Study unavailable</h1><p>Reload to retry, or use the <a href="LEARNING-ROADMAP.md">reading study path</a>. Progress is unchanged.</p>';});return;}
+  if(path==='sources'){disposeCourseMotion();stopTerminal();view='sources';main.innerHTML=renderSources();enterView();document.title='Source library — Howto codex';renderRail();scrollToPart();return;}
+  if(path==='labs'){disposeCourseMotion();stopTerminal();view='labs';main.innerHTML=renderLabLibrary();highlightView(main);enterView();document.title='Practice labs — Howto codex';renderRail();scrollToPart();return;}
   if(!['','roadmap','why','vs-docs','get-started','languages','main-content'].includes(path)){stopTerminal();view='error';main.innerHTML='<div class="error-state"><h1>Page not found.</h1><p>The address may have changed.</p><a class="button" href="#path">Back to the learning path</a></div>';renderRail();return;}
-  if(view!=='home'||force){stopTerminal();main.innerHTML=renderHome();view='home';renderRail();mountReferenceMotion(main);}
-  document.title='Codex How-To — A practical field guide';renderRail();
-  requestAnimationFrame(()=>{if(path==='main-content'){main.focus();return;}scrollToPart(path);});
+  if(view!=='home'||force){stopTerminal();main.innerHTML=renderHome();view='home';renderRail();mountReferenceMotion(main,{entrance:!restoringHomePreview});restoringHomePreview=false;}
+  document.title='Howto codex — A practical field guide';renderRail();
+  requestAnimationFrame(()=>{if(path==='main-content'){main.focus();return;}scrollToPart(path==='roadmap'&&/^level-(beginner|intermediate|advanced)$/.test(part||'')?part:path);});
 }
 function showAssessment() {
   if(!contentReady){notify('Open the course before choosing a starting point. Use Try again if the lesson files could not load.');return;}
   if(drawerOpen) setDrawer(false,false);
-  const questions=['I can distinguish Codex in the app, CLI, and IDE.','I can give a task with a clear scope and outcome.','I have reviewed a change and checked that it works.','I have used a skill or connected tool in Codex.'];
-  $('#assessment-body').innerHTML=`<h2 id="assessment-title">What have you already tried?</h2><p>Choose based on real experience. This suggests a starting point; it is not a certification test.</p><form id="assessment-form">${questions.map((q,i)=>`<fieldset class="assessment-question"><legend>${i+1}. ${q}</legend><div class="assessment-options"><label><input type="radio" name="q${i}" value="yes" required> I have done this</label><label><input type="radio" name="q${i}" value="no" required> Not sure yet</label></div></fieldset>`).join('')}<div class="dialog-actions"><button class="button button-solid" type="submit">Show my starting point</button></div></form>`;
-  if(!$('#assessment-dialog').open) $('#assessment-dialog').showModal();
+  learningTools?.showAssessment();
 }
 function normalizeText(text) {return text.normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/đ/g,'d').replace(/Đ/g,'D').toLowerCase();}
 
+function practiceFileView(reading){
+  $('#file-reading').hidden=!reading;$('#file-preview').hidden=reading;
+  for(const button of document.querySelectorAll('[data-file-view]')){const active=(button.dataset.fileView==='reading')===reading;button.setAttribute('aria-selected',String(active));button.tabIndex=active?0:-1;}
+}
+async function openPracticeFile(path,{back=false}={}){
+  if(!/^labs\/[a-z0-9_./-]+$/i.test(path)||path.includes('..'))return;
+  const nested=$('#file-dialog').open;
+  if(!nested)viewerHistory=[];else if(!back&&viewerPath)viewerHistory.push(viewerPath);
+  viewerPath=path;
+  const request=++viewerRequest;viewerFileText='';$('#file-modal-title').textContent=path.split('/').at(-1);$('#file-preview-path').textContent=path;
+  $('#file-preview').hidden=false;$('#file-preview').textContent='Loading source…';$('#file-reading').hidden=true;$('#file-reading').innerHTML='';$('#file-view-tabs').hidden=true;
+  $('#file-back').hidden=!viewerHistory.length;$('#file-preview-status').textContent='';$('#file-preview-caption').textContent='Preview only. Opening this file does not run it.';showDialog($('#file-dialog'));
+  try{
+    const response=await fetch(path);if(!response.ok)throw Error('Unavailable');const source=await response.text();if(source.length>1024*1024)throw Error('Too large');if(request!==viewerRequest)return;
+    viewerFileText=source;
+    const ext=path.split('.').at(-1).toLowerCase(),languages={cjs:'javascript',mjs:'javascript',js:'javascript',md:'markdown',json:'json',jsonl:'json',toml:'toml',yml:'yaml',yaml:'yaml',py:'python',ps1:'powershell'};
+    $('#file-preview').innerHTML=highlightCode(source,languages[ext]||'text');
+    if(ext==='md'){$('#file-reading').innerHTML=guideMarkdown(source,{labPath:path});highlightView($('#file-reading'));$('#file-view-tabs').hidden=false;practiceFileView(true);$('#file-preview-caption').textContent='Reading guide. Examples run only when you choose to use them in your own practice folder.';}
+    $('#file-dialog').scrollTop=0;$('#file-preview').scrollTop=0;
+    if(nested){$('#file-modal-title').tabIndex=-1;$('#file-modal-title').focus({preventScroll:true});}
+  }catch{if(request!==viewerRequest)return;$('#file-preview').textContent='';$('#file-preview-status').textContent='This source file could not be loaded. Close this view and use the lab download or try again.';}
+}
+$('#file-view-tabs').addEventListener('keydown',event=>{
+  if(!['ArrowLeft','ArrowRight','Home','End'].includes(event.key))return;event.preventDefault();
+  const tabs=[...document.querySelectorAll('[data-file-view]')],current=tabs.indexOf(document.activeElement),index=event.key==='Home'?0:event.key==='End'?1:1-Math.max(0,current);
+  practiceFileView(index===0);tabs[index].focus();
+});
+
 document.addEventListener('click',async event=>{
+  const guideSelect=$('.a-guide-select');if(guideSelect?.open&&!guideSelect.contains(event.target))guideSelect.open=false;
   const target=event.target.closest('button,a');if(!target)return;
   if(target.classList.contains('skip-link')){event.preventDefault();main.focus();main.scrollIntoView({behavior:'instant'});return;}
   if(homeMenuOpen&&target.closest('#nav-menu')&&target.tagName==='A')closeHomeMenu(false);
-  if(target.tagName==='A'&&target.getAttribute('href')===location.hash&&document.getElementById(location.hash.slice(1))){event.preventDefault();scrollToPart(location.hash.slice(1));return;}
-  if(target.id==='theme-toggle'){animateReferenceTheme(()=>{const dark=document.documentElement.dataset.theme==='dark';document.documentElement.dataset.theme=dark?'light':'dark';try{localStorage.setItem(THEME_KEY,dark?'light':'dark');}catch{}updateThemeLabel();});return;}
+  if(target.tagName==='A'&&target.getAttribute('href')===location.hash){event.preventDefault();route(false,false);return;}
+  if(target.id==='theme-toggle'){const choice=(themeChoice||document.documentElement.dataset.theme)==='dark'?'light':'dark';applyThemeChoice(choice,true);try{localStorage.setItem(THEME_KEY,choice);}catch{}return;}
   if(target.id==='menu-toggle'){if(byId.has(view))setDrawer(!drawerOpen);else setHomeMenu(!homeMenuOpen);return;}
   if(target.hasAttribute('data-copy')||target.hasAttribute('data-lesson-copy')||target.hasAttribute('data-example')||target.hasAttribute('data-worked')||target.hasAttribute('data-lab-copy')){
     const item=byId.get(target.dataset.example||target.dataset.lessonCopy);
     const text=target.hasAttribute('data-worked')?byId.get(target.dataset.worked)?.worked?.code:target.hasAttribute('data-lab-copy')?byId.get(target.dataset.labCopy)?.lab?.commands[Number(target.dataset.command)]?.command:target.dataset.copy??[item?.example,...(item?.examples||[])][Number(target.dataset.exampleIndex)||0]?.code;
     if(typeof text!=='string')return;
-    try{await navigator.clipboard.writeText(text);target.textContent='Copied ✓';notify('Example copied.');setTimeout(()=>{if(target.isConnected)target.textContent='Copy';},2000);}
-    catch{notify('Automatic copy is unavailable. Select the example text and copy it manually.');}
+    const request=(copyRequests.get(target)||0)+1;copyRequests.set(target,request);const original=target.dataset.copyLabel||target.textContent;target.dataset.copyLabel=original;
+    try{await navigator.clipboard.writeText(text);if(copyRequests.get(target)!==request||!target.isConnected)return;target.textContent='Copied ✓';notify('Example copied.');setTimeout(()=>{if(target.isConnected&&copyRequests.get(target)===request)target.textContent=original;},2000);}
+    catch{if(copyRequests.get(target)===request)notify('Automatic copy is unavailable. Select the example text and copy it manually.');}
     return;
   }
   switch(target.dataset.action){
@@ -302,37 +385,33 @@ document.addEventListener('click',async event=>{
     case 'diagram':{
       const l=byId.get(target.dataset.lesson);if(!l)return;
       diagramZoom=1;$('#diagram-modal-title').textContent=l.diagram.title;$('#diagram-modal-description').textContent=l.diagram.text;
-      const img=$('#diagram-modal-image');img.onload=positionDiagram;img.src=l.diagram.asset;img.alt=l.diagram.text;img.dataset.width=l.diagram.width;img.style.width=l.diagram.width+'px';$('#diagram-scale').textContent='100%';$('#diagram-dialog').showModal();positionDiagram();break;
+      const img=$('#diagram-modal-image');img.onload=positionDiagram;img.src=l.diagram.asset;img.alt=l.diagram.text;img.dataset.width=l.diagram.width;img.style.width=l.diagram.width+'px';showDialog($('#diagram-dialog'));fitDiagram();break;
     }
     case 'close-diagram':$('#diagram-dialog').close();break;
     case 'zoom-in':case 'zoom-out':case 'zoom-reset':{
       const reset=target.dataset.action==='zoom-reset';
       zoomDiagram(reset?1:diagramZoom+(target.dataset.action==='zoom-in'?.25:-.25),reset);break;
     }
-    case 'zoom-fit':{
-      const canvas=$('.diagram-modal-canvas'),style=getComputedStyle(canvas);
-      const available=canvas.clientWidth-parseFloat(style.paddingLeft)-parseFloat(style.paddingRight);
-      zoomDiagram(Math.min(1,available/Number($('#diagram-modal-image').dataset.width)),true);break;
-    }
+    case 'zoom-fit':fitDiagram();break;
     case 'lab-file':{
-      const path=target.dataset.file;if(!/^labs\/[a-z0-9_./-]+$/i.test(path)||path.includes('..'))return;
-      const request=++viewerRequest;viewerFileText='';$('#file-modal-title').textContent=path;$('#file-preview').textContent='Loading source…';$('#file-preview-status').textContent='';$('#file-dialog').showModal();
-      try{const response=await fetch(path);if(!response.ok)throw new Error('Unavailable');const source=await response.text();if(source.length>1024*1024)throw new Error('Too large');if(request!==viewerRequest)return;viewerFileText=source;$('#file-preview').textContent=source;}
-      catch{if(request!==viewerRequest)return;$('#file-preview').textContent='';$('#file-preview-status').textContent='This source file could not be loaded. Close this view and use the lab download or try again.';}break;
+      event.preventDefault();await openPracticeFile(target.dataset.file);break;
     }
+    case 'file-reading':practiceFileView(true);break;
+    case 'file-source':practiceFileView(false);break;
+    case 'file-back':{const path=viewerHistory.pop();if(path)await openPracticeFile(path,{back:true});break;}
     case 'close-file':viewerRequest++;$('#file-dialog').close();break;
     case 'copy-file':{
       if(!viewerFileText){notify('Wait for the source file to load.');break;}try{await navigator.clipboard.writeText(viewerFileText);notify('File contents copied.');}catch{notify('Select the source text and copy it manually.');}break;
     }
     case 'close-menu':setDrawer(false);break;
-    case 'expand':{const id=target.dataset.module,expanded=target.getAttribute('aria-expanded')==='true';target.setAttribute('aria-expanded',String(!expanded));$('#lessons-'+id).hidden=expanded;expanded?openModules.delete(id):openModules.add(id);main.dispatchEvent(new CustomEvent('reference-progress'));break;}
+    case 'expand':{const id=target.dataset.module,expanded=target.getAttribute('aria-expanded')==='true';target.setAttribute('aria-expanded',String(!expanded));target.setAttribute('aria-label',(expanded?'Show':'Hide')+' lessons in '+modules.find(m=>m.id===id).title);$('#lessons-'+id).hidden=expanded;expanded?openModules.delete(id):openModules.add(id);main.dispatchEvent(new CustomEvent('reference-progress'));break;}
     case 'roadmap-complete':{const id=target.dataset.lesson;if(!byId.has(id))break;state.lessons[id]={...state.lessons[id],status:status(id)==='done'?'started':'done',updated:Date.now()};saveProgress();paintRoadmap();break;}
     case 'assessment':showAssessment();break;
     case 'close-assessment':$('#assessment-dialog').close();break;
-    case 'reset':$('#reset-dialog').showModal();break;
+    case 'reset':showDialog($('#reset-dialog'));break;
     case 'cancel-reset':$('#reset-dialog').close();break;
-    case 'confirm-reset':state={lessons:{},last:null};saveProgress();$('#reset-dialog').close();route(true);notify('Progress reset in this browser.');break;
-    case 'complete':{const id=target.dataset.lesson,done=status(id)==='done';state.lessons[id]={...state.lessons[id],status:done?'started':'done',updated:Date.now()};saveProgress();target.setAttribute('aria-pressed',String(!done));target.textContent=done?'Mark lesson complete':'✓ Completed · Study again';target.classList.toggle('button-solid',done);target.classList.toggle('button-success',!done);$('#lesson-state-label').textContent=done?'In progress':'Completed';renderRail();notify(done?'Lesson moved back to in progress.':'Lesson completion saved.');break;}
+    case 'confirm-reset':{state={lessons:{},last:null};const saved=saveProgress(true);$('#reset-dialog').close();route(true);notify(saved?'Progress reset in this browser.':'Progress reset for this session only. The saved backup could not be changed.');break;}
+    case 'complete':{const id=target.dataset.lesson,done=status(id)==='done';state.lessons[id]={...state.lessons[id],status:done?'started':'done',updated:Date.now()};const saved=saveProgress();target.setAttribute('aria-pressed',String(!done));target.textContent=done?'Mark lesson complete':'✓ Completed · Study again';target.classList.toggle('button-solid',done);target.classList.toggle('button-success',!done);$('#lesson-state-label').textContent=done?'In progress':'Completed';renderRail();notify(saved?(done?'Lesson moved back to in progress.':'Lesson completion saved.'):'Lesson updated for this session only; progress was not saved.');break;}
     case 'sidebar':setDrawer(true);break;
     case 'retry':boot();break;
     case 'export':{
@@ -353,14 +432,10 @@ document.addEventListener('submit',event=>{
     if(!l||!Number.isInteger(answer)||answer<0||answer>=l.quiz.options.length)return;
     state.lessons[id]={...state.lessons[id],status:status(id)==='done'?'done':'started',answer,updated:Date.now()};saveProgress();$('.quiz-feedback',event.target).innerHTML=quizFeedback(l,answer);return;
   }
-  if(event.target.id!=='assessment-form')return;event.preventDefault();
-  if(!contentReady){$('#assessment-dialog').close();notify('The course needs to finish loading first.');return;}
-  const fd=new FormData(event.target),answers=[0,1,2,3].map(i=>fd.get('q'+i)==='yes');
-  const id=!answers[0]?'01':!answers[1]?'02':!answers[2]?'08':!answers[3]?'03':'09',m=modules.find(m=>m.id===id);
-  $('#assessment-body').innerHTML=`<div class="assessment-result"><span class="source-tag">A suggested starting point</span><h2 id="assessment-title" tabindex="-1">Start with module ${m.id}</h2><h3>${esc(m.title)}</h3><p>${esc(m.description)} You can open any other lesson; this recommendation does not skip or complete lessons for you.</p><div class="dialog-actions"><a class="button button-solid" href="${lessonURL(m.lessons[0].id)}" id="assessment-start">Open the suggested lesson</a><button class="button" data-action="assessment" type="button">Choose again</button></div></div>`;
-  $('#assessment-start').addEventListener('click',()=>$('#assessment-dialog').close());$('#assessment-title').focus();
+
 });
 document.addEventListener('load',event=>{if(event.target.matches?.('.diagram-viewport img')){const frame=event.target.parentElement;frame.scrollLeft=Math.max(0,(frame.scrollWidth-frame.clientWidth)/2);}},true);
+document.addEventListener('error',event=>{if(event.target.matches?.('.diagram-viewport img')){const figure=event.target.closest('figure');if(figure.querySelector('.diagram-load-notice'))return;event.target.hidden=true;figure.querySelector('source')?.remove();const text=figure.querySelector('details');if(text)text.open=true;const note=document.createElement('p');note.className='diagram-load-notice';note.setAttribute('role','status');note.textContent='The diagram image could not load. Its complete text description is available below.';figure.querySelector('.diagram-viewport').append(note);}},true);
 document.addEventListener('change',async event=>{
   if(event.target.id!=='progress-import')return;
   const file=event.target.files?.[0];if(!file)return;
@@ -371,17 +446,26 @@ document.addEventListener('change',async event=>{
     if(data.edition!==EDITION)throw new Error('Wrong edition');
     const next=sanitizeProgress(data.progress,lessons);
     if(Object.entries(data.progress.lessons).some(([id,v])=>!byId.has(id)||!['started','done'].includes(v?.status)||(v.answer!==undefined&&(!Number.isInteger(v.answer)||v.answer<0||v.answer>=byId.get(id).quiz.options.length))))throw new Error('Invalid lesson');
-    state=next;saveProgress();renderRail();result.textContent='Progress imported. Open the learning path to resume.';
+    state=next;const saved=saveProgress(true);renderRail();result.textContent=saved?'Progress imported. Open the learning path to resume.':'Progress imported for this session only. Browser storage is unavailable; keep your backup before closing this page.';
   }catch{result.textContent='This is not a valid progress backup for the 60-lesson edition. Your current progress was kept.';}
   event.target.value='';
 });
 document.addEventListener('keydown',event=>{
+  if(event.key==='Escape'&&$('.a-guide-select')?.open){$('.a-guide-select').open=false;$('.a-guide-select summary').focus();return;}
   if(event.key==='Escape'&&homeMenuOpen){closeHomeMenu();return;}
   if(event.key==='Escape'&&drawerOpen){setDrawer(false);return;}
   if(event.key==='Tab'&&drawerOpen){const controls=[...$('#app-rail').querySelectorAll('a,button,input')].filter(el=>!el.hidden&&el.getClientRects().length);const first=controls[0],last=controls.at(-1);if(event.shiftKey&&document.activeElement===first){event.preventDefault();last.focus();}else if(!event.shiftKey&&document.activeElement===last){event.preventDefault();first.focus();}}
 });
 window.addEventListener('hashchange',()=>route());
-window.addEventListener('storage',event=>{if(event.key===STORAGE_KEY||event.key===null){readProgress();route(true,false);}});
+function syncProgressView(){
+ readProgress();
+ if(view==='home'){paintRoadmap();return;}
+ const l=byId.get(view);
+ if(l){const done=status(l.id)==='done',button=$('#complete-lesson');button.setAttribute('aria-pressed',String(done));button.textContent=done?'✓ Completed · Study again':'Mark lesson complete';button.classList.toggle('button-success',done);button.classList.toggle('button-solid',!done);$('#lesson-state-label').textContent=statusLabel(l.id);const answer=state.lessons[l.id]?.answer;for(const radio of main.querySelectorAll('.lesson-quiz input'))radio.checked=Number(radio.value)===answer;$('.quiz-feedback').innerHTML=Number.isInteger(answer)?quizFeedback(l,answer):'';}
+ renderRail();
+}
+window.addEventListener('storage',event=>{if(event.key===THEME_KEY||event.key===null)applyThemeChoice(event.key===null?null:event.newValue,true);if(event.key===STORAGE_KEY||event.key===null)syncProgressView();});
+window.addEventListener('pageshow',event=>{if(!event.persisted||!contentReady)return;const position=window.scrollY;readProgress();try{applyThemeChoice(localStorage.getItem(THEME_KEY));}catch{}route(true,false);requestAnimationFrame(()=>window.scrollTo({top:position,behavior:'instant'}));});
 narrow.addEventListener('change',()=>{setDrawer(false,false);closeHomeMenu(false);});
 
 async function boot() {
@@ -389,7 +473,11 @@ async function boot() {
     contentReady=false;
     $('.header-assessment').disabled=true;
     setDrawer(false,false);
-    main.innerHTML='<div class="loading-state" role="status">Opening your learning workspace…</div>';
+    const firstPath=location.hash.slice(1).split('?')[0];
+    restoringHomePreview=!!main.querySelector('[data-static-snapshot]')&&['','roadmap','path','why','vs-docs','get-started','languages','main-content'].includes(firstPath);
+    main.setAttribute('aria-busy','true');
+    if(restoringHomePreview) main.insertAdjacentHTML('beforeend','<p class="sr-only" role="status">Opening the interactive learning workspace. The reading preview remains available.</p>');
+    else main.innerHTML='<div class="loading-state" role="status">Opening your learning workspace…</div>';
     const responses=await Promise.all([...PARTS.map(part=>`content/${part}.json`),'content/source-map.json','content/diagrams.json','content/labs.json','content/diagram-overviews.json'].map(url=>fetch(url)));
     if(responses.some(response=>!response.ok))throw new Error('Content unavailable');
     const documents=await Promise.all(responses.map(response=>response.json()));
@@ -398,9 +486,13 @@ async function boot() {
     modules=validateCourse(documents.flat(),catalog,diagrams);
     lessons=modules.flatMap(m=>m.lessons);byId=new Map(lessons.map(l=>[l.id,l]));
     contentReady=true;
+    main.removeAttribute('aria-busy');
+    document.documentElement.classList.add('app-ready');
+    if(!learningTools)learningTools=mountLearningTools({lessons,modules,showDialog});
     $('.header-assessment').disabled=false;
     readProgress();view='';route();
   } catch {
+    restoringHomePreview=false;main.removeAttribute('aria-busy');
     view='error';main.innerHTML='<div class="error-state" role="alert"><span class="eyebrow">Content unavailable</span><h1>Let’s try opening the course again.</h1><p>The lesson files could not be read. Check that the local server is running and the content folder is present. Your saved progress has not been deleted.</p><button class="button button-solid" type="button" data-action="retry">Try again</button></div>';
   }
 }

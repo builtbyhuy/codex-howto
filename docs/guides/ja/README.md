@@ -10,7 +10,7 @@
 
 Codex は、プロジェクトのファイルを読み、変更を提案し、利用可能なツールを使うコーディングエージェントです。まずはデスクトップアプリを使うと、プロジェクト、チャット、プレビューを同じ作業場所で扱えます。インストールとサインインは[公式アプリの案内](https://learn.chatgpt.com/docs/app)に従ってください。すでに導入済みなら、まず現在の環境を確認します。Codex を選び、練習専用のフォルダーを開きます。サインインできたことだけでは、正しいフォルダーが開いている証拠にはなりません。
 
-[最初のレッスン](https://codex-howto.hokhachuy1234.chatgpt.site/#lesson/s01-01)を開き、[Orbit Notes](https://codex-howto.hokhachuy1234.chatgpt.site/labs/project-workflow.zip) をダウンロードして展開してください。ZIP は展開先の下に `labs/project-workflow/` を保持します。その練習フォルダーで実行します。
+[最初のレッスン](https://builtbyhuy.github.io/codex-howto/#lesson/s01-01)を開き、[Orbit Notes](https://builtbyhuy.github.io/codex-howto/labs/project-workflow.zip) をダウンロードして展開してください。ZIP は展開先の下に `labs/project-workflow/` を保持します。その練習フォルダーで実行します。
 
 ```text
 node create-workspace.cjs
@@ -56,15 +56,15 @@ node cli.cjs "  REVIEW  "
 
 | 段階 | モジュールとレッスン数 |
 | --- | --- |
-| 基礎 | [コマンドと初回セッション](https://codex-howto.hokhachuy1234.chatgpt.site/#lesson/s01-01) — 6、[プロジェクト指示とメモリ](https://codex-howto.hokhachuy1234.chatgpt.site/#lesson/s02-01) — 5、[復元と Git](https://codex-howto.hokhachuy1234.chatgpt.site/#lesson/s08-01) — 5、[CLI](https://codex-howto.hokhachuy1234.chatgpt.site/#lesson/s10-01) — 5 |
-| 中級 | [Skills](https://codex-howto.hokhachuy1234.chatgpt.site/#lesson/s03-01) — 6、[Hooks](https://codex-howto.hokhachuy1234.chatgpt.site/#lesson/s06-01) — 7、[MCP](https://codex-howto.hokhachuy1234.chatgpt.site/#lesson/s05-01) — 6、[サブエージェント](https://codex-howto.hokhachuy1234.chatgpt.site/#lesson/s04-01) — 7 |
-| 応用 | [高度な機能](https://codex-howto.hokhachuy1234.chatgpt.site/#lesson/s09-01) — 7、[Plugins](https://codex-howto.hokhachuy1234.chatgpt.site/#lesson/s07-01) — 6 |
+| 基礎 | [コマンドと初回セッション](https://builtbyhuy.github.io/codex-howto/#lesson/s01-01) — 6、[プロジェクト指示とメモリ](https://builtbyhuy.github.io/codex-howto/#lesson/s02-01) — 5、[復元と Git](https://builtbyhuy.github.io/codex-howto/#lesson/s08-01) — 5、[CLI](https://builtbyhuy.github.io/codex-howto/#lesson/s10-01) — 5 |
+| 中級 | [Skills](https://builtbyhuy.github.io/codex-howto/#lesson/s03-01) — 6、[Hooks](https://builtbyhuy.github.io/codex-howto/#lesson/s06-01) — 7、[MCP](https://builtbyhuy.github.io/codex-howto/#lesson/s05-01) — 6、[サブエージェント](https://builtbyhuy.github.io/codex-howto/#lesson/s04-01) — 7 |
+| 応用 | [高度な機能](https://builtbyhuy.github.io/codex-howto/#lesson/s09-01) — 7、[Plugins](https://builtbyhuy.github.io/codex-howto/#lesson/s07-01) — 6 |
 
 各レッスンには、目標、解説、例、課題、確認すべき証拠、参考解答、理解度チェックがあります。解答を開く前に課題を試してください。学習時間の表示は見積もりであり、習熟を保証するものではありません。
 
 ## 5. 七つの練習パックが示す範囲を知る
 
-[練習ライブラリ](https://codex-howto.hokhachuy1234.chatgpt.site/#labs)では七つのパックを個別に取得できます。`project-workflow` は初めてのプロジェクトと復元、`cli-pipeline` は子プロセスのイベントと抽出レポートの検証、`skill-workflow` は再利用できるレビュー skill と決定的な補助プログラム、`mcp-workbench` は実際のローカル JSON-RPC 通信、`delegation-capstone` は二つの担当作業の統合を扱います。`hook-policy` は制限付きイベントの再生と成果物の根拠確認、`workflow-plugin` は skill、ツール、接続用の構成要素をまとめる練習です。
+[練習ライブラリ](https://builtbyhuy.github.io/codex-howto/#labs)では七つのパックを個別に取得できます。`project-workflow` は初めてのプロジェクトと復元、`cli-pipeline` は子プロセスのイベントと抽出レポートの検証、`skill-workflow` は再利用できるレビュー skill と決定的な補助プログラム、`mcp-workbench` は実際のローカル JSON-RPC 通信、`delegation-capstone` は二つの担当作業の統合を扱います。`hook-policy` は制限付きイベントの再生と成果物の根拠確認、`workflow-plugin` は skill、ツール、接続用の構成要素をまとめる練習です。
 
 ローカルプログラムは実際に動きますが、架空のデータ、合成イベント、模擬的な作業委任にはその旨が明記されています。補助プログラムのテスト成功は、Codex が skill を呼び出した、MCP ツールを選んだ、サブエージェントを起動した、hook を有効化したという証明にはなりません。任意の実クライアント向け手順で、それぞれ別に観察します。各 README を読み、新しいコピーを使い、意図的に失敗する練習の初期状態と、成功すべき参考実装の検証を区別してください。
 

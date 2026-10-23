@@ -10,7 +10,7 @@
 
 Codex — агент для програмування: він читає файли проєкту, пропонує зміни та користується доступними інструментами. Почніть із настільного застосунку, де проєкти, чати й попередній перегляд розташовані в одному робочому просторі. Для встановлення та входу скористайтеся [офіційною інструкцією](https://learn.chatgpt.com/docs/app). Якщо застосунок уже встановлено, спершу перевірте наявну версію. Виберіть Codex і відкрийте окрему навчальну теку. Успішний вхід ще не доводить, що відкрито потрібний проєкт.
 
-Відкрийте [перший урок](https://codex-howto.hokhachuy1234.chatgpt.site/#lesson/s01-01) і завантажте [Orbit Notes](https://codex-howto.hokhachuy1234.chatgpt.site/labs/project-workflow.zip). Розпакуйте архів: він зберігає структуру `labs/project-workflow/` усередині кореневої теки розпакування. У теці цієї вправи виконайте:
+Відкрийте [перший урок](https://builtbyhuy.github.io/codex-howto/#lesson/s01-01) і завантажте [Orbit Notes](https://builtbyhuy.github.io/codex-howto/labs/project-workflow.zip). Розпакуйте архів: він зберігає структуру `labs/project-workflow/` усередині кореневої теки розпакування. У теці цієї вправи виконайте:
 
 ```text
 node create-workspace.cjs
@@ -56,15 +56,15 @@ node cli.cjs "  REVIEW  "
 
 | Рівень | Модулі та кількість уроків |
 | --- | --- |
-| Початковий | [Команди та перша сесія](https://codex-howto.hokhachuy1234.chatgpt.site/#lesson/s01-01) — 6; [Інструкції проєкту й пам’ять](https://codex-howto.hokhachuy1234.chatgpt.site/#lesson/s02-01) — 5; [Відновлення й Git](https://codex-howto.hokhachuy1234.chatgpt.site/#lesson/s08-01) — 5; [CLI](https://codex-howto.hokhachuy1234.chatgpt.site/#lesson/s10-01) — 5 |
-| Середній | [Skills](https://codex-howto.hokhachuy1234.chatgpt.site/#lesson/s03-01) — 6; [Hooks](https://codex-howto.hokhachuy1234.chatgpt.site/#lesson/s06-01) — 7; [MCP](https://codex-howto.hokhachuy1234.chatgpt.site/#lesson/s05-01) — 6; [Підагенти](https://codex-howto.hokhachuy1234.chatgpt.site/#lesson/s04-01) — 7 |
-| Поглиблений | [Розширені можливості](https://codex-howto.hokhachuy1234.chatgpt.site/#lesson/s09-01) — 7; [Plugins](https://codex-howto.hokhachuy1234.chatgpt.site/#lesson/s07-01) — 6 |
+| Початковий | [Команди та перша сесія](https://builtbyhuy.github.io/codex-howto/#lesson/s01-01) — 6; [Інструкції проєкту й пам’ять](https://builtbyhuy.github.io/codex-howto/#lesson/s02-01) — 5; [Відновлення й Git](https://builtbyhuy.github.io/codex-howto/#lesson/s08-01) — 5; [CLI](https://builtbyhuy.github.io/codex-howto/#lesson/s10-01) — 5 |
+| Середній | [Skills](https://builtbyhuy.github.io/codex-howto/#lesson/s03-01) — 6; [Hooks](https://builtbyhuy.github.io/codex-howto/#lesson/s06-01) — 7; [MCP](https://builtbyhuy.github.io/codex-howto/#lesson/s05-01) — 6; [Підагенти](https://builtbyhuy.github.io/codex-howto/#lesson/s04-01) — 7 |
+| Поглиблений | [Розширені можливості](https://builtbyhuy.github.io/codex-howto/#lesson/s09-01) — 7; [Plugins](https://builtbyhuy.github.io/codex-howto/#lesson/s07-01) — 6 |
 
 Кожен урок має мету, пояснення, приклад, вправу, очікувані докази, еталонну відповідь і перевірку знань. Спершу спробуйте виконати завдання, а вже потім відкривайте відповідь. Вказаний час навчання є оцінкою, а не обіцянкою майстерності.
 
 ## 5. Розумійте, що доводять сім практичних пакетів
 
-У [бібліотеці вправ](https://codex-howto.hokhachuy1234.chatgpt.site/#labs) є сім окремих завантажень. `project-workflow` охоплює перший проєкт і відновлення; `cli-pipeline` перевіряє події дочірнього процесу та витягнуті звіти; `skill-workflow` містить повторно використовувану навичку перевірки й детермінований допоміжний засіб; `mcp-workbench` справді обмінюється локальними повідомленнями JSON-RPC; `delegation-capstone` об’єднує два окремі робочі завдання. `hook-policy` відтворює обмежені події та перевіряє докази, пов’язані з файлами; `workflow-plugin` поєднує навичку, інструменти та матеріали для налаштування підключень.
+У [бібліотеці вправ](https://builtbyhuy.github.io/codex-howto/#labs) є сім окремих завантажень. `project-workflow` охоплює перший проєкт і відновлення; `cli-pipeline` перевіряє події дочірнього процесу та витягнуті звіти; `skill-workflow` містить повторно використовувану навичку перевірки й детермінований допоміжний засіб; `mcp-workbench` справді обмінюється локальними повідомленнями JSON-RPC; `delegation-capstone` об’єднує два окремі робочі завдання. `hook-policy` відтворює обмежені події та перевіряє докази, пов’язані з файлами; `workflow-plugin` поєднує навичку, інструменти та матеріали для налаштування підключень.
 
 Локальні програми виконуються насправді, але вигадані дані, синтетичні події та імітація делегування позначені. Успішні тести допоміжного засобу не доводять, що Codex викликав skill, обрав інструмент MCP, запустив підагентів чи активував hook. Додаткові інструкції для справжнього клієнта пояснюють, як спостерігати це окремо. Читайте README кожного пакета, працюйте у свіжих копіях і відрізняйте навмисно невдалий початковий варіант вправи від перевірок еталонного розв’язку.
 

@@ -1,6 +1,10 @@
 # Content provenance
 
-The course adapts every original roadmap topic from [Claude How-To](https://github.com/luongnv89/claude-howto) at commit 188f468893231cbe4525f45e657d554746232072. Commands, configuration and exercises are authored for Codex rather than renamed mechanically. A different or unsupported source mechanism is identified explicitly; offline checks do not prove native-client activation. The landing stylesheet is an unchanged copy from the same pinned MIT source, with separate integration overrides, derived markup and lifecycle-aware interactions. See [design provenance](design-sources.md) and the [source notice](../assets/reference/SOURCE-NOTICE.md). The five getting-started guides are translations of the introduction only; the detailed curriculum, quizzes and practice source remain in English.
+The course adapts the sixty roadmap topics and their learning purposes from [Claude How-To](https://github.com/luongnv89/claude-howto) at commit 188f468893231cbe4525f45e657d554746232072, MIT © 2024 luongnv89. Codex commands, configuration and exercises were authored for Codex rather than renamed mechanically. Different, unavailable or client-specific mechanisms are identified explicitly. Offline checks do not establish that a native Codex client selected a skill, invoked a role, trusted a hook or retrieved a connected record.
+
+The 2.6 local design candidate uses an original Atelier presentation under assets/atelier. The earlier source-derived implementation and complete MIT permission remain under assets/reference as historical licensed material. They are not the active green/subway/typewriter design of this candidate. See [design provenance](design-sources.md), [the retained source notice](../assets/reference/SOURCE-NOTICE.md) and [third-party notices](../THIRD-PARTY-NOTICES.md).
+
+Five getting-started guides introduce the course in English, Vietnamese, Chinese, Japanese and Ukrainian. The sixty detailed lessons, quizzes and executable practice files remain English. The [static reading curriculum](../assets/reading/index.html) provides all sixty complete lessons without JavaScript; the home snapshot links to those pages. Interactive progress, copy controls and quiz submissions remain separate.
 
 | Codex lesson | Source topic | Adaptation |
 | --- | --- | --- |

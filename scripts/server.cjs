@@ -4,8 +4,8 @@ const fs = require('node:fs');
 const path = require('node:path');
 const root = path.resolve(__dirname, '..');
 const types = {'.html':'text/html; charset=utf-8','.css':'text/css; charset=utf-8','.js':'text/javascript; charset=utf-8','.mjs':'text/javascript; charset=utf-8','.json':'application/json; charset=utf-8','.md':'text/plain; charset=utf-8','.svg':'image/svg+xml','.woff2':'font/woff2','.ttf':'font/ttf','.png':'image/png','.zip':'application/zip','.txt':'text/plain; charset=utf-8'};
-const publicFiles=new Set(['index.html','polish.css','style.css','learning.css','app.js','content-model.mjs','course-motion.mjs','course-motion.css','README.md','CONTRIBUTING.md','THIRD-PARTY-NOTICES.md']);
-const publicDirs=new Set(['assets','content','labs','docs','evidence']);
+const publicFiles=new Set(['index.html','polish.css','style.css','learning.css','app.js','content-model.mjs','course-motion.mjs','course-motion.css','README.md','CONTRIBUTING.md','THIRD-PARTY-NOTICES.md','CATALOG.md','LEARNING-ROADMAP.md']);
+const publicDirs=new Set(['assets','content','labs','docs','study','evidence']);
 function makeServer() {
   return http.createServer((req,res)=>{
     res.setHeader('X-Content-Type-Options','nosniff');
@@ -35,5 +35,5 @@ function makeServer() {
     });
   });
 }
-if(require.main===module){const server=makeServer();const port=Number(process.env.PORT)||4173;server.listen(port,'127.0.0.1',()=>process.stdout.write(`Codex How-To: http://127.0.0.1:${port}\n`));server.on('error',err=>{process.stderr.write(err.message+'\n');process.exitCode=1;});}
+if(require.main===module){const server=makeServer();const port=Number(process.env.PORT)||4173;server.listen(port,'127.0.0.1',()=>process.stdout.write(`Howto codex: http://127.0.0.1:${port}\n`));server.on('error',err=>{process.stderr.write(err.message+'\n');process.exitCode=1;});}
 module.exports={makeServer};

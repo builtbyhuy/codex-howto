@@ -10,7 +10,7 @@ Guide updated **22 October 2026**. Product documentation checked **21 October 20
 
 Codex is a coding agent: it can read project files, propose edits and use available tools. Start in the desktop app, where projects, chats and previews share a workspace. Follow the [official app instructions](https://learn.chatgpt.com/docs/app) for installation and sign-in; if it is already installed, inspect the existing installation first. Select Codex and open a harmless practice folder. Successful sign-in does not prove that the right folder is open.
 
-Open [lesson 1](https://codex-howto.hokhachuy1234.chatgpt.site/#lesson/s01-01) and download [Orbit Notes](https://codex-howto.hokhachuy1234.chatgpt.site/labs/project-workflow.zip). Extract the ZIP. It preserves `labs/project-workflow/` beneath the extraction root. In that lab folder, run:
+Open [lesson 1](https://builtbyhuy.github.io/codex-howto/#lesson/s01-01) and download [Orbit Notes](https://builtbyhuy.github.io/codex-howto/labs/project-workflow.zip). Extract the ZIP. It preserves `labs/project-workflow/` beneath the extraction root. In that lab folder, run:
 
 ```text
 node create-workspace.cjs
@@ -54,15 +54,15 @@ The course contains **60 lessons**, grouped in this order. A skill is a reusable
 
 | Stage | Modules and lesson counts |
 | --- | --- |
-| Beginner | [Commands and first session](https://codex-howto.hokhachuy1234.chatgpt.site/#lesson/s01-01) — 6; [Project guidance and memory](https://codex-howto.hokhachuy1234.chatgpt.site/#lesson/s02-01) — 5; [Recovery and Git](https://codex-howto.hokhachuy1234.chatgpt.site/#lesson/s08-01) — 5; [CLI](https://codex-howto.hokhachuy1234.chatgpt.site/#lesson/s10-01) — 5 |
-| Intermediate | [Skills](https://codex-howto.hokhachuy1234.chatgpt.site/#lesson/s03-01) — 6; [Hooks](https://codex-howto.hokhachuy1234.chatgpt.site/#lesson/s06-01) — 7; [MCP](https://codex-howto.hokhachuy1234.chatgpt.site/#lesson/s05-01) — 6; [Subagents](https://codex-howto.hokhachuy1234.chatgpt.site/#lesson/s04-01) — 7 |
-| Advanced | [Advanced features](https://codex-howto.hokhachuy1234.chatgpt.site/#lesson/s09-01) — 7; [Plugins](https://codex-howto.hokhachuy1234.chatgpt.site/#lesson/s07-01) — 6 |
+| Beginner | [Commands and first session](https://builtbyhuy.github.io/codex-howto/#lesson/s01-01) — 6; [Project guidance and memory](https://builtbyhuy.github.io/codex-howto/#lesson/s02-01) — 5; [Recovery and Git](https://builtbyhuy.github.io/codex-howto/#lesson/s08-01) — 5; [CLI](https://builtbyhuy.github.io/codex-howto/#lesson/s10-01) — 5 |
+| Intermediate | [Skills](https://builtbyhuy.github.io/codex-howto/#lesson/s03-01) — 6; [Hooks](https://builtbyhuy.github.io/codex-howto/#lesson/s06-01) — 7; [MCP](https://builtbyhuy.github.io/codex-howto/#lesson/s05-01) — 6; [Subagents](https://builtbyhuy.github.io/codex-howto/#lesson/s04-01) — 7 |
+| Advanced | [Advanced features](https://builtbyhuy.github.io/codex-howto/#lesson/s09-01) — 7; [Plugins](https://builtbyhuy.github.io/codex-howto/#lesson/s07-01) — 6 |
 
 Each lesson has a goal, explanation, example, exercise, expected evidence, reference answer and knowledge check. Attempt the exercise before opening its answer. Any displayed learning time is an estimate, not a promise of mastery.
 
 ## 5. Understand what the seven labs prove
 
-[Practice labs](https://codex-howto.hokhachuy1234.chatgpt.site/#labs) offer seven separate downloads. `project-workflow` covers the first project and recovery; `cli-pipeline` validates subprocess events and extracted reports; `skill-workflow` provides a reusable review skill and deterministic helper; `mcp-workbench` exchanges real local JSON-RPC messages; `delegation-capstone` integrates two work packages; `hook-policy` replays guarded events and checks artifact evidence; `workflow-plugin` combines a skill, tools and connection artifacts.
+[Practice labs](https://builtbyhuy.github.io/codex-howto/#labs) offer seven separate downloads. `project-workflow` covers the first project and recovery; `cli-pipeline` validates subprocess events and extracted reports; `skill-workflow` provides a reusable review skill and deterministic helper; `mcp-workbench` exchanges real local JSON-RPC messages; `delegation-capstone` integrates two work packages; `hook-policy` replays guarded events and checks artifact evidence; `workflow-plugin` combines a skill, tools and connection artifacts.
 
 Local programs really execute, but fictional data, synthetic events and simulated delegation are labeled. A helper passing its tests does not prove Codex invoked a skill, chose an MCP tool, spawned agents or activated a hook. Optional native tracks explain these separate observations. Read each package README, use fresh copies, and distinguish expected red learner starters from passing reference checks.
 

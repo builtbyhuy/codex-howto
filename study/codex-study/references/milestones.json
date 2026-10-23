@@ -1,0 +1,314 @@
+[
+  {
+    "module": "01",
+    "requires": [],
+    "minutes": [
+      25,
+      45
+    ],
+    "lesson": "s01-01",
+    "practice": "labs/project-workflow/README.md",
+    "exit": "In a fresh Orbit Notes copy, report n1–n4, identify the unsupported npm test instruction and leave the deployment URL unknown.",
+    "recall": "How would you distinguish sign-in, folder access and a grounded answer?",
+    "transfer": "A fictional Atlas Notes README claims a deployment exists, but provides no URL or package manifest. Draft a read-only request and explain which facts remain unknown.",
+    "transferRubric": [
+      "Name the actual workspace and files to inspect; do not infer access from sign-in.",
+      "Treat the deployment claim as unsupported without a URL source.",
+      "Inspect the manifest before accepting an npm instruction; do not install to justify a claim."
+    ],
+    "readingUrls": {
+      "s01-01": "https://builtbyhuy.github.io/codex-howto/assets/reading/s01-01.html",
+      "s01-02": "https://builtbyhuy.github.io/codex-howto/assets/reading/s01-02.html",
+      "s01-03": "https://builtbyhuy.github.io/codex-howto/assets/reading/s01-03.html",
+      "s01-04": "https://builtbyhuy.github.io/codex-howto/assets/reading/s01-04.html",
+      "s01-05": "https://builtbyhuy.github.io/codex-howto/assets/reading/s01-05.html",
+      "s01-06": "https://builtbyhuy.github.io/codex-howto/assets/reading/s01-06.html"
+    },
+    "practiceUrl": "https://builtbyhuy.github.io/codex-howto/labs/project-workflow/README.md",
+    "immediateTask": "In a disposable Orbit Notes starter copy from the linked project-workflow lab, make a read-only request: inspect README.md, AGENTS.md and notes.json; report the exact folder, the four note IDs n1, n2, n3, n4, the unsupported npm test instruction (no package.json), and deployment URL unknown. Do not edit or run commands. Compare the reported observations with this milestone exit."
+  },
+  {
+    "module": "02",
+    "requires": [
+      "01"
+    ],
+    "minutes": [
+      30,
+      50
+    ],
+    "lesson": "s02-01",
+    "practice": "labs/project-workflow/README.md",
+    "exit": "Write scoped project guidance in a disposable copy, explain its scope, and compare observed behavior with the instruction; do not infer loading from file existence.",
+    "recall": "What evidence separates an instruction file existing from the client loading and following it?",
+    "transfer": "A fictional monorepo has conflicting parent and child guidance. Describe the files and scope you would inspect before editing its child app.",
+    "transferRubric": [
+      "Inspect parent and child guidance within the actual workspace and explain their scopes.",
+      "Identify the conflict before proposing a bounded child-app change.",
+      "Separate files existing from observed client loading and compliance."
+    ],
+    "readingUrls": {
+      "s02-01": "https://builtbyhuy.github.io/codex-howto/assets/reading/s02-01.html",
+      "s02-02": "https://builtbyhuy.github.io/codex-howto/assets/reading/s02-02.html",
+      "s02-03": "https://builtbyhuy.github.io/codex-howto/assets/reading/s02-03.html",
+      "s02-04": "https://builtbyhuy.github.io/codex-howto/assets/reading/s02-04.html",
+      "s02-05": "https://builtbyhuy.github.io/codex-howto/assets/reading/s02-05.html"
+    },
+    "practiceUrl": "https://builtbyhuy.github.io/codex-howto/labs/project-workflow/README.md",
+    "immediateTask": "Use the linked authored practice in a disposable copy and collect this milestone exit evidence: Write scoped project guidance in a disposable copy, explain its scope, and compare observed behavior with the instruction; do not infer loading from file existence."
+  },
+  {
+    "module": "08",
+    "requires": [
+      "01",
+      "02"
+    ],
+    "minutes": [
+      30,
+      50
+    ],
+    "lesson": "s08-01",
+    "practice": "labs/project-workflow/README.md",
+    "exit": "In an owned scratch copy, recover only the intended change and prove unrelated learner edits remain with a diff.",
+    "recall": "Why is a conversation checkpoint not a universal filesystem backup?",
+    "transfer": "A fictional teammate has an unrelated unsaved change beside your failed experiment. Propose a narrow recovery and a preservation check.",
+    "transferRubric": [
+      "Identify the exact experiment changes using a diff before recovery.",
+      "Preserve the unrelated teammate change; avoid broad reset or overwrite.",
+      "Verify both intended recovery and preservation afterwards; a chat checkpoint is insufficient evidence."
+    ],
+    "readingUrls": {
+      "s08-01": "https://builtbyhuy.github.io/codex-howto/assets/reading/s08-01.html",
+      "s08-02": "https://builtbyhuy.github.io/codex-howto/assets/reading/s08-02.html",
+      "s08-03": "https://builtbyhuy.github.io/codex-howto/assets/reading/s08-03.html",
+      "s08-04": "https://builtbyhuy.github.io/codex-howto/assets/reading/s08-04.html",
+      "s08-05": "https://builtbyhuy.github.io/codex-howto/assets/reading/s08-05.html"
+    },
+    "practiceUrl": "https://builtbyhuy.github.io/codex-howto/labs/project-workflow/README.md",
+    "immediateTask": "Use the linked authored practice in a disposable copy and collect this milestone exit evidence: In an owned scratch copy, recover only the intended change and prove unrelated learner edits remain with a diff."
+  },
+  {
+    "module": "10",
+    "requires": [
+      "01",
+      "08"
+    ],
+    "minutes": [
+      30,
+      60
+    ],
+    "lesson": "s10-01",
+    "practice": "labs/cli-pipeline/README.md",
+    "exit": "Run the fictional local pipeline and separate events, final output and errors; label native Codex execution unrun unless actually observed.",
+    "recall": "How do you distinguish command exit status from a useful, valid final artifact?",
+    "transfer": "A fictional CI task returns exit zero but its final JSON is missing a required field. Design separate process and artifact checks.",
+    "transferRubric": [
+      "Check process exit status and final artifact validity independently.",
+      "Specify the missing required JSON field and reject the incomplete artifact even on exit zero.",
+      "Keep events, final output and errors distinct; do not report fixture execution as live Codex behavior."
+    ],
+    "readingUrls": {
+      "s10-01": "https://builtbyhuy.github.io/codex-howto/assets/reading/s10-01.html",
+      "s10-02": "https://builtbyhuy.github.io/codex-howto/assets/reading/s10-02.html",
+      "s10-03": "https://builtbyhuy.github.io/codex-howto/assets/reading/s10-03.html",
+      "s10-04": "https://builtbyhuy.github.io/codex-howto/assets/reading/s10-04.html",
+      "s10-05": "https://builtbyhuy.github.io/codex-howto/assets/reading/s10-05.html"
+    },
+    "practiceUrl": "https://builtbyhuy.github.io/codex-howto/labs/cli-pipeline/README.md",
+    "immediateTask": "Use the linked authored practice in a disposable copy and collect this milestone exit evidence: Run the fictional local pipeline and separate events, final output and errors; label native Codex execution unrun unless actually observed."
+  },
+  {
+    "module": "03",
+    "requires": [
+      "01",
+      "02"
+    ],
+    "minutes": [
+      40,
+      70
+    ],
+    "lesson": "s03-02",
+    "practice": "labs/skill-workflow/README.md",
+    "exit": "Inspect a local skill and run its bounded fixture checks; record discovery, selection and execution as separate observations.",
+    "recall": "How would you diagnose a skill that is visible but fails during execution?",
+    "transfer": "A fictional README audit skill is listed but its helper cannot read a fixture. Give a diagnosis sequence without reinstalling globally.",
+    "transferRubric": [
+      "Distinguish discovery and selection from helper execution failure.",
+      "Check the referenced fixture path, helper input contract and access with evidence.",
+      "Propose a narrow scratch repair; global reinstallation does not diagnose a local fixture error."
+    ],
+    "readingUrls": {
+      "s03-01": "https://builtbyhuy.github.io/codex-howto/assets/reading/s03-01.html",
+      "s03-02": "https://builtbyhuy.github.io/codex-howto/assets/reading/s03-02.html",
+      "s03-03": "https://builtbyhuy.github.io/codex-howto/assets/reading/s03-03.html",
+      "s03-04": "https://builtbyhuy.github.io/codex-howto/assets/reading/s03-04.html",
+      "s03-05": "https://builtbyhuy.github.io/codex-howto/assets/reading/s03-05.html",
+      "s03-06": "https://builtbyhuy.github.io/codex-howto/assets/reading/s03-06.html"
+    },
+    "practiceUrl": "https://builtbyhuy.github.io/codex-howto/labs/skill-workflow/README.md",
+    "immediateTask": "Use the linked authored practice in a disposable copy and collect this milestone exit evidence: Inspect a local skill and run its bounded fixture checks; record discovery, selection and execution as separate observations."
+  },
+  {
+    "module": "05",
+    "requires": [
+      "02",
+      "10"
+    ],
+    "minutes": [
+      40,
+      70
+    ],
+    "lesson": "s05-02",
+    "practice": "labs/mcp-workbench/README.md",
+    "exit": "Exchange actual local JSON-RPC messages and distinguish initialization, tool discovery, authorization and retrieval evidence.",
+    "recall": "Why does successful initialization not prove a requested record was retrieved?",
+    "transfer": "A fictional connector lists a tool but cannot retrieve ticket AT-17. Separate transport, authorization and missing-data hypotheses.",
+    "transferRubric": [
+      "Separate successful initialization/tool listing from a successful record retrieval.",
+      "Inspect transport error, authorization response and missing-record evidence as distinct hypotheses.",
+      "Keep AT-17 unknown until a real tool response supports the claim."
+    ],
+    "readingUrls": {
+      "s05-01": "https://builtbyhuy.github.io/codex-howto/assets/reading/s05-01.html",
+      "s05-02": "https://builtbyhuy.github.io/codex-howto/assets/reading/s05-02.html",
+      "s05-03": "https://builtbyhuy.github.io/codex-howto/assets/reading/s05-03.html",
+      "s05-04": "https://builtbyhuy.github.io/codex-howto/assets/reading/s05-04.html",
+      "s05-05": "https://builtbyhuy.github.io/codex-howto/assets/reading/s05-05.html",
+      "s05-06": "https://builtbyhuy.github.io/codex-howto/assets/reading/s05-06.html"
+    },
+    "practiceUrl": "https://builtbyhuy.github.io/codex-howto/labs/mcp-workbench/README.md",
+    "immediateTask": "Use the linked authored practice in a disposable copy and collect this milestone exit evidence: Exchange actual local JSON-RPC messages and distinguish initialization, tool discovery, authorization and retrieval evidence."
+  },
+  {
+    "module": "04",
+    "requires": [
+      "02",
+      "03",
+      "08"
+    ],
+    "minutes": [
+      45,
+      75
+    ],
+    "lesson": "s04-07",
+    "practice": "labs/delegation-capstone/README.md",
+    "exit": "Produce two bounded work briefs and integrate their artifacts using the capstone contract; distinguish fixture integration from live delegation.",
+    "recall": "Which ownership and output boundaries prevent two workers from overwriting each other?",
+    "transfer": "A fictional review task needs both a schema check and prose review. Divide ownership and specify how you will resolve conflicting recommendations.",
+    "transferRubric": [
+      "Assign separate owned artifacts to schema and prose reviewers.",
+      "Give each brief inputs, boundaries and an output contract.",
+      "Define an integration check and a conflict-resolution decision with evidence rather than concurrent overwrites."
+    ],
+    "readingUrls": {
+      "s04-01": "https://builtbyhuy.github.io/codex-howto/assets/reading/s04-01.html",
+      "s04-02": "https://builtbyhuy.github.io/codex-howto/assets/reading/s04-02.html",
+      "s04-03": "https://builtbyhuy.github.io/codex-howto/assets/reading/s04-03.html",
+      "s04-04": "https://builtbyhuy.github.io/codex-howto/assets/reading/s04-04.html",
+      "s04-05": "https://builtbyhuy.github.io/codex-howto/assets/reading/s04-05.html",
+      "s04-06": "https://builtbyhuy.github.io/codex-howto/assets/reading/s04-06.html",
+      "s04-07": "https://builtbyhuy.github.io/codex-howto/assets/reading/s04-07.html"
+    },
+    "practiceUrl": "https://builtbyhuy.github.io/codex-howto/labs/delegation-capstone/README.md",
+    "immediateTask": "Use the linked authored practice in a disposable copy and collect this milestone exit evidence: Produce two bounded work briefs and integrate their artifacts using the capstone contract; distinguish fixture integration from live delegation."
+  },
+  {
+    "module": "06",
+    "requires": [
+      "01",
+      "10"
+    ],
+    "minutes": [
+      40,
+      70
+    ],
+    "lesson": "s06-01",
+    "practice": "labs/hook-policy/README.md",
+    "exit": "Replay bounded fictional events and inspect allowed, rejected and failure cases; label real hook registration/trust separately.",
+    "recall": "What can an offline event replay prove, and what requires client observation?",
+    "transfer": "A fictional post-tool hook fails to write its report. Explain how to preserve the tool result while surfacing the hook failure without claiming enforcement.",
+    "transferRubric": [
+      "Preserve the tool result independently from the failed report write.",
+      "Surface the hook failure and inspect its allowed path/error without claiming enforcement.",
+      "Distinguish offline replay from actual client registration, trust and execution."
+    ],
+    "readingUrls": {
+      "s06-01": "https://builtbyhuy.github.io/codex-howto/assets/reading/s06-01.html",
+      "s06-02": "https://builtbyhuy.github.io/codex-howto/assets/reading/s06-02.html",
+      "s06-03": "https://builtbyhuy.github.io/codex-howto/assets/reading/s06-03.html",
+      "s06-04": "https://builtbyhuy.github.io/codex-howto/assets/reading/s06-04.html",
+      "s06-05": "https://builtbyhuy.github.io/codex-howto/assets/reading/s06-05.html",
+      "s06-06": "https://builtbyhuy.github.io/codex-howto/assets/reading/s06-06.html",
+      "s06-07": "https://builtbyhuy.github.io/codex-howto/assets/reading/s06-07.html"
+    },
+    "practiceUrl": "https://builtbyhuy.github.io/codex-howto/labs/hook-policy/README.md",
+    "immediateTask": "Use the linked authored practice in a disposable copy and collect this milestone exit evidence: Replay bounded fictional events and inspect allowed, rejected and failure cases; label real hook registration/trust separately."
+  },
+  {
+    "module": "09",
+    "requires": [
+      "04",
+      "05",
+      "06",
+      "08",
+      "10"
+    ],
+    "minutes": [
+      50,
+      90
+    ],
+    "lesson": "s09-01",
+    "practice": "labs/workflow-plugin/README.md",
+    "exit": "Prepare a bounded plan, permission matrix and validated output artifact; keep scheduling, model comparison and live actions explicitly unrun.",
+    "recall": "How do a prepared plan, a validated fixture and an executed workflow differ?",
+    "transfer": "A fictional team wants a scheduled weekly review. Draft the minimum safe plan, required approval boundary and output checks without scheduling anything.",
+    "transferRubric": [
+      "Bound the weekly-review inputs, owned outputs and acceptance checks.",
+      "Identify permission required for scheduling or external actions and leave them unrun.",
+      "Distinguish a prepared plan and validated fixture from an executed workflow."
+    ],
+    "readingUrls": {
+      "s09-01": "https://builtbyhuy.github.io/codex-howto/assets/reading/s09-01.html",
+      "s09-02": "https://builtbyhuy.github.io/codex-howto/assets/reading/s09-02.html",
+      "s09-03": "https://builtbyhuy.github.io/codex-howto/assets/reading/s09-03.html",
+      "s09-04": "https://builtbyhuy.github.io/codex-howto/assets/reading/s09-04.html",
+      "s09-05": "https://builtbyhuy.github.io/codex-howto/assets/reading/s09-05.html",
+      "s09-06": "https://builtbyhuy.github.io/codex-howto/assets/reading/s09-06.html",
+      "s09-07": "https://builtbyhuy.github.io/codex-howto/assets/reading/s09-07.html"
+    },
+    "practiceUrl": "https://builtbyhuy.github.io/codex-howto/labs/workflow-plugin/README.md",
+    "immediateTask": "Use the linked authored practice in a disposable copy and collect this milestone exit evidence: Prepare a bounded plan, permission matrix and validated output artifact; keep scheduling, model comparison and live actions explicitly unrun."
+  },
+  {
+    "module": "07",
+    "requires": [
+      "03",
+      "05",
+      "06",
+      "09"
+    ],
+    "minutes": [
+      50,
+      90
+    ],
+    "lesson": "s07-05",
+    "practice": "labs/workflow-plugin/README.md",
+    "exit": "Inspect the package, run its schema/protocol checks and explain distribution limits; fixture checks do not establish native activation.",
+    "recall": "Why does a valid package not prove that a client activated its skill, MCP tools and hooks?",
+    "transfer": "A fictional team packages a review skill with a local server and lifecycle hook. Write a release checklist separating offline validation, scratch client checks and publication permission.",
+    "transferRubric": [
+      "Check the distributed skill, server, hook references and offline schema/protocol output.",
+      "Require separate scratch-client observations for discovery, activation and actual retrieval/hook execution.",
+      "Keep publication approval separate from package validity; do not call fixture success native activation."
+    ],
+    "readingUrls": {
+      "s07-01": "https://builtbyhuy.github.io/codex-howto/assets/reading/s07-01.html",
+      "s07-02": "https://builtbyhuy.github.io/codex-howto/assets/reading/s07-02.html",
+      "s07-03": "https://builtbyhuy.github.io/codex-howto/assets/reading/s07-03.html",
+      "s07-04": "https://builtbyhuy.github.io/codex-howto/assets/reading/s07-04.html",
+      "s07-05": "https://builtbyhuy.github.io/codex-howto/assets/reading/s07-05.html",
+      "s07-06": "https://builtbyhuy.github.io/codex-howto/assets/reading/s07-06.html"
+    },
+    "practiceUrl": "https://builtbyhuy.github.io/codex-howto/labs/workflow-plugin/README.md",
+    "immediateTask": "Use the linked authored practice in a disposable copy and collect this milestone exit evidence: Inspect the package, run its schema/protocol checks and explain distribution limits; fixture checks do not establish native activation."
+  }
+]

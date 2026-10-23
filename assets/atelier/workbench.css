@@ -1,0 +1,103 @@
+/* Original illustration. All selectors are scoped; no page shell overrides. */
+.atelier-workbench{--wb-ink:var(--atelier-ink,#202126);--wb-accent:var(--atelier-accent,#4351e8);--wb-surface:var(--atelier-surface,#fff);--wb-soft:var(--atelier-soft,#f1f2f6);container-type:inline-size;min-width:0;padding:26px 24px 18px;background:#e9ebf8;border:1px solid #dce0f1;border-radius:16px;color:var(--wb-ink);font-family:Manrope,system-ui,sans-serif;text-align:left;position:relative;isolation:isolate}
+.atelier-workbench *{box-sizing:border-box}
+.atelier-workbench svg{width:16px;height:16px;flex:none;vertical-align:middle}
+.atelier-workbench .wb-stage-label{display:flex;align-items:center;gap:8px;margin:0 0 17px;font-size:11px;line-height:1.5;font-weight:650;letter-spacing:.02em;color:#515773}
+.atelier-workbench .wb-stage-marker{width:7px;height:7px;border-radius:2px;background:var(--wb-accent);transform:rotate(45deg)}
+.atelier-workbench .wb-window{background:var(--wb-surface);border:1px solid #d8dbea;border-radius:10px;box-shadow:0 20px 48px -24px #2d36574d,0 4px 12px -6px #2d36572b;overflow:hidden}
+.atelier-workbench .wb-titlebar{display:flex;align-items:center;gap:12px;min-height:43px;padding:0 16px;border-bottom:1px solid #ededf3;font-size:11px;font-weight:650;color:#5f6476}
+.atelier-workbench .wb-window-dots{display:flex;gap:4px;margin-right:2px}
+.atelier-workbench .wb-window-dots i{width:6px;height:6px;border:1px solid #d4d7df;border-radius:50%;background:#f4f5f8}
+.atelier-workbench .wb-project-tag{margin-left:auto;padding:3px 6px;border:1px solid #e2e4ee;border-radius:4px;font-size:9px;font-weight:500;letter-spacing:.015em;white-space:nowrap}
+.atelier-workbench .wb-tabs{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));padding:0 14px;border-bottom:1px solid #e8eaf1;gap:7px;background:var(--wb-surface)}
+.atelier-workbench .wb-tabs button{appearance:none;display:flex;align-items:center;justify-content:center;gap:9px;position:relative;min-height:52px;border:0;border-radius:0;background:transparent;color:#7c8090;font:600 12px/1.3 Manrope,system-ui,sans-serif;cursor:pointer;white-space:nowrap;transition:color 160ms ease,background 160ms ease}
+.atelier-workbench .wb-tabs button::after{content:"";position:absolute;bottom:-1px;inset-inline:8px;height:2px;background:var(--wb-accent);transform:scaleX(0);transform-origin:center;transition:transform 200ms cubic-bezier(.2,.8,.2,1)}
+.atelier-workbench .wb-tabs button[aria-selected=true]{color:var(--wb-accent)}
+.atelier-workbench .wb-tabs button[aria-selected=true]::after{transform:scaleX(1)}
+.atelier-workbench .wb-tabs button:hover{color:var(--wb-accent);background:#f8f9ff}
+.atelier-workbench .wb-tab-index{font:10px/1.3 "JetBrains Mono",monospace;color:#a0a4b3}
+.atelier-workbench .wb-tabs button[aria-selected=true] .wb-tab-index{color:var(--wb-accent)}
+.atelier-workbench .wb-tabs svg{width:12px;height:12px;margin-left:auto;opacity:.45}
+.atelier-workbench .wb-tabs button:last-child{padding-right:21px}
+.atelier-workbench .wb-panels{min-width:0;min-height:282px}
+.atelier-workbench .wb-panel{min-width:0;min-height:282px;margin:0;background:var(--wb-surface)}
+.atelier-workbench .wb-panel[hidden]{display:none!important}
+.atelier-workbench .wb-enter{animation:atelier-workbench-enter 220ms cubic-bezier(.2,.8,.2,1) both}
+@keyframes atelier-workbench-enter{from{opacity:.3;transform:translateY(4px)}to{opacity:1;transform:translateY(0)}}
+.atelier-workbench .wb-task-layout{display:grid;grid-template-columns:130px minmax(0,1fr);min-height:282px}
+.atelier-workbench .wb-file-tree{padding:23px 0 22px 14px;background:#fafafd;border-right:1px solid #ededf3;color:#858997;font:10px/1.7 "JetBrains Mono",monospace}
+.atelier-workbench .wb-file-tree>p{margin:0 0 15px 7px;font:500 8px/1.4 Manrope,system-ui,sans-serif;letter-spacing:.13em;color:#a1a5b3}
+.atelier-workbench .wb-file-tree>span,.atelier-workbench .wb-folder{display:flex;align-items:center;gap:6px;min-height:29px;padding:3px 7px;white-space:nowrap}
+.atelier-workbench .wb-folder{color:#545a70;font-weight:600}
+.atelier-workbench .wb-folder svg{width:10px;height:10px;transform:rotate(90deg)}
+.atelier-workbench .wb-file-tree>span svg{width:12px;height:12px;opacity:.65}
+.atelier-workbench .wb-file-tree .wb-tree-active{color:var(--wb-accent);background:#eceefa;border-left:2px solid var(--wb-accent);padding-left:5px}
+.atelier-workbench .wb-task-main{min-width:0;padding:29px 25px 24px}
+.atelier-workbench .wb-overline{display:block;font:600 9px/1.4 "JetBrains Mono",monospace;letter-spacing:.09em;text-transform:uppercase;color:#878b9b}
+.atelier-workbench h3{margin:10px 0 12px;color:var(--wb-ink);font:600 24px/1.23 Manrope,system-ui,sans-serif;letter-spacing:-.045em;text-wrap:balance}
+.atelier-workbench .wb-task-main>p{margin:0;color:#73788a;font-size:11px;line-height:1.85;max-width:250px}
+.atelier-workbench .wb-context{display:flex;flex-wrap:wrap;gap:6px;margin-top:18px}
+.atelier-workbench .wb-context>span{display:flex;align-items:center;gap:4px;border:1px solid #e6e8ef;border-radius:4px;padding:4px 6px;color:#6c7184;font:9px/1.3 "JetBrains Mono",monospace;white-space:nowrap}
+.atelier-workbench .wb-context svg{width:10px;height:10px}
+.atelier-workbench .wb-task-boundary{margin-top:15px;font-size:10px;color:#9a9ead}
+.atelier-workbench .wb-change-main{padding:25px 0 24px;min-width:0}
+.atelier-workbench .wb-file-heading{display:flex;align-items:center;gap:7px;padding:0 22px;margin:0 0 19px;font:10px/1.5 "JetBrains Mono",monospace;color:#6e7489}
+.atelier-workbench .wb-file-heading>span{margin-left:auto;font:9px/1.4 Manrope,system-ui,sans-serif;color:#989dac}
+.atelier-workbench .wb-diff{min-width:0;max-width:100%;overflow:auto;padding:10px 0;background:#fafbfd;border-block:1px solid #f0f1f6;scrollbar-width:thin;scrollbar-color:#ccd1e2 transparent}
+.atelier-workbench .wb-diff pre{min-width:max-content;margin:0;padding:0;background:transparent;border:0;border-radius:0;font:10px/2.25 "JetBrains Mono",monospace;letter-spacing:-.025em}
+.atelier-workbench .wb-diff code{font:inherit;color:inherit;background:transparent;padding:0;border:0}
+.atelier-workbench .wb-diff code>span{display:block;min-width:100%;padding:0 18px}
+.atelier-workbench .wb-code-neutral{color:#8b91a0}
+.atelier-workbench .wb-code-remove{color:#a86872;background:#fcf0f1}
+.atelier-workbench .wb-code-add{color:#4a7f6d;background:#eff8f3}
+.atelier-workbench .wb-change-caption{display:flex;align-items:flex-start;gap:7px;margin-top:20px;padding:0 22px;font-size:10px;line-height:1.8;color:#798093;max-width:350px}
+.atelier-workbench .wb-change-caption svg{color:#4a8b73;width:14px;height:14px;margin-top:2px}
+.atelier-workbench .wb-check-main{padding:26px 28px 22px}
+.atelier-workbench .wb-check-heading{display:flex;align-items:center;gap:14px}
+.atelier-workbench .wb-result-mark{display:grid;place-items:center;width:43px;height:43px;border-radius:50%;background:#edf5f1;color:#4f8b74;border:1px solid #e0eee6;flex:none}
+.atelier-workbench .wb-result-mark svg{width:22px;height:22px}
+.atelier-workbench .wb-check-heading h3{margin:8px 0 0;font-size:22px}
+.atelier-workbench .wb-check-command{display:flex;align-items:center;gap:9px;margin:22px 0 0;padding:11px 13px;background:var(--wb-soft);border-radius:5px;font:10px/1.6 "JetBrains Mono",monospace;color:#555d76;min-width:0;overflow:auto}
+.atelier-workbench .wb-check-command>span{color:#a5aabc}
+.atelier-workbench .wb-check-command code{padding:0;background:transparent;border:0;font:inherit;white-space:nowrap}
+.atelier-workbench .wb-check-metrics{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:17px}
+.atelier-workbench .wb-check-metrics>div{display:flex;align-items:baseline;gap:6px;min-width:0}
+.atelier-workbench .wb-check-metrics strong{font:500 23px/1.2 "JetBrains Mono",monospace;letter-spacing:-.06em;color:#557e6e}
+.atelier-workbench .wb-check-metrics span{font-size:9px;color:#9499aa}
+.atelier-workbench .wb-check-scope{margin:16px 0 0;color:#9499aa;font-size:9px;line-height:1.8;max-width:320px}
+.atelier-workbench .wb-statusbar{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:8px;padding:11px 15px;border-top:1px solid #e8eaf1;color:#969cad;font-size:8px;line-height:1.6;background:#fdfdff}
+.atelier-workbench .wb-statusbar>span{display:flex;align-items:center;gap:5px}
+.atelier-workbench .wb-statusbar i{width:4px;height:4px;background:#a6adbf;border-radius:50%}
+.atelier-workbench .wb-statusbar a{display:flex;align-items:center;gap:5px;color:var(--wb-accent);text-decoration:none;font-weight:650;white-space:nowrap}
+.atelier-workbench .wb-statusbar a:hover{text-decoration:underline;text-underline-offset:3px}
+.atelier-workbench .wb-statusbar svg{width:10px;height:10px}
+.atelier-workbench .wb-stage-caption{margin:17px 0 0;color:#8b91ab;text-align:center;font-size:10px;line-height:1.6;letter-spacing:.015em}
+.atelier-workbench :is(button,a,[tabindex]):focus-visible{outline:2px solid var(--wb-accent);outline-offset:3px;border-radius:3px}
+.atelier-workbench .wb-panel:focus-visible{outline-offset:-4px}
+@container(max-width:410px){.atelier-workbench .wb-task-layout{grid-template-columns:100px minmax(0,1fr)}.atelier-workbench .wb-file-tree{padding-left:5px;font-size:8px}.atelier-workbench .wb-task-main{padding:26px 17px}.atelier-workbench h3{font-size:23px}.atelier-workbench .wb-tabs{padding-inline:7px;gap:0}.atelier-workbench .wb-tabs button{gap:6px;font-size:11px}.atelier-workbench .wb-check-main{padding:25px 20px}.atelier-workbench .wb-titlebar{padding-inline:12px;gap:8px}.atelier-workbench .wb-file-heading{padding-inline:17px}}
+@container(max-width:310px){.atelier-workbench .wb-file-tree{display:none}.atelier-workbench .wb-task-layout{grid-template-columns:minmax(0,1fr)}.atelier-workbench .wb-task-main{padding:25px 22px}.atelier-workbench .wb-task-main>p{font-size:12px}.atelier-workbench .wb-project-tag{display:none}.atelier-workbench .wb-file-heading>span{font-size:8px}.atelier-workbench .wb-check-heading h3{font-size:21px}.atelier-workbench .wb-check-heading{gap:10px}.atelier-workbench .wb-check-metrics{gap:6px}.atelier-workbench .wb-check-metrics>div{gap:4px}.atelier-workbench .wb-tabs svg{display:none}.atelier-workbench .wb-tabs button:last-child{padding-right:6px}.atelier-workbench .wb-statusbar{padding-inline:12px;font-size:8px}}
+@media(prefers-reduced-motion:reduce){.atelier-workbench .wb-enter{animation:none}.atelier-workbench .wb-tabs button,.atelier-workbench .wb-tabs button::after{transition:none}}
+/* The illustration stays readable instead of relying on faint miniature text. */
+.atelier-workbench .wb-titlebar{font-size:11px;color:#62677a}
+.atelier-workbench .wb-project-tag{font-size:10px}
+.atelier-workbench .wb-tabs button{font-size:12px}
+.atelier-workbench .wb-tab-index{color:#686e81}
+.atelier-workbench .wb-file-tree{font-size:10px;color:#6d7285}
+.atelier-workbench .wb-file-tree>p{font-size:9px;color:#747a8c}
+.atelier-workbench .wb-overline{font-size:10px;color:#6d7285}
+.atelier-workbench .wb-task-main>p{font-size:12px;color:#636a7d}
+.atelier-workbench .wb-context>span{font-size:10px;color:#686e81}
+.atelier-workbench .wb-task-boundary{font-size:10px;color:#6d7285}
+.atelier-workbench .wb-file-heading{font-size:11px;color:#626a80}
+.atelier-workbench .wb-file-heading>span{font-size:10px;color:#6d7285}
+.atelier-workbench .wb-diff pre{font-size:11px;line-height:2.05}
+.atelier-workbench .wb-code-neutral{color:#697183}
+.atelier-workbench .wb-code-remove{color:#914f5b}
+.atelier-workbench .wb-code-add{color:#3e705e}
+.atelier-workbench .wb-change-caption{font-size:11px;color:#656d80}
+.atelier-workbench .wb-check-command{font-size:11px}
+.atelier-workbench .wb-check-command>span{color:#6d7285}
+.atelier-workbench .wb-check-metrics span{font-size:10px;color:#6d7285}
+.atelier-workbench .wb-check-scope{font-size:10px;color:#6d7285}
+.atelier-workbench .wb-statusbar{font-size:9px;color:#6d7285}
+.atelier-workbench .wb-stage-caption{font-size:11px;color:#626b8b}
