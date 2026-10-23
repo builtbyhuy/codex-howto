@@ -38,6 +38,8 @@ let contentReady = false;
 let learningTools;
 let restoringHomePreview=false;
 let storageAvailable=true;
+let progressReadBlocked=false;
+let progressWriteDenied=false;
 installInteractions();
 
 const systemTheme=matchMedia('(prefers-color-scheme: dark)');
@@ -76,6 +78,7 @@ function syncStorageCopy(){
   const summary=$('.a-path-summary');if(summary)summary.textContent='Your place is kept for this open session only. Export a backup before closing.';
 }
 function readProgress() {
+  progressReadBlocked=false;
   try {
     const raw = localStorage.getItem(STORAGE_KEY);
     if (!raw) {
@@ -88,11 +91,28 @@ function readProgress() {
       return;
     }
     state = sanitizeProgress(JSON.parse(raw),lessons);
-  } catch { state={lessons:{},last:null};warnStorage('Saved progress could not be read. You can keep learning; check your browser storage settings before closing this page.'); }
+    // External recovery proves persisted data is valid, not that a denied writer can write.
+    if(!progressWriteDenied)restoreStorageStatus();
+    else warnStorage('Your browser is blocking saved progress. Changes will only last for this open session.');
+  } catch { state={lessons:{},last:null};progressReadBlocked=true;warnStorage('Saved progress could not be read and may be corrupt. The original record is preserved. You can learn for this session; explicitly import a valid backup or reset progress to replace it.'); }
 }
-function saveProgress() {
-  try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); return true; }
-  catch { warnStorage('Your browser is blocking saved progress. Changes will only last for this open session.'); return false; }
+function restoreStorageStatus(){
+  storageAvailable=true;
+  $('#storage-notice')?.remove();
+  const indicator=$('.local-indicator');if(indicator)indicator.innerHTML='<i aria-hidden="true"></i>Saved in this browser';
+  const saved=$('.a-progress-bottom>span');if(saved)saved.textContent='Saved in this browser';
+  const summary=$('.a-path-summary');if(summary)summary.textContent='One useful task at a time. Your place is saved.';
+}
+function saveProgress(replaceUnreadable=false) {
+  if(progressReadBlocked&&!replaceUnreadable)return false;
+  try {
+    const raw=JSON.stringify(state);
+    localStorage.setItem(STORAGE_KEY,raw);
+    if(localStorage.getItem(STORAGE_KEY)!==raw)throw new Error('Progress write could not be confirmed');
+    progressReadBlocked=false;progressWriteDenied=false;restoreStorageStatus();
+    return true;
+  }
+  catch { progressWriteDenied=true;warnStorage(progressReadBlocked?'Saved progress could not be read and may be corrupt. The original record is preserved; browser storage is also blocking recovery. Changes are session-only.':'Your browser is blocking saved progress. Changes will only last for this open session.'); return false; }
 }
 function status(id) { return state.lessons[id]?.status || 'new'; }
 function counts(items = lessons) {
@@ -387,7 +407,7 @@ document.addEventListener('click',async event=>{
     case 'close-assessment':$('#assessment-dialog').close();break;
     case 'reset':showDialog($('#reset-dialog'));break;
     case 'cancel-reset':$('#reset-dialog').close();break;
-    case 'confirm-reset':{state={lessons:{},last:null};const saved=saveProgress();$('#reset-dialog').close();route(true);notify(saved?'Progress reset in this browser.':'Progress reset for this session only. The saved backup could not be changed.');break;}
+    case 'confirm-reset':{state={lessons:{},last:null};const saved=saveProgress(true);$('#reset-dialog').close();route(true);notify(saved?'Progress reset in this browser.':'Progress reset for this session only. The saved backup could not be changed.');break;}
     case 'complete':{const id=target.dataset.lesson,done=status(id)==='done';state.lessons[id]={...state.lessons[id],status:done?'started':'done',updated:Date.now()};const saved=saveProgress();target.setAttribute('aria-pressed',String(!done));target.textContent=done?'Mark lesson complete':'✓ Completed · Study again';target.classList.toggle('button-solid',done);target.classList.toggle('button-success',!done);$('#lesson-state-label').textContent=done?'In progress':'Completed';renderRail();notify(saved?(done?'Lesson moved back to in progress.':'Lesson completion saved.'):'Lesson updated for this session only; progress was not saved.');break;}
     case 'sidebar':setDrawer(true);break;
     case 'retry':boot();break;
@@ -423,7 +443,7 @@ document.addEventListener('change',async event=>{
     if(data.edition!==EDITION)throw new Error('Wrong edition');
     const next=sanitizeProgress(data.progress,lessons);
     if(Object.entries(data.progress.lessons).some(([id,v])=>!byId.has(id)||!['started','done'].includes(v?.status)||(v.answer!==undefined&&(!Number.isInteger(v.answer)||v.answer<0||v.answer>=byId.get(id).quiz.options.length))))throw new Error('Invalid lesson');
-    state=next;const saved=saveProgress();renderRail();result.textContent=saved?'Progress imported. Open the learning path to resume.':'Progress imported for this session only. Browser storage is unavailable; keep your backup before closing this page.';
+    state=next;const saved=saveProgress(true);renderRail();result.textContent=saved?'Progress imported. Open the learning path to resume.':'Progress imported for this session only. Browser storage is unavailable; keep your backup before closing this page.';
   }catch{result.textContent='This is not a valid progress backup for the 60-lesson edition. Your current progress was kept.';}
   event.target.value='';
 });
