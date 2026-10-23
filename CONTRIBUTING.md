@@ -4,4 +4,4 @@ Open an issue with the stable lesson ID (for example s01-01), the step you attem
 
 For a documentation correction, cite the current official source and distinguish a fixture check from actual Codex activation. Preserve lesson IDs, source keys, quiz option order and answer semantics so browser progress keeps its meaning. The lesson data is in content/part-a.json, part-b.json and part-c.json. Practice sources are under labs/.
 
-Use a new disposable practice folder, retain intentional failing starter checks and report what you actually ran. Passing the supplied reference checks does not prove that an edited learner candidate works.
+Run node scripts/build-study.cjs after editing lessons, then node scripts/build-study.cjs --check and node tests/repo-level.cjs --controls. The latter rejects changed quiz answers, broken study links and missing rubrics using temporary copies. Run the two reading generators documented in README as well. Use a new disposable practice folder, retain intentional failing starter checks and report what you actually ran. Passing the supplied reference checks does not prove that an edited learner candidate works.

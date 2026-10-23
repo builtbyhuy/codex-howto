@@ -1,4 +1,5 @@
 import {highlightView,highlightCode,renderReference,mountLearningTools} from './assets/atelier/learning-tools.mjs';
+import {mountStudy} from './assets/atelier/study.mjs';
 import {lessonOutline} from './assets/atelier/lesson-outline.mjs';
 import {showDialog,installInteractions,arrive,disposeReader,mountReader} from './assets/atelier/interactions.mjs';
 import {validateCourse, sanitizeProgress, EDITION, PARTS} from './content-model.mjs';
@@ -27,7 +28,7 @@ const levels = [
 const topicIcons = ['terminal','sparkles','book-open','code-2','git-branch','sparkles','plug','shield','terminal','route'];
 const openModules = new Set();
 let modules = [], lessons = [], byId = new Map(), catalog, labCatalog=[], overviews={}, view = '';
-let diagramZoom=1, viewerFileText='', viewerRequest=0;
+let diagramZoom=1, viewerFileText='', viewerRequest=0, studyRequest=0;
 let viewerPath='',viewerHistory=[];
 let state = {lessons:{},last:null};
 let toastTimer;
@@ -150,7 +151,8 @@ function renderRail() {
   $('[data-nav="path"]').classList.toggle('active', lessonView || /(?:path|roadmap)/.test(location.hash));
   $('[data-nav="sources"]').classList.toggle('active', view==='sources');
   $('[data-nav="labs"]').classList.toggle('active',view==='labs');
-  $('#header-page').textContent = lessonView ? `Module ${view.slice(1,3)}` : view==='sources'?'Source library':view==='labs'?'Practice labs':'Overview';
+  $('[data-nav="study"]').classList.toggle('active',view==='study');
+  $('#header-page').textContent = lessonView ? `Module ${view.slice(1,3)}` : view==='sources'?'Source library':view==='labs'?'Practice labs':view==='study'?'Focused study':'Overview';
   $('.nav-count').textContent=lessons.length;
   syncStorageCopy();
 }
@@ -235,7 +237,7 @@ function renderSources() {
 <h2>The 60-topic coverage map</h2><p>Reference snapshot <code>${esc(catalog.reference.commit.slice(0,7))}</code>, checked 21 October 2026. Open a source topic to compare its purpose; open the Codex lesson to learn the adapted workflow.</p>
 <div class="coverage-list">${modules.map(m=>`<section><h3>${m.id}. ${esc(m.title)} <small>${m.lessons.length} lessons</small></h3>${m.lessons.map(l=>{const s=sourceLessons.find(s=>s.key===l.sourceKey);return `<div class="coverage-row"><div><span class="mapping-label">${esc(l.equivalence.status)}</span><a href="${lessonURL(l.id)}">${esc(l.title)}</a><p>${esc(l.equivalence.summary)}</p></div><a class="coverage-original" href="${esc(s.originalUrl)}" target="_blank" rel="noopener noreferrer">${esc(s.title)} ↗</a></div>`;}).join('')}</section>`).join('')}</div>
 <h2>Product names and current documentation</h2><p>Older Codex links may redirect to ChatGPT Learn. Codex in the desktop app, Codex CLI and an IDE extension have different surfaces. Account, platform, organization policy and version can affect availability. Follow the environment note in each lesson; a documented feature is not a promise that it is enabled in your installation.</p>
-<h2>Design references and licensed materials</h2><p>The current field-guide design uses an original cool-white layout, Manrope typography, restrained cobalt accents and an illustrative Task → Change → Check workbench. <a href="https://linear.app/method" target="_blank" rel="noopener noreferrer">Linear Method</a> informed editorial hierarchy, <a href="https://www.framer.com/academy/" target="_blank" rel="noopener noreferrer">Framer Academy</a> informed course navigation, and <a href="https://codecrafters.io/" target="_blank" rel="noopener noreferrer">CodeCrafters</a> informed the emphasis on inspectable practice. Their code, logos and artwork are not included.</p><p>Learning topic organization was adapted from <a href="https://luongnv.com/claude-howto/" target="_blank" rel="noopener noreferrer">Claude How-To by luongnv89</a>, MIT © 2024 luongnv89, at commit 188f468. The earlier source-derived presentation and its complete MIT notice remain in assets/reference/ for provenance; its landing stylesheet and typewriter motion are no longer loaded. The current presentation is maintained under assets/atelier/. Manrope and JetBrains Mono are self-hosted under OFL; retained Fraunces font files keep their OFL notice. Lucide SVG icons retain ISC/MIT notices. Semantic diagrams were compiled with MIT-licensed Mermaid; the course serves static SVGs. No paid resource or runtime account is needed to read this course.</p><p><a href="THIRD-PARTY-NOTICES.md">Third-party notices</a> · <a href="docs/design-sources.md">Design reference notes</a> · <a href="docs/verification.md">Verification report</a> · <a href="assets/reading/index.html">Read without JavaScript</a></p>
+<h2>Design references and licensed materials</h2><p>The current field-guide design uses an original cool-white layout, Fraunces display headings and Manrope body text, restrained cobalt accents and an illustrative Task → Change → Check workbench. <a href="https://linear.app/method" target="_blank" rel="noopener noreferrer">Linear Method</a> informed editorial hierarchy, <a href="https://www.framer.com/academy/" target="_blank" rel="noopener noreferrer">Framer Academy</a> informed course navigation, and <a href="https://codecrafters.io/" target="_blank" rel="noopener noreferrer">CodeCrafters</a> informed the emphasis on inspectable practice. Their code, logos and artwork are not included.</p><p>Learning topic organization was adapted from <a href="https://luongnv.com/claude-howto/" target="_blank" rel="noopener noreferrer">Claude How-To by luongnv89</a>, MIT © 2024 luongnv89, at commit 188f468. The earlier source-derived presentation and its complete MIT notice remain in assets/reference/ for provenance; its landing stylesheet and typewriter motion are no longer loaded. The current presentation is maintained under assets/atelier/. Fraunces, Manrope and JetBrains Mono are self-hosted under OFL with their notices preserved. Lucide SVG icons retain ISC/MIT notices. Semantic diagrams were compiled with MIT-licensed Mermaid; the course serves static SVGs. No paid resource or runtime account is needed to read this course.</p><p><a href="THIRD-PARTY-NOTICES.md">Third-party notices</a> · <a href="docs/design-sources.md">Design reference notes</a> · <a href="docs/verification.md">Verification report</a> · <a href="assets/reading/index.html">Read without JavaScript</a></p>
 <h2>Official documentation used</h2><ul class="source-links">${[...sources.values()].map(s=>`<li><a href="${esc(s.url)}" target="_blank" rel="noopener noreferrer">${esc(s.title)} ↗</a></li>`).join('')}</ul><h2>What completion means</h2><p>Times are practice estimates. Completion is your own assessment, not a certification. The website does not run Codex, execute the examples or inspect your local project. Check the actual result before marking a lesson complete.</p><a class="button button-solid" href="#path">Explore the learning path ${icon('arrow-right')}</a></article>`;
 }
 
@@ -297,7 +299,7 @@ function scrollToPart(part, focus = false) {
 }
 function route(force = false, trackVisit = true) {
   if(!lessons.length) return;
-  disposeReader();viewerRequest++;guideRequest++;document.documentElement.lang='en';
+  disposeReader();viewerRequest++;guideRequest++;const studyToken=++studyRequest;document.documentElement.lang='en';
   closeHomeMenu(false);
   $('.a-guide-select')?.removeAttribute('open');
   for(const id of ['diagram-dialog','file-dialog','assessment-dialog','search-dialog'])if($('#'+id)?.open)$('#'+id).close();
@@ -318,6 +320,7 @@ function route(force = false, trackVisit = true) {
     if(same)mountReader(main);requestAnimationFrame(()=>scrollToPart(part,!same));return;
   }
   if(path==='reference'){stopTerminal();view='reference';main.innerHTML=renderReference(modules);highlightView(main);enterView();document.title='Field reference — Howto codex';renderRail();scrollToPart(part);return;}
+  if(path==='study'){disposeCourseMotion();stopTerminal();view='study';main.innerHTML='<p role="status">Loading focused study…</p>';document.title='Focused study — Howto codex';renderRail();mountStudy(main,modules,()=>studyToken===studyRequest).catch(()=>{if(studyToken===studyRequest)main.innerHTML='<h1>Study unavailable</h1><p>Reload to retry, or use the <a href="LEARNING-ROADMAP.md">reading study path</a>. Progress is unchanged.</p>';});return;}
   if(path==='sources'){disposeCourseMotion();stopTerminal();view='sources';main.innerHTML=renderSources();enterView();document.title='Source library — Howto codex';renderRail();scrollToPart();return;}
   if(path==='labs'){disposeCourseMotion();stopTerminal();view='labs';main.innerHTML=renderLabLibrary();highlightView(main);enterView();document.title='Practice labs — Howto codex';renderRail();scrollToPart();return;}
   if(!['','roadmap','why','vs-docs','get-started','languages','main-content'].includes(path)){stopTerminal();view='error';main.innerHTML='<div class="error-state"><h1>Page not found.</h1><p>The address may have changed.</p><a class="button" href="#path">Back to the learning path</a></div>';renderRail();return;}

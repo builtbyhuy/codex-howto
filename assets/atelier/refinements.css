@@ -77,3 +77,16 @@ html{scroll-padding-top:0}
 .a-level-heading h3{font-family:var(--display);font-weight:520;letter-spacing:-.01em}
 .a-module h4{font-family:var(--display);font-weight:560;letter-spacing:-.01em}
 .source-page>h1,.reference-heading h1{font-family:var(--display);font-weight:480;letter-spacing:-.01em}
+/* Focused study follows the existing field-guide type and color tokens. */
+.study-page{max-width:54rem;margin:0 auto;padding:clamp(24px,5vw,64px) 24px;line-height:1.65}
+.study-page h1{font-size:clamp(2rem,5vw,3.5rem);line-height:1.15}
+.study-page h2,.study-page h3{margin-top:1.5em;line-height:1.3}
+.study-page label{display:block;font-weight:600;margin-top:1.25rem}
+.study-page textarea,.study-page select{display:block;width:100%;max-width:100%;padding:.75rem;border:1px solid currentColor;border-radius:6px;background:var(--bg,#fff);color:var(--text,#17201b);font:inherit}
+.study-page textarea{resize:vertical}
+.study-page button{padding:.65rem 1rem;margin:.8rem .6rem .8rem 0;border:1px solid currentColor;border-radius:6px;background:transparent;color:inherit;font:inherit;cursor:pointer}
+.study-page :is(button,select,textarea,summary,a):focus-visible{outline:3px solid currentColor;outline-offset:4px}
+.study-page details{padding:1rem;border:1px solid currentColor;border-radius:6px}
+.study-page summary{cursor:pointer;font-weight:600}
+.study-answer{white-space:pre-wrap;overflow-wrap:anywhere}
+[data-theme="dark"] .study-page :is(textarea,select){background:#17201b;color:#f1f3ee}

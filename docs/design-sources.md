@@ -1,8 +1,8 @@
 # Atelier field guide: design and source notes
 
-The **2.6 field guide** presents the existing Codex curriculum with a light cool canvas, Fraunces display headings, Manrope body/UI typography, JetBrains Mono for code and restrained cobalt accents. The original app-style workbench uses **Task → Change → Check** to show the Orbit Notes brief, focused reference edit and illustrative six-check result. It does not execute Codex, contact a model or validate a learner's local work.
+The **2.6 field guide** presents the existing Codex curriculum with a light cool canvas, Fraunces display headings and Manrope body/UI typography, JetBrains Mono for code and restrained cobalt accents. The original app-style workbench uses **Task → Change → Check** to show the Orbit Notes brief, focused reference edit and illustrative six-check result. It does not execute Codex, contact a model or validate a learner's local work.
 
-Active presentation files are home.mjs, motion.mjs, workbench.mjs, workbench.css, reader-base.css, site.css and refinements.css under assets/atelier. The reader foundation retains the existing course controls and responsive rules. On 23 October 2026, the Fraunces display roles, hero optical size and heading weights were restored from the live Claude How-To landing typography; the local layout and workbench remain distinct.
+Active presentation files are home.mjs, motion.mjs, workbench.mjs, workbench.css, reader-base.css, site.css and refinements.css under assets/atelier. The reader foundation retains the existing course controls and responsive rules. The current CSS sets --display to Fraunces and uses it for hero and curriculum headings; study text uses the Manrope body stack.
 
 ## Professional references
 
@@ -18,7 +18,7 @@ These observations inform original layout and interaction decisions. No propriet
 
 The ten-module learning structure and source-topic purposes come from [Claude How-To](https://github.com/luongnv89/claude-howto), pinned at 188f468893231cbe4525f45e657d554746232072. Copyright (c) 2024 luongnv89, MIT. The earlier source-derived stylesheet/markup/motion remain under assets/reference as licensed historical implementation material, with [the full source notice](../assets/reference/SOURCE-NOTICE.md). This retention does not claim that the current Atelier design is the original site's interface.
 
-Manrope, Fraunces and JetBrains Mono font files remain self-hosted under SIL OFL. Fraunces is used for display headings, Manrope for body/UI text and JetBrains Mono for code. Lucide icons retain ISC/MIT notices. Full semantic diagrams were generated using MIT-licensed Mermaid; compact desktop/mobile reading diagrams are original course artwork. See [third-party notices](../THIRD-PARTY-NOTICES.md).
+Manrope, Fraunces and JetBrains Mono font files remain self-hosted under SIL OFL. Fraunces is used for display headings and Manrope for body/UI text and JetBrains Mono for code. Lucide icons retain ISC/MIT notices. Full semantic diagrams were generated using MIT-licensed Mermaid; compact desktop/mobile reading diagrams are original course artwork. See [third-party notices](../THIRD-PARTY-NOTICES.md).
 
 ## Reading and interaction scope
 

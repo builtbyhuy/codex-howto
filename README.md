@@ -2,9 +2,13 @@
 
 An independent app-first Codex course: **10 modules, 60 detailed English lessons and 7 downloadable practice projects**. This source package is **version 2.6**. Publication status is verified separately; no visual equality with Claude How-To or measured learner outcome is claimed.
 
-The field-guide interface uses a light cool canvas, Fraunces headings, Manrope body/UI text, JetBrains Mono code, restrained cobalt accents and a **Task → Change → Check** workbench. The workbench illustrates the bundled Orbit Notes task, reference change and six-check result. It never executes Codex or checks your local files.
+The field-guide interface uses a light cool canvas, Fraunces display headings and Manrope body/UI text, JetBrains Mono code, restrained cobalt accents and a **Task → Change → Check** workbench. The workbench illustrates the bundled Orbit Notes task, reference change and six-check result. It never executes Codex or checks your local files.
 
 **[Open the course](https://builtbyhuy.github.io/codex-howto/)** · [Read all 60 lessons without JavaScript](assets/reading/index.html) · [First reading lesson](assets/reading/s01-01.html) · [Report a lesson problem](https://github.com/builtbyhuy/codex-howto/issues/new)
+
+**[Choose a dependency-aware path](LEARNING-ROADMAP.md)** · [Browse lessons on GitHub](CATALOG.md) · [Focused study and optional Codex coach](study/README.md) · [Website study sessions](https://builtbyhuy.github.io/codex-howto/#study)
+
+Prerequisites: a browser for reading; existing Node.js 20+ for offline labs. Native Codex practice is optional and requires your own supported client/access. Outcomes: inspect source facts, make a bounded change, verify its result and explain recovery boundaries.
 
 ## Read, practise and keep your place
 
@@ -16,7 +20,7 @@ The home includes a readable curriculum snapshot, and all sixty lessons have sta
 
 ## A first useful result
 
-Download Orbit Notes from the first lesson into a disposable practice folder. Its deliberately broken search starts at **4 passing and 2 failing checks**. Ask Codex to fix case and surrounding-space handling while preserving unrelated files. Inspect the edit; the target is **6 passing checks**, with the actual matching notes. Commands, fictional inputs, synthetic events, deterministic helpers and optional native-client activation are labeled.
+From a clone, run `node labs/project-workflow/create-workspace.cjs`, then open the returned disposable path and follow [the lab instructions](labs/project-workflow/README.md). Its deliberately broken search starts at **4 passing and 2 failing checks**. Ask Codex to fix case and surrounding-space handling while preserving unrelated files. Inspect the edit; the target is **6 passing checks**, with the actual matching notes. Commands, fictional inputs, synthetic events, deterministic helpers and optional native-client activation are labeled.
 
 ## Run locally
 
@@ -26,7 +30,7 @@ With Node.js 20+ already installed, run this from the exported source directory 
 node scripts/server.cjs
 ~~~
 
-Open http://127.0.0.1:4173/ and keep the terminal running. No package installation or framework build is required to read the supplied website. Stop the server with Ctrl+C. The GitHub repository may contain an earlier release than the live website; these instructions describe this exported package. Individual labs have their own course-relative commands; run them in disposable practice copies.
+Open http://127.0.0.1:4173/ and keep the terminal running. No package installation or framework build is required to read the supplied website. Stop the server with Ctrl+C. The repository source and Pages publication are synchronized separately by the maintainer. Individual labs have their own course-relative commands; run them in disposable practice copies.
 
 After changing lesson data or the home renderer, regenerate and verify the static reading output:
 
@@ -35,6 +39,10 @@ node scripts/build-reading-fallback.cjs
 node scripts/build-home-snapshot.mjs
 node scripts/build-reading-fallback.cjs --check
 node scripts/build-home-snapshot.mjs --check
+node scripts/build-study.cjs
+node scripts/build-study.cjs --check
+node tests/repo-level.cjs
+node tests/repo-level.cjs --controls
 ~~~
 
 The generators use existing course data and no additional dependency. The home generator changes only the contents of the root main element; interactive application code remains separate.

@@ -151,5 +151,7 @@ const evidence = {
     'Generation, link inventory and byte boundaries were checked; JavaScript-disabled visual and keyboard review remains separate.',
   ],
 };
-fs.writeFileSync(path.join(root, 'evidence', 'atelier-home-snapshot-2026-10-22.json'), JSON.stringify(evidence, null, 2) + '\n');
+fs.mkdirSync(path.join(root, 'evidence'), {recursive:true});
+const reportDir=fs.mkdtempSync(path.join(root, 'evidence', 'home-snapshot-'));
+fs.writeFileSync(path.join(reportDir, 'report.json'), JSON.stringify(evidence, null, 2) + '\n');
 process.stdout.write(JSON.stringify({status:evidence.status, mode:checkOnly?'check':'build', modules:10, lessons:60, staticLessonLinks:linkedIds.size, disabledButtons, outsideMainUnchanged:true, snapshotBytes:Buffer.byteLength(innerHTML)}) + '\n');

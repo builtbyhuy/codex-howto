@@ -2855,7 +2855,7 @@
           "commands": [
             {
               "command": "node --test labs/workflow-plugin/test.cjs labs/workflow-plugin/depth.test.cjs",
-              "expected": "25 checks pass: 19 original behavioral/protocol checks plus five workspace/extension/isolation checks."
+              "expected": "24 checks pass: 19 original behavioral/protocol checks plus five workspace/extension/isolation checks."
             },
             {
               "command": "node labs/workflow-plugin/demo.cjs",

@@ -10,7 +10,7 @@ Cập nhật hướng dẫn **22/10/2026**. Tài liệu sản phẩm được ki
 
 Codex là tác nhân lập trình: có thể đọc tệp dự án, đề xuất chỉnh sửa và sử dụng công cụ được cấp. Hãy bắt đầu trong ứng dụng máy tính, nơi dự án, cuộc trò chuyện và bản xem trước nằm trong cùng không gian làm việc. Làm theo [hướng dẫn ứng dụng chính thức](https://learn.chatgpt.com/docs/app) để cài đặt và đăng nhập. Nếu đã cài, kiểm tra bản đang dùng trước. Chọn Codex rồi mở thư mục thực hành riêng; đăng nhập thành công chưa chứng minh đã mở đúng dự án.
 
-Mở [bài đầu tiên](https://codex-howto.hokhachuy1234.chatgpt.site/#lesson/s01-01) và tải [Orbit Notes](https://codex-howto.hokhachuy1234.chatgpt.site/labs/project-workflow.zip). Giải nén; gói giữ cấu trúc `labs/project-workflow/` bên trong thư mục giải nén. Từ thư mục của bài thực hành, chạy:
+Mở [bài đầu tiên](https://builtbyhuy.github.io/codex-howto/#lesson/s01-01) và tải [Orbit Notes](https://builtbyhuy.github.io/codex-howto/labs/project-workflow.zip). Giải nén; gói giữ cấu trúc `labs/project-workflow/` bên trong thư mục giải nén. Từ thư mục của bài thực hành, chạy:
 
 ```text
 node create-workspace.cjs
@@ -54,15 +54,15 @@ Khóa học có **60 bài**, theo thứ tự dưới đây. Skill là gói hư�
 
 | Giai đoạn | Mô-đun và số bài |
 | --- | --- |
-| Cơ bản | [Lệnh và phiên đầu tiên](https://codex-howto.hokhachuy1234.chatgpt.site/#lesson/s01-01) — 6; [Hướng dẫn dự án và bộ nhớ](https://codex-howto.hokhachuy1234.chatgpt.site/#lesson/s02-01) — 5; [Phục hồi và Git](https://codex-howto.hokhachuy1234.chatgpt.site/#lesson/s08-01) — 5; [CLI](https://codex-howto.hokhachuy1234.chatgpt.site/#lesson/s10-01) — 5 |
-| Trung cấp | [Skills](https://codex-howto.hokhachuy1234.chatgpt.site/#lesson/s03-01) — 6; [Hooks](https://codex-howto.hokhachuy1234.chatgpt.site/#lesson/s06-01) — 7; [MCP](https://codex-howto.hokhachuy1234.chatgpt.site/#lesson/s05-01) — 6; [Tác nhân con](https://codex-howto.hokhachuy1234.chatgpt.site/#lesson/s04-01) — 7 |
-| Nâng cao | [Tính năng nâng cao](https://codex-howto.hokhachuy1234.chatgpt.site/#lesson/s09-01) — 7; [Plugins](https://codex-howto.hokhachuy1234.chatgpt.site/#lesson/s07-01) — 6 |
+| Cơ bản | [Lệnh và phiên đầu tiên](https://builtbyhuy.github.io/codex-howto/#lesson/s01-01) — 6; [Hướng dẫn dự án và bộ nhớ](https://builtbyhuy.github.io/codex-howto/#lesson/s02-01) — 5; [Phục hồi và Git](https://builtbyhuy.github.io/codex-howto/#lesson/s08-01) — 5; [CLI](https://builtbyhuy.github.io/codex-howto/#lesson/s10-01) — 5 |
+| Trung cấp | [Skills](https://builtbyhuy.github.io/codex-howto/#lesson/s03-01) — 6; [Hooks](https://builtbyhuy.github.io/codex-howto/#lesson/s06-01) — 7; [MCP](https://builtbyhuy.github.io/codex-howto/#lesson/s05-01) — 6; [Tác nhân con](https://builtbyhuy.github.io/codex-howto/#lesson/s04-01) — 7 |
+| Nâng cao | [Tính năng nâng cao](https://builtbyhuy.github.io/codex-howto/#lesson/s09-01) — 7; [Plugins](https://builtbyhuy.github.io/codex-howto/#lesson/s07-01) — 6 |
 
 Mỗi bài có mục tiêu, giải thích, ví dụ, bài tập, bằng chứng cần kiểm tra, đáp án và câu hỏi kiến thức. Tự làm trước khi mở đáp án. Thời lượng hiển thị chỉ là ước tính, không phải cam kết thành thạo.
 
 ## 5. Hiểu bảy gói thực hành chứng minh điều gì
 
-[Thư viện thực hành](https://codex-howto.hokhachuy1234.chatgpt.site/#labs) có bảy gói tải riêng. `project-workflow` dạy dự án đầu và phục hồi; `cli-pipeline` kiểm tra sự kiện của tiến trình và báo cáo trích xuất; `skill-workflow` cung cấp quy trình đánh giá tái sử dụng cùng chương trình hỗ trợ xác định; `mcp-workbench` trao đổi thông điệp JSON-RPC thật giữa các tiến trình cục bộ; `delegation-capstone` tích hợp hai phần việc; `hook-policy` phát lại sự kiện và kiểm tra bằng chứng gắn với tệp; `workflow-plugin` kết hợp skill, công cụ và tài nguyên kết nối.
+[Thư viện thực hành](https://builtbyhuy.github.io/codex-howto/#labs) có bảy gói tải riêng. `project-workflow` dạy dự án đầu và phục hồi; `cli-pipeline` kiểm tra sự kiện của tiến trình và báo cáo trích xuất; `skill-workflow` cung cấp quy trình đánh giá tái sử dụng cùng chương trình hỗ trợ xác định; `mcp-workbench` trao đổi thông điệp JSON-RPC thật giữa các tiến trình cục bộ; `delegation-capstone` tích hợp hai phần việc; `hook-policy` phát lại sự kiện và kiểm tra bằng chứng gắn với tệp; `workflow-plugin` kết hợp skill, công cụ và tài nguyên kết nối.
 
 Chương trình cục bộ thực sự chạy, nhưng dữ liệu hư cấu, sự kiện tổng hợp và giao việc mô phỏng đều được ghi rõ. Công cụ hỗ trợ vượt kiểm tra không chứng minh Codex đã gọi skill, chọn công cụ MCP, tạo tác nhân con hay kích hoạt hook. Nhánh thực hành trực tiếp trong ứng dụng giải thích cách quan sát riêng các việc đó. Đọc README của từng gói, dùng bản sao mới và phân biệt lỗi chủ ý của bài tập với kiểm tra của lời giải.
 

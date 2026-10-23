@@ -10,7 +10,7 @@
 
 Codex 是编程智能体，可以读取项目文件、提出修改并使用可用工具。建议从桌面应用开始：项目、对话和预览集中在同一工作区。安装和登录请按[官方应用说明](https://learn.chatgpt.com/docs/app)操作；如果已经安装，先确认当前版本和界面。选择 Codex，再打开独立的练习文件夹。登录成功并不代表已经选中了正确的项目。
 
-打开[第一课](https://codex-howto.hokhachuy1234.chatgpt.site/#lesson/s01-01)，下载 [Orbit Notes](https://codex-howto.hokhachuy1234.chatgpt.site/labs/project-workflow.zip) 并解压。压缩包会在解压根目录下保留 `labs/project-workflow/` 结构。进入该练习目录，运行：
+打开[第一课](https://builtbyhuy.github.io/codex-howto/#lesson/s01-01)，下载 [Orbit Notes](https://builtbyhuy.github.io/codex-howto/labs/project-workflow.zip) 并解压。压缩包会在解压根目录下保留 `labs/project-workflow/` 结构。进入该练习目录，运行：
 
 ```text
 node create-workspace.cjs
@@ -56,15 +56,15 @@ node cli.cjs "  REVIEW  "
 
 | 阶段 | 模块与课数 |
 | --- | --- |
-| 基础 | [命令与首次会话](https://codex-howto.hokhachuy1234.chatgpt.site/#lesson/s01-01) — 6；[项目指令与记忆](https://codex-howto.hokhachuy1234.chatgpt.site/#lesson/s02-01) — 5；[恢复与 Git](https://codex-howto.hokhachuy1234.chatgpt.site/#lesson/s08-01) — 5；[CLI](https://codex-howto.hokhachuy1234.chatgpt.site/#lesson/s10-01) — 5 |
-| 中级 | [Skills](https://codex-howto.hokhachuy1234.chatgpt.site/#lesson/s03-01) — 6；[Hooks](https://codex-howto.hokhachuy1234.chatgpt.site/#lesson/s06-01) — 7；[MCP](https://codex-howto.hokhachuy1234.chatgpt.site/#lesson/s05-01) — 6；[子智能体](https://codex-howto.hokhachuy1234.chatgpt.site/#lesson/s04-01) — 7 |
-| 进阶 | [高级功能](https://codex-howto.hokhachuy1234.chatgpt.site/#lesson/s09-01) — 7；[Plugins](https://codex-howto.hokhachuy1234.chatgpt.site/#lesson/s07-01) — 6 |
+| 基础 | [命令与首次会话](https://builtbyhuy.github.io/codex-howto/#lesson/s01-01) — 6；[项目指令与记忆](https://builtbyhuy.github.io/codex-howto/#lesson/s02-01) — 5；[恢复与 Git](https://builtbyhuy.github.io/codex-howto/#lesson/s08-01) — 5；[CLI](https://builtbyhuy.github.io/codex-howto/#lesson/s10-01) — 5 |
+| 中级 | [Skills](https://builtbyhuy.github.io/codex-howto/#lesson/s03-01) — 6；[Hooks](https://builtbyhuy.github.io/codex-howto/#lesson/s06-01) — 7；[MCP](https://builtbyhuy.github.io/codex-howto/#lesson/s05-01) — 6；[子智能体](https://builtbyhuy.github.io/codex-howto/#lesson/s04-01) — 7 |
+| 进阶 | [高级功能](https://builtbyhuy.github.io/codex-howto/#lesson/s09-01) — 7；[Plugins](https://builtbyhuy.github.io/codex-howto/#lesson/s07-01) — 6 |
 
 每课都有目标、说明、示例、练习、应检查的证据、参考答案和知识测验。先独立尝试，再展开答案。显示的学习时间只是估算，不代表完成后必然熟练。
 
 ## 5. 分清七个练习包的验证范围
 
-[练习库](https://codex-howto.hokhachuy1234.chatgpt.site/#labs)提供七个独立下载包。`project-workflow` 练习首个项目与恢复；`cli-pipeline` 验证子进程事件流及提取报告；`skill-workflow` 提供可复用审查 skill 和确定性辅助程序；`mcp-workbench` 在本地进程之间实际交换 JSON-RPC 消息；`delegation-capstone` 集成两份有明确边界的任务；`hook-policy` 回放受约束事件并核对文件证据；`workflow-plugin` 组合 skill、工具和连接配置材料。
+[练习库](https://builtbyhuy.github.io/codex-howto/#labs)提供七个独立下载包。`project-workflow` 练习首个项目与恢复；`cli-pipeline` 验证子进程事件流及提取报告；`skill-workflow` 提供可复用审查 skill 和确定性辅助程序；`mcp-workbench` 在本地进程之间实际交换 JSON-RPC 消息；`delegation-capstone` 集成两份有明确边界的任务；`hook-policy` 回放受约束事件并核对文件证据；`workflow-plugin` 组合 skill、工具和连接配置材料。
 
 这些本地程序会实际执行，但虚构数据、合成事件和模拟委派都有标注。辅助程序通过测试，不等于 Codex 真正调用了 skill、选择了 MCP 工具、启动了子智能体或激活了 hook。可选的原生客户端路线会单独说明如何观察这些行为。阅读每个包的 README，在新副本中操作，并区分初始练习故意失败的检查与参考实现应通过的检查。
 

@@ -1,6 +1,6 @@
 # Verification and limits
 
-**Source package: version 2.6.** The bounded release review was recorded 2026-10-23T10:24:35.532Z. A built directory does not itself prove deployment, accessibility certification, design equality or learning effectiveness.
+**Source package: version 2.6.** The bounded release review was recorded 2026-10-23T11:58:35.823Z. A built directory does not itself prove deployment, accessibility certification, design equality or learning effectiveness.
 
 ## What is checked
 
