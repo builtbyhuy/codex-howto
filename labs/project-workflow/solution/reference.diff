@@ -1,0 +1,55 @@
+diff --git a/README.md b/README.md
+index 24f4cad..90f3251 100644
+--- a/README.md
++++ b/README.md
+@@ -5,21 +5,32 @@ Orbit Notes is a fictional, local note-search practice project.
+ ## Project facts
+ 
+ - Four sample notes are stored in notes.json.
+-- Search should match a title substring without regard to case or surrounding spaces.
+-- Search must preserve note objects and their original order.
++- Search matches a title substring without regard to case or surrounding spaces.
++- Search preserves the note objects and their original order.
+ 
+ ## Run
+ 
+ Use an existing Node.js 20 or newer installation. No dependencies or network access are needed.
+ 
+ ```text
+-node cli.cjs Review
++node cli.cjs "  REVIEW  "
++```
++
++Expected result:
++
++```text
++n1: Review launch checklist
++n3: Review documentation
+ ```
+ 
+ ## Verify
+ 
+ ```text
+-npm test
++node --test checks.cjs
+ ```
+ 
+-The verification instruction above is deliberately unsupported: this starter has no package.json. Find the real check in the exercise brief, then correct this README as part of the capstone. Do not install packages to make the planted claim appear true.
++The complete reference implementation passes all six supplied checks. The original starter intentionally fails the case and surrounding-whitespace checks. This is a local reference result, not proof that Codex ran or that a real product was accepted.
++
++## Review note
++
++The useful additional paragraph must survive a rejected heading experiment.
+diff --git a/notes.cjs b/notes.cjs
+index bf24790..ed9d99d 100644
+--- a/notes.cjs
++++ b/notes.cjs
+@@ -1,6 +1,6 @@
+ 'use strict';
+ function searchNotes(notes, query) {
+-  // Intentional exercise defect: matching should ignore case and outer spaces.
+-  return notes.filter(note => note.title.includes(query));
++  const needle = query.trim().toLowerCase();
++  return notes.filter(note => note.title.toLowerCase().includes(needle));
+ }
+ module.exports = { searchNotes };

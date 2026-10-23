@@ -1,0 +1,1597 @@
+{
+  "renderer": {
+    "name": "Original static SVG",
+    "version": 1,
+    "license": "Project original artwork",
+    "checkedAt": "2026-10-21",
+    "source": "scripts/build-overviews.cjs",
+    "purpose": "Compact reading summaries; full semantic diagrams remain available separately."
+  },
+  "lessons": {
+    "s01-01": {
+      "asset": "assets/diagram-overviews/s01-01.svg",
+      "mobileAsset": "assets/diagram-overviews/s01-01-mobile.svg",
+      "title": "Choose a surface, then verify the same project",
+      "text": "Choose the app, CLI, or IDE according to where you work. Each route converges on inspecting the actual folder and comparing README facts with the answer. Signing in alone does not prove project access.",
+      "width": 624,
+      "height": 238,
+      "mobileWidth": 288,
+      "mobileHeight": 306,
+      "kind": "decision",
+      "layout": "fork",
+      "fullAsset": "assets/diagrams/s01-01.svg",
+      "sourceHash": "9d5bfba9ca6652eee539c730f37bdea7be9f7c2cbe0e62b6ffb7ab218355815c",
+      "summary": {
+        "layout": "fork",
+        "lead": "Choose your surface",
+        "branches": [
+          "App: projects + chats",
+          "CLI: terminal work",
+          "IDE: editor workspace"
+        ],
+        "note": "All three: open the right folder; verify README facts."
+      }
+    },
+    "s01-02": {
+      "asset": "assets/diagram-overviews/s01-02.svg",
+      "mobileAsset": "assets/diagram-overviews/s01-02-mobile.svg",
+      "title": "A composer control and a shell command take different paths",
+      "text": "Slash commands are handled by the Codex client. Shell commands are handled by the terminal process. A client diff helps inspect changes; a test process provides separate behavioral evidence.",
+      "width": 624,
+      "height": 192,
+      "mobileWidth": 288,
+      "mobileHeight": 250,
+      "kind": "comparison",
+      "layout": "comparison",
+      "fullAsset": "assets/diagrams/s01-02.svg",
+      "sourceHash": "b08bae077c173d2150b799021a945308e3b7b694b07dc671cea099bebbf13a22",
+      "summary": {
+        "layout": "comparison",
+        "rows": [
+          [
+            "Composer",
+            "Client controls: plan, diff, review"
+          ],
+          [
+            "Terminal",
+            "Run the documented test command"
+          ]
+        ],
+        "note": "A diff shows edits. Tests check behavior."
+      }
+    },
+    "s01-03": {
+      "asset": "assets/diagram-overviews/s01-03.svg",
+      "mobileAsset": "assets/diagram-overviews/s01-03-mobile.svg",
+      "title": "A reusable skill has a discoverable boundary",
+      "text": "A reusable request becomes a skill with metadata and instructions. References, scripts, and fixtures are supporting files, not text that must all be loaded for every request.",
+      "width": 624,
+      "height": 238,
+      "mobileWidth": 288,
+      "mobileHeight": 306,
+      "kind": "hierarchy",
+      "layout": "hierarchy",
+      "fullAsset": "assets/diagrams/s01-03.svg",
+      "sourceHash": "174ba95e13aefd52ac50331a36248709dcdc8e847e4cabefde8c9cd9bd6e5a57",
+      "summary": {
+        "layout": "hierarchy",
+        "lead": "Reusable skill",
+        "branches": [
+          "SKILL.md: identity",
+          "SKILL.md: procedure",
+          "Optional support files"
+        ],
+        "note": "Discover by relevance; load support only when needed."
+      }
+    },
+    "s01-04": {
+      "asset": "assets/diagram-overviews/s01-04.svg",
+      "mobileAsset": "assets/diagram-overviews/s01-04-mobile.svg",
+      "title": "A connected-tool request must return evidence",
+      "text": "The user gives a bounded request. Codex discovers an available tool and calls the connected server. The answer must be grounded in the returned source; a missing capability ends with an explicit gap, not an invented command.",
+      "width": 624,
+      "height": 306,
+      "mobileWidth": 288,
+      "mobileHeight": 310,
+      "kind": "sequence",
+      "layout": "sequence",
+      "fullAsset": "assets/diagrams/s01-04.svg",
+      "sourceHash": "0654c840dfa3681e8d3ffbc931589b62241b5be81b138b81a3afd16430f325e5",
+      "summary": {
+        "layout": "sequence",
+        "actors": [
+          "User",
+          "Codex",
+          "Server"
+        ],
+        "messages": [
+          [
+            0,
+            1,
+            "Bounded request"
+          ],
+          [
+            1,
+            2,
+            "Discover + call"
+          ],
+          [
+            2,
+            1,
+            "Result or explicit error"
+          ],
+          [
+            1,
+            0,
+            "Evidence + access gaps"
+          ]
+        ],
+        "note": "Missing capability: report the gap; do not invent a call."
+      }
+    },
+    "s01-05": {
+      "asset": "assets/diagram-overviews/s01-05.svg",
+      "mobileAsset": "assets/diagram-overviews/s01-05-mobile.svg",
+      "title": "Test a skill against relevant and irrelevant requests",
+      "text": "Create the skill, invoke it on a relevant fixture, and compare its result with the rubric. An irrelevant request is a separate test of the skill's boundary. Failures return to the instructions rather than being hidden by a passing example.",
+      "width": 624,
+      "height": 200,
+      "mobileWidth": 288,
+      "mobileHeight": 288,
+      "kind": "cycle",
+      "layout": "loop",
+      "fullAsset": "assets/diagrams/s01-05.svg",
+      "sourceHash": "c79e2827beff3302f1965ec2d8e48fdad11c5b7053f1341c006fefaba74f3ef1",
+      "summary": {
+        "layout": "loop",
+        "nodes": [
+          "Write the skill",
+          "Test a relevant task",
+          "Test an unrelated task",
+          "Compare with rubric"
+        ],
+        "note": "A failed boundary returns to the instructions."
+      }
+    },
+    "s01-06": {
+      "asset": "assets/diagram-overviews/s01-06.svg",
+      "mobileAsset": "assets/diagram-overviews/s01-06-mobile.svg",
+      "title": "A useful task has an acceptance loop",
+      "text": "Define the outcome, scope and acceptance before editing. Inspect relevant files, make a focused change, run the checks, and open the output and diff before deciding. Return to inspection for failed or unverified criteria; record success and limits only after the evidence satisfies the brief.",
+      "width": 624,
+      "height": 200,
+      "mobileWidth": 288,
+      "mobileHeight": 288,
+      "kind": "flow",
+      "layout": "loop",
+      "fullAsset": "assets/diagrams/s01-06.svg",
+      "sourceHash": "0bf851765b4861c7c14477761be9a9fd86265bde704e85150bf380e40fa7df76",
+      "summary": {
+        "layout": "loop",
+        "nodes": [
+          "Brief + acceptance",
+          "Inspect + edit",
+          "Tests, output\nand diff",
+          "Assess acceptance"
+        ],
+        "note": "Failed or unverified criteria return to inspection."
+      }
+    },
+    "s02-01": {
+      "asset": "assets/diagram-overviews/s02-01.svg",
+      "mobileAsset": "assets/diagram-overviews/s02-01-mobile.svg",
+      "title": "Instructions, working evidence, and memory are distinct inputs",
+      "text": "AGENTS.md supplies project guidance, current files supply evidence, and eligible memory may help retrieve context. These inputs meet at the task, but a remembered claim still needs checking against its current source.",
+      "width": 624,
+      "height": 236,
+      "mobileWidth": 288,
+      "mobileHeight": 306,
+      "kind": "comparison",
+      "layout": "merge",
+      "fullAsset": "assets/diagrams/s02-01.svg",
+      "sourceHash": "0efaabd2a75ffa7591760f106987eee2772c14980cb588f26a27c35a500ede7f",
+      "summary": {
+        "layout": "merge",
+        "branches": [
+          "AGENTS.md guidance",
+          "Current project files",
+          "Memory: verify source"
+        ],
+        "end": "Current task + checked result",
+        "note": "Remembered context still needs a current-source check."
+      }
+    },
+    "s02-02": {
+      "asset": "assets/diagram-overviews/s02-02.svg",
+      "mobileAsset": "assets/diagram-overviews/s02-02-mobile.svg",
+      "title": "Generate guidance, review it, then test discovery",
+      "text": "Inspect the repository before drafting guidance. Review generated claims, start a fresh session, and check which instructions apply. Incorrect run commands or vague guidance lead back to the file, not to a claim that initialization proved correctness.",
+      "width": 624,
+      "height": 200,
+      "mobileWidth": 288,
+      "mobileHeight": 288,
+      "kind": "cycle",
+      "layout": "loop",
+      "fullAsset": "assets/diagrams/s02-02.svg",
+      "sourceHash": "794164dffa20a8ec65729c8790c85fd116c0d4e668fe50c93ae5659900eeb80f",
+      "summary": {
+        "layout": "loop",
+        "nodes": [
+          "Inspect real scripts",
+          "Draft\nAGENTS.md",
+          "Review its claims",
+          "Test a fresh session"
+        ],
+        "note": "Wrong guidance: revise the file and retest discovery."
+      }
+    },
+    "s02-03": {
+      "asset": "assets/diagram-overviews/s02-03.svg",
+      "mobileAsset": "assets/diagram-overviews/s02-03-mobile.svg",
+      "title": "Instruction discovery follows the working-directory path",
+      "text": "The global layer precedes repository guidance, followed by directories along the path to the working directory. At each directory, an override replaces the ordinary file selected at that same level. An unrelated sibling does not join the chain.",
+      "width": 624,
+      "height": 200,
+      "mobileWidth": 288,
+      "mobileHeight": 288,
+      "kind": "hierarchy",
+      "layout": "hierarchy-chain",
+      "fullAsset": "assets/diagrams/s02-03.svg",
+      "sourceHash": "74e7581223b442a077afe3cd8a697526419405f657bc5c47ba14ec2a1c8a70b7",
+      "summary": {
+        "layout": "hierarchy-chain",
+        "nodes": [
+          "Global guidance",
+          "Repository root",
+          "Directories on path",
+          "Working directory"
+        ],
+        "note": "At each level, override replaces the ordinary file."
+      }
+    },
+    "s02-04": {
+      "asset": "assets/diagram-overviews/s02-04.svg",
+      "mobileAsset": "assets/diagram-overviews/s02-04-mobile.svg",
+      "title": "Prose guidance and command rules solve different problems",
+      "text": "Nested AGENTS.md and explicit reference documents describe the work. Command rules evaluate execution-policy decisions. Neither is a mechanical substitute for the other, and discovery and policy need different tests.",
+      "width": 624,
+      "height": 192,
+      "mobileWidth": 288,
+      "mobileHeight": 250,
+      "kind": "comparison",
+      "layout": "comparison",
+      "fullAsset": "assets/diagrams/s02-04.svg",
+      "sourceHash": "5c99e0df7f1e79ee1a9d157b923d246449bafa06ca7390e518dbb8b9ad8cafb8",
+      "summary": {
+        "layout": "comparison",
+        "rows": [
+          [
+            "AGENTS.md",
+            "How to work: scope and guidance"
+          ],
+          [
+            "Command\nrules",
+            "Match command\nagainst policy"
+          ]
+        ],
+        "note": "Test instruction discovery and policy separately."
+      }
+    },
+    "s02-05": {
+      "asset": "assets/diagram-overviews/s02-05.svg",
+      "mobileAsset": "assets/diagram-overviews/s02-05-mobile.svg",
+      "title": "Use memory only after checking its applicability",
+      "text": "If local memories are unavailable or disabled, use explicit project records. If a memory is available, verify its scope and current source before relying on it. A closed chat is not proof that memory generation completed.",
+      "width": 624,
+      "height": 304,
+      "mobileWidth": 288,
+      "mobileHeight": 316,
+      "kind": "decision",
+      "layout": "decision",
+      "fullAsset": "assets/diagrams/s02-05.svg",
+      "sourceHash": "d5929b798a9f79c56811e00cfb2fa7d1f81462afc7cd014b4f0756cd1a0b017d",
+      "summary": {
+        "layout": "decision",
+        "question": "Memory available + verified?",
+        "yes": "Use eligible context",
+        "no": "Use project records",
+        "end": "Keep canonical decisions in the project",
+        "note": "A closed chat does not prove memory was generated."
+      }
+    },
+    "s08-01": {
+      "asset": "assets/diagram-overviews/s08-01.svg",
+      "mobileAsset": "assets/diagram-overviews/s08-01-mobile.svg",
+      "title": "Different kinds of state need different recovery",
+      "text": "Saved chat history helps recover conversation context. A Git baseline or a verified copy helps restore files. External side effects require the affected service's recovery procedure. Recovering one kind does not automatically undo the others.",
+      "width": 624,
+      "height": 246,
+      "mobileWidth": 288,
+      "mobileHeight": 310,
+      "kind": "comparison",
+      "layout": "comparison",
+      "fullAsset": "assets/diagrams/s08-01.svg",
+      "sourceHash": "439e1fb613b7669d7f7a181da4c92e0ef276fcdc2d416ba6916a65dc010c8bb6",
+      "summary": {
+        "layout": "comparison",
+        "rows": [
+          [
+            "Chat context",
+            "Saved chat or factual handoff"
+          ],
+          [
+            "Local files",
+            "Git baseline or verified copy"
+          ],
+          [
+            "External effect",
+            "Service-specific correction"
+          ]
+        ],
+        "note": "Recovering one kind of state does not undo the rest."
+      }
+    },
+    "s08-02": {
+      "asset": "assets/diagram-overviews/s08-02.svg",
+      "mobileAsset": "assets/diagram-overviews/s08-02-mobile.svg",
+      "title": "Inspect both the change and its baseline",
+      "text": "A working-tree diff shows current edits. The baseline establishes the desired earlier content. Compare both, preserve unrelated work, and choose a named-file or targeted correction.",
+      "width": 624,
+      "height": 236,
+      "mobileWidth": 288,
+      "mobileHeight": 270,
+      "kind": "flow",
+      "layout": "merge",
+      "fullAsset": "assets/diagrams/s08-02.svg",
+      "sourceHash": "34cf4ea1a729e7fc2ed606d3106352342aebb96d8828260df1aac2cca6a00cc8",
+      "summary": {
+        "layout": "merge",
+        "branches": [
+          "Current file + diff",
+          "Verified baseline"
+        ],
+        "end": "Targeted correction; preserve useful work",
+        "note": "Review the final diff before accepting the correction."
+      }
+    },
+    "s08-03": {
+      "asset": "assets/diagram-overviews/s08-03.svg",
+      "mobileAsset": "assets/diagram-overviews/s08-03-mobile.svg",
+      "title": "Choose chat recovery or file correction deliberately",
+      "text": "Confused conversation context can be replaced by a factual handoff. Incorrect file content needs a scoped correction. If a file contains both useful and rejected changes, correct the rejected part rather than restoring the whole file.",
+      "width": 624,
+      "height": 304,
+      "mobileWidth": 288,
+      "mobileHeight": 316,
+      "kind": "decision",
+      "layout": "decision",
+      "fullAsset": "assets/diagrams/s08-03.svg",
+      "sourceHash": "9882d1214f0c3cb06f664dbbbbb21f7b6ccddbf3b1c6718cf2fc2a617ff2a94b",
+      "summary": {
+        "layout": "decision",
+        "question": "Useful edits share the file?",
+        "yes": "Correct rejected part",
+        "no": "Review one-file restore",
+        "end": "Verify the intended final file state",
+        "note": "Chat context needs its own factual handoff."
+      }
+    },
+    "s08-04": {
+      "asset": "assets/diagram-overviews/s08-04.svg",
+      "mobileAsset": "assets/diagram-overviews/s08-04-mobile.svg",
+      "title": "Compare isolated experiments against one baseline",
+      "text": "Two candidates start from the same baseline and remain separate. Their checks are compared before choosing one. An unsuccessful candidate is discarded without replacing unrelated work.",
+      "width": 624,
+      "height": 308,
+      "mobileWidth": 288,
+      "mobileHeight": 316,
+      "kind": "branch",
+      "layout": "parallel",
+      "fullAsset": "assets/diagrams/s08-04.svg",
+      "sourceHash": "3b3ff5fdbf5fc8755880b1181e310797cdd1e74f6242ed4381329ff2f0fd8f30",
+      "summary": {
+        "layout": "parallel",
+        "lead": "Same verified baseline",
+        "branches": [
+          "Candidate A + checks",
+          "Candidate B + checks"
+        ],
+        "end": "Compare evidence; integrate the winner",
+        "note": "Keep unrelated work; discard only the rejected experiment."
+      }
+    },
+    "s08-05": {
+      "asset": "assets/diagram-overviews/s08-05.svg",
+      "mobileAsset": "assets/diagram-overviews/s08-05-mobile.svg",
+      "title": "Git records file evidence, not every effect of a task",
+      "text": "Inspect the starting state, record a local baseline when appropriate, make a bounded change, and inspect the resulting diff and tests. An accepted change can become a new checkpoint; external effects remain separate.",
+      "width": 624,
+      "height": 200,
+      "mobileWidth": 288,
+      "mobileHeight": 288,
+      "kind": "cycle",
+      "layout": "loop",
+      "fullAsset": "assets/diagrams/s08-05.svg",
+      "sourceHash": "1c1128263b853a0348c0970b79383006ad21dc6242c668f71e8c00a151329a1b",
+      "summary": {
+        "layout": "loop",
+        "nodes": [
+          "Inspect existing work",
+          "Record local baseline",
+          "Change one behavior",
+          "Review diff + tests"
+        ],
+        "note": "Keep: next checkpoint. Reject: targeted recovery."
+      }
+    },
+    "s10-01": {
+      "asset": "assets/diagram-overviews/s10-01.svg",
+      "mobileAsset": "assets/diagram-overviews/s10-01-mobile.svg",
+      "title": "Interactive work and scripted work have different interfaces",
+      "text": "Use the interactive CLI for an ongoing conversation. Use codex exec for a bounded non-interactive task with an explicit output contract. Both require the correct project scope and result verification.",
+      "width": 624,
+      "height": 304,
+      "mobileWidth": 288,
+      "mobileHeight": 316,
+      "kind": "decision",
+      "layout": "decision",
+      "fullAsset": "assets/diagrams/s10-01.svg",
+      "sourceHash": "7bd81696463745fdee4c8b14ac3549f5cedd77daec53d7c32ee6d8034e3ecd41",
+      "summary": {
+        "layout": "decision",
+        "question": "Need an ongoing conversation?",
+        "yes": "Interactive codex",
+        "no": "Bounded codex exec",
+        "end": "Verify output, changes and process state",
+        "note": "Both routes begin in the intended project directory."
+      }
+    },
+    "s10-02": {
+      "asset": "assets/diagram-overviews/s10-02.svg",
+      "mobileAsset": "assets/diagram-overviews/s10-02-mobile.svg",
+      "title": "Find a CLI command by the job it performs",
+      "text": "The executable's help lists command families. Starting or resuming a chat, running a task, reviewing changes, and inspecting MCP configuration are different jobs. Check the selected subcommand's help before using its options.",
+      "width": 624,
+      "height": 238,
+      "mobileWidth": 288,
+      "mobileHeight": 306,
+      "kind": "hierarchy",
+      "layout": "fork",
+      "fullAsset": "assets/diagrams/s10-02.svg",
+      "sourceHash": "679c607106e1a3ab8b8484a9d1daf43337428c91f4723f4546b712d0eefe329e",
+      "summary": {
+        "layout": "fork",
+        "lead": "codex --help",
+        "branches": [
+          "Session + execution",
+          "Review commands",
+          "MCP configuration"
+        ],
+        "note": "Then read the selected subcommand’s own help."
+      }
+    },
+    "s10-03": {
+      "asset": "assets/diagram-overviews/s10-03.svg",
+      "mobileAsset": "assets/diagram-overviews/s10-03-mobile.svg",
+      "title": "Scope, review, and output are separate choices",
+      "text": "Directory options define workspace context; sandbox and approval settings define execution boundaries; output options define how results are captured. Setting one category does not establish the others.",
+      "width": 624,
+      "height": 236,
+      "mobileWidth": 288,
+      "mobileHeight": 306,
+      "kind": "comparison",
+      "layout": "merge",
+      "fullAsset": "assets/diagrams/s10-03.svg",
+      "sourceHash": "00e0cbb203c85190749593552de9120880703d82c83a832bd98a84680bc9b980",
+      "summary": {
+        "layout": "merge",
+        "branches": [
+          "Project-directory scope",
+          "Execution boundaries",
+          "Output contract"
+        ],
+        "end": "Effective invocation",
+        "note": "A directory option does not set approval or output rules."
+      }
+    },
+    "s10-04": {
+      "asset": "assets/diagram-overviews/s10-04.svg",
+      "mobileAsset": "assets/diagram-overviews/s10-04-mobile.svg",
+      "title": "Consume events and final output without confusing them",
+      "text": "The parent starts the CLI and passes captured JSONL plus the actual child exit or signal to the report consumer. The final-answer artifact is separate. A report is accepted only when process outcome, terminal event and report data all pass; malformed, incomplete and failed runs return distinct non-zero outcomes.",
+      "width": 624,
+      "height": 306,
+      "mobileWidth": 288,
+      "mobileHeight": 310,
+      "kind": "sequence",
+      "layout": "sequence",
+      "fullAsset": "assets/diagrams/s10-04.svg",
+      "sourceHash": "da6046b8f0f513c2cac4b5d59f20e663bc2a6a5468e7d9ee867ab0708d6e2d1c",
+      "summary": {
+        "layout": "sequence",
+        "actors": [
+          "Parent",
+          "CLI",
+          "Consumer"
+        ],
+        "messages": [
+          [
+            0,
+            1,
+            "Start bounded task"
+          ],
+          [
+            1,
+            0,
+            "Events + artifact + exit"
+          ],
+          [
+            0,
+            2,
+            "Events + actual exit"
+          ],
+          [
+            2,
+            0,
+            "Checked report or error"
+          ]
+        ],
+        "note": "Accept only valid process state, terminal event and report."
+      }
+    },
+    "s10-05": {
+      "asset": "assets/diagram-overviews/s10-05.svg",
+      "mobileAsset": "assets/diagram-overviews/s10-05-mobile.svg",
+      "title": "Prove a small repeatable task before scripting it",
+      "text": "Select a bounded useful task, run it manually, validate its inputs and output, and only then reuse it in a script. A regression or a missing input returns to the tested task definition.",
+      "width": 624,
+      "height": 200,
+      "mobileWidth": 288,
+      "mobileHeight": 288,
+      "kind": "cycle",
+      "layout": "loop",
+      "fullAsset": "assets/diagrams/s10-05.svg",
+      "sourceHash": "724eea2c3f057b8fdfef2601727b8cb911746b392494245a80d9db7987d2ea20",
+      "summary": {
+        "layout": "loop",
+        "nodes": [
+          "Choose a small task",
+          "Run it manually",
+          "Check result + failures",
+          "Script proven contract"
+        ],
+        "note": "Missing input or a regression returns to the checks."
+      }
+    },
+    "s03-01": {
+      "asset": "assets/diagram-overviews/s03-01.svg",
+      "mobileAsset": "assets/diagram-overviews/s03-01-mobile.svg",
+      "title": "Choose a skill only when the task benefits from reuse",
+      "text": "A one-off request may need only a clear brief. A recurring task with a stable procedure and useful boundary is a candidate for a skill. Evaluate the skill against both relevant and irrelevant requests.",
+      "width": 624,
+      "height": 304,
+      "mobileWidth": 288,
+      "mobileHeight": 316,
+      "kind": "decision",
+      "layout": "decision",
+      "fullAsset": "assets/diagrams/s03-01.svg",
+      "sourceHash": "ffdbf970891aebc0d5090872d504ec404d7a9433e1d6814e21253397f4fc1934",
+      "summary": {
+        "layout": "decision",
+        "question": "Recurring task + stable procedure?",
+        "yes": "Package a small skill",
+        "no": "Clarify a one-off brief",
+        "end": "Test relevant and irrelevant requests",
+        "join": "yes",
+        "note": "Reuse is useful only when the boundary is clear."
+      }
+    },
+    "s03-02": {
+      "asset": "assets/diagram-overviews/s03-02.svg",
+      "mobileAsset": "assets/diagram-overviews/s03-02-mobile.svg",
+      "title": "Progressive disclosure loads detail as the task needs it",
+      "text": "Metadata supports discovery. The selected SKILL.md provides the procedure. Supporting references or scripts are consulted only when needed. This is conditional discovery, not a requirement to load every file sequentially.",
+      "width": 624,
+      "height": 304,
+      "mobileWidth": 288,
+      "mobileHeight": 316,
+      "kind": "hierarchy",
+      "layout": "decision",
+      "fullAsset": "assets/diagrams/s03-02.svg",
+      "sourceHash": "2f0e4cabe3ff94c0538412c16d55ce1903b60609d90361ad2eb00f85ea5aeaa3",
+      "summary": {
+        "layout": "decision",
+        "question": "Relevant skill selected?",
+        "yes": "Read its SKILL.md",
+        "no": "Continue without it",
+        "end": "Read support only if the task needs it",
+        "join": "yes",
+        "note": "Discovery is conditional; it is not “load every file.”"
+      }
+    },
+    "s03-03": {
+      "asset": "assets/diagram-overviews/s03-03.svg",
+      "mobileAsset": "assets/diagram-overviews/s03-03-mobile.svg",
+      "title": "A project skill is a small package with an executable test boundary",
+      "text": "The project skill directory contains required metadata and instructions, plus optional supporting files. A fixture and rubric let you check actual output rather than accepting discovery alone as success.",
+      "width": 624,
+      "height": 238,
+      "mobileWidth": 288,
+      "mobileHeight": 306,
+      "kind": "hierarchy",
+      "layout": "hierarchy",
+      "fullAsset": "assets/diagrams/s03-03.svg",
+      "sourceHash": "3a6deaa4b694754f52704408bb28f5d25c15f65faa10d94bc1e09e12b35ae2a5",
+      "summary": {
+        "layout": "hierarchy",
+        "lead": "Project skill package",
+        "branches": [
+          "Metadata: discovery",
+          "Procedure: execution",
+          "Fixture + rubric: test"
+        ],
+        "note": "Discovery alone does not prove a correct output."
+      }
+    },
+    "s03-04": {
+      "asset": "assets/diagram-overviews/s03-04.svg",
+      "mobileAsset": "assets/diagram-overviews/s03-04-mobile.svg",
+      "title": "Invocation policy and authorization are different checks",
+      "text": "A skill may be selected explicitly or, when allowed and relevant, implicitly. Selection supplies instructions; it does not grant permission to perform every action those instructions mention.",
+      "width": 624,
+      "height": 230,
+      "mobileWidth": 288,
+      "mobileHeight": 244,
+      "kind": "decision",
+      "layout": "decision",
+      "fullAsset": "assets/diagrams/s03-04.svg",
+      "sourceHash": "611c4d65946dad2a0f1d6e8c1a857e69862e071620eac14df30a6ba1373704c0",
+      "summary": {
+        "layout": "decision",
+        "question": "Skill selected; action authorized?",
+        "yes": "Perform + verify",
+        "no": "Prepare a scoped proposal",
+        "note": "Skill selection supplies instructions, not access."
+      }
+    },
+    "s03-05": {
+      "asset": "assets/diagram-overviews/s03-05.svg",
+      "mobileAsset": "assets/diagram-overviews/s03-05-mobile.svg",
+      "title": "Delegated skill use needs a returned artifact and evidence",
+      "text": "The parent defines a bounded task and relevant skill. The child performs its task within inherited limits and returns evidence. The parent checks the result before synthesis; mentioning a skill does not prove the child actually used it.",
+      "width": 624,
+      "height": 306,
+      "mobileWidth": 288,
+      "mobileHeight": 310,
+      "kind": "sequence",
+      "layout": "sequence",
+      "fullAsset": "assets/diagrams/s03-05.svg",
+      "sourceHash": "20871aa0aa88519723e39521906ef54031cc7c022b2173baeafcf903a49355c5",
+      "summary": {
+        "layout": "sequence",
+        "actors": [
+          "Parent",
+          "Worker",
+          "Checks"
+        ],
+        "messages": [
+          [
+            0,
+            1,
+            "Scope + relevant skill"
+          ],
+          [
+            1,
+            2,
+            "Test resulting artifact"
+          ],
+          [
+            2,
+            1,
+            "Output + evidence"
+          ],
+          [
+            1,
+            0,
+            "Artifact + evidence"
+          ]
+        ],
+        "note": "The parent verifies the handoff before accepting the result."
+      }
+    },
+    "s03-06": {
+      "asset": "assets/diagram-overviews/s03-06.svg",
+      "mobileAsset": "assets/diagram-overviews/s03-06-mobile.svg",
+      "title": "A skill revision must earn its place through regression checks",
+      "text": "Observe actual failure cases, change the smallest instruction or resource, and rerun the relevant and irrelevant requests. Keep a revision only when it improves the targeted behavior without breaking the boundary.",
+      "width": 624,
+      "height": 200,
+      "mobileWidth": 288,
+      "mobileHeight": 288,
+      "kind": "cycle",
+      "layout": "loop",
+      "fullAsset": "assets/diagrams/s03-06.svg",
+      "sourceHash": "5662c8fc374f14f3a5a6044322203b3f6285ddb4a74ca851f65977c85468a38f",
+      "summary": {
+        "layout": "loop",
+        "nodes": [
+          "Observe a real failure",
+          "Revise smallest part",
+          "Rerun both boundaries",
+          "Evaluate the revision"
+        ],
+        "note": "A targeted improvement must not break irrelevant cases."
+      }
+    },
+    "s05-01": {
+      "asset": "assets/diagram-overviews/s05-01.svg",
+      "mobileAsset": "assets/diagram-overviews/s05-01-mobile.svg",
+      "title": "The MCP server supplies tools; the client decides how to use them",
+      "text": "Codex discovers a server's capabilities, calls a tool for the bounded user task, and receives a structured result or error. The server's source data and the client's final answer are separate stages that both need checking.",
+      "width": 624,
+      "height": 306,
+      "mobileWidth": 288,
+      "mobileHeight": 310,
+      "kind": "sequence",
+      "layout": "sequence",
+      "fullAsset": "assets/diagrams/s05-01.svg",
+      "sourceHash": "b3378c5d551539ed16337bf2f27225bbe758f062d1445177fcef6bb18178acc1",
+      "summary": {
+        "layout": "sequence",
+        "actors": [
+          "Codex",
+          "MCP server",
+          "Source"
+        ],
+        "messages": [
+          [
+            0,
+            1,
+            "Discover capabilities"
+          ],
+          [
+            0,
+            1,
+            "Call a bounded tool"
+          ],
+          [
+            1,
+            2,
+            "Read permitted data"
+          ],
+          [
+            1,
+            0,
+            "Source result or error"
+          ]
+        ],
+        "note": "Check source evidence before writing the final answer."
+      }
+    },
+    "s05-02": {
+      "asset": "assets/diagram-overviews/s05-02.svg",
+      "mobileAsset": "assets/diagram-overviews/s05-02-mobile.svg",
+      "title": "Choose the transport before diagnosing the connection",
+      "text": "Choose stdio for a local subprocess or supported HTTP for a hosted endpoint. A local service may require credentials in its startup environment. Protected HTTP requests require authorization at the transport layer, so a 401 can prevent initialization; authorize and retry, or stop. After successful initialization, discover and call a real capability.",
+      "width": 624,
+      "height": 192,
+      "mobileWidth": 288,
+      "mobileHeight": 250,
+      "kind": "decision",
+      "layout": "comparison",
+      "fullAsset": "assets/diagrams/s05-02.svg",
+      "sourceHash": "cd9f6b31d380369a922e8c48758f8e567df853fdcbc1b422b7182eea47675f76",
+      "summary": {
+        "layout": "comparison",
+        "rows": [
+          [
+            "Local stdio",
+            "Start a subprocess with its environment"
+          ],
+          [
+            "Hosted HTTP",
+            "Reach endpoint; authorize if required"
+          ]
+        ],
+        "note": "After initialization succeeds: discover and call a tool."
+      }
+    },
+    "s05-03": {
+      "asset": "assets/diagram-overviews/s05-03.svg",
+      "mobileAsset": "assets/diagram-overviews/s05-03-mobile.svg",
+      "title": "Configuration does not define the entire access boundary",
+      "text": "Configuration selects a server definition. Identity determines its account access; exposed tools determine possible operations; the current user task determines what is authorized now. The permitted action is the intersection, not the union, of those limits.",
+      "width": 624,
+      "height": 236,
+      "mobileWidth": 288,
+      "mobileHeight": 306,
+      "kind": "comparison",
+      "layout": "merge",
+      "fullAsset": "assets/diagrams/s05-03.svg",
+      "sourceHash": "1cdb71220c952cc5378942688eb905460e4be2b5bca3b9d1f5ca56c3a98cfd9b",
+      "summary": {
+        "layout": "merge",
+        "branches": [
+          "Configured capability",
+          "Account access",
+          "Current task authority"
+        ],
+        "end": "Permitted action = intersection",
+        "note": "A connected tool does not authorize every available action."
+      }
+    },
+    "s05-04": {
+      "asset": "assets/diagram-overviews/s05-04.svg",
+      "mobileAsset": "assets/diagram-overviews/s05-04-mobile.svg",
+      "title": "A resource URI and a tool result are different contracts",
+      "text": "The client may read an advertised MCP resource or call a tool that returns source content. Either route must preserve source identity and missing-data behavior. A workspace-file mention is not evidence that a resource-mention syntax is supported.",
+      "width": 624,
+      "height": 192,
+      "mobileWidth": 288,
+      "mobileHeight": 250,
+      "kind": "sequence",
+      "layout": "comparison",
+      "fullAsset": "assets/diagrams/s05-04.svg",
+      "sourceHash": "576dd72aacbf2a824b552da83e54f29f44cf62eba5783e7b5931656a97de9e1b",
+      "summary": {
+        "layout": "comparison",
+        "rows": [
+          [
+            "Resource\nread",
+            "Advertised URI → source content"
+          ],
+          [
+            "Tool call",
+            "Named tool + input → result"
+          ]
+        ],
+        "note": "Preserve source identity and explicit missing-data behavior."
+      }
+    },
+    "s05-05": {
+      "asset": "assets/diagram-overviews/s05-05.svg",
+      "mobileAsset": "assets/diagram-overviews/s05-05-mobile.svg",
+      "title": "Capability discovery and content retrieval are two searches",
+      "text": "Finding which tool can search a source is capability discovery. Calling that tool with a query retrieves content. The retrieved page must still be read before a conclusion is supported.",
+      "width": 624,
+      "height": 200,
+      "mobileWidth": 288,
+      "mobileHeight": 288,
+      "kind": "hierarchy",
+      "layout": "chain",
+      "fullAsset": "assets/diagrams/s05-05.svg",
+      "sourceHash": "88d57e1b6339f8b8600b02162a5d89110c038c990e07a0244707c391cb8384ce",
+      "summary": {
+        "layout": "chain",
+        "nodes": [
+          "Discover search tool",
+          "Call with a query",
+          "Read returned source",
+          "Support a conclusion"
+        ],
+        "note": "Finding a capability is different from retrieving content."
+      }
+    },
+    "s05-06": {
+      "asset": "assets/diagram-overviews/s05-06.svg",
+      "mobileAsset": "assets/diagram-overviews/s05-06-mobile.svg",
+      "title": "Choose external tools, bounded execution, or application embedding",
+      "text": "Connecting external capabilities to Codex, running a one-shot Codex task, and embedding Codex in a custom application are different requirements. The experimental app-server protocol is not a drop-in MCP-server replacement.",
+      "width": 624,
+      "height": 238,
+      "mobileWidth": 288,
+      "mobileHeight": 306,
+      "kind": "decision",
+      "layout": "fork",
+      "fullAsset": "assets/diagrams/s05-06.svg",
+      "sourceHash": "561f788c4718cf383daf5fa5f35fa58ab5b967ff22b0d418ab3b881498c68260",
+      "summary": {
+        "layout": "fork",
+        "lead": "What needs to connect?",
+        "branches": [
+          "External tools → MCP",
+          "One task → codex exec",
+          "Custom app → app-server"
+        ],
+        "note": "Experimental app-server is not an MCP-server replacement."
+      }
+    },
+    "s04-01": {
+      "asset": "assets/diagram-overviews/s04-01.svg",
+      "mobileAsset": "assets/diagram-overviews/s04-01-mobile.svg",
+      "title": "Two independent work packages meet at one interface",
+      "text": "The parent supplies the frozen normalized-task interface. Owner A fixes status normalization while owner B fixes aggregation against that interface. Their code and evidence meet at integration, where the four learner candidate tests check the combined result.",
+      "width": 624,
+      "height": 308,
+      "mobileWidth": 288,
+      "mobileHeight": 316,
+      "kind": "branch",
+      "layout": "parallel",
+      "fullAsset": "assets/diagrams/s04-01.svg",
+      "sourceHash": "6b119e16f79063207f8125eb77dda8d488245b770effc0f51a3a56a19738744c",
+      "summary": {
+        "layout": "parallel",
+        "lead": "Frozen normalized-task interface",
+        "branches": [
+          "A: normalize status",
+          "B: aggregate report"
+        ],
+        "end": "Integrate; run four candidate checks",
+        "note": "Separate code ownership; one checked combined outcome."
+      }
+    },
+    "s04-02": {
+      "asset": "assets/diagram-overviews/s04-02.svg",
+      "mobileAsset": "assets/diagram-overviews/s04-02-mobile.svg",
+      "title": "A role file specializes instructions within inherited boundaries",
+      "text": "The parent session supplies execution limits and connected capabilities. A TOML role supplies focused instructions. A particular delegated task narrows the immediate work further; the role description does not expand its permissions.",
+      "width": 624,
+      "height": 236,
+      "mobileWidth": 288,
+      "mobileHeight": 306,
+      "kind": "hierarchy",
+      "layout": "merge",
+      "fullAsset": "assets/diagrams/s04-02.svg",
+      "sourceHash": "47cb681ee64274f4d00125c7a6a8da5f51946222e9575d7812a5a812b00ae114",
+      "summary": {
+        "layout": "merge",
+        "branches": [
+          "Parent execution limits",
+          "Focused TOML role",
+          "Bounded delegated task"
+        ],
+        "end": "Effective worker scope",
+        "note": "A role description cannot expand inherited permissions."
+      }
+    },
+    "s04-03": {
+      "asset": "assets/diagram-overviews/s04-03.svg",
+      "mobileAsset": "assets/diagram-overviews/s04-03-mobile.svg",
+      "title": "Choose a role for the actual work",
+      "text": "Use an exploratory role for understanding, a worker for bounded changes, or an appropriate general role for a mixed task. Role choice is followed by explicit verification of the actual output and constraints.",
+      "width": 624,
+      "height": 238,
+      "mobileWidth": 288,
+      "mobileHeight": 306,
+      "kind": "decision",
+      "layout": "fork",
+      "fullAsset": "assets/diagrams/s04-03.svg",
+      "sourceHash": "7cde900816fa25f431feb49b923d7c8920218c48511af6ba13f2e4e4add11b1c",
+      "summary": {
+        "layout": "fork",
+        "lead": "Choose for the actual work",
+        "branches": [
+          "Explore: understand",
+          "Worker: bounded edits",
+          "General: mixed task"
+        ],
+        "note": "Verify the output and constraints after role selection."
+      }
+    },
+    "s04-04": {
+      "asset": "assets/diagram-overviews/s04-04.svg",
+      "mobileAsset": "assets/diagram-overviews/s04-04-mobile.svg",
+      "title": "A handoff carries evidence between stages",
+      "text": "Investigation produces a reproduction and relevant paths; review checks that evidence; implementation changes the chosen behavior; verification checks the final integrated version. A later stage must not silently turn an unverified report into a fact.",
+      "width": 624,
+      "height": 200,
+      "mobileWidth": 288,
+      "mobileHeight": 288,
+      "kind": "sequence",
+      "layout": "chain",
+      "fullAsset": "assets/diagrams/s04-04.svg",
+      "sourceHash": "402b50a0c197e1451189e51263a03ce3839bb6e570ef8e3f30fbfd7f442a8b13",
+      "summary": {
+        "layout": "chain",
+        "nodes": [
+          "Reproduction + paths",
+          "Review the evidence",
+          "Implement chosen fix",
+          "Verify final version"
+        ],
+        "note": "A handoff must not turn an unverified claim into a fact."
+      }
+    },
+    "s04-05": {
+      "asset": "assets/diagram-overviews/s04-05.svg",
+      "mobileAsset": "assets/diagram-overviews/s04-05-mobile.svg",
+      "title": "Background work keeps its identity until authoritative completion",
+      "text": "A dispatched task is running or waiting until its real handle reports completion, failure, or required input. A polling timeout is a reason to inspect or wait again, not evidence that a duplicate task should be started.",
+      "width": 624,
+      "height": 238,
+      "mobileWidth": 288,
+      "mobileHeight": 306,
+      "kind": "state",
+      "layout": "state-branch",
+      "fullAsset": "assets/diagrams/s04-05.svg",
+      "sourceHash": "ee32fa473428dab6487f0e43f9f946b7d7fdebf00be4504fee6caee03eb09038",
+      "summary": {
+        "layout": "state-branch",
+        "lead": "Running / waiting",
+        "branches": [
+          "Complete → verify",
+          "Failed → diagnose",
+          "Needs input → handoff"
+        ],
+        "note": "A poll timeout keeps the same task identity; do not duplicate."
+      }
+    },
+    "s04-06": {
+      "asset": "assets/diagram-overviews/s04-06.svg",
+      "mobileAsset": "assets/diagram-overviews/s04-06-mobile.svg",
+      "title": "Separate contexts and separate file trees solve different conflicts",
+      "text": "Two agent contexts do not by themselves isolate files. Independent worktrees start from a chosen baseline, keep changes apart, and require checks and integration before the final result is accepted.",
+      "width": 624,
+      "height": 308,
+      "mobileWidth": 288,
+      "mobileHeight": 316,
+      "kind": "branch",
+      "layout": "parallel",
+      "fullAsset": "assets/diagrams/s04-06.svg",
+      "sourceHash": "365841d97fe6c2d08e4da6a131fe82f5a8144baf19650589175b933babe19d05",
+      "summary": {
+        "layout": "parallel",
+        "lead": "Known Git baseline",
+        "branches": [
+          "Worktree A + worker",
+          "Worktree B + worker"
+        ],
+        "end": "Integrate changes + rerun checks",
+        "note": "Separate agent contexts do not isolate shared files."
+      }
+    },
+    "s04-07": {
+      "asset": "assets/diagram-overviews/s04-07.svg",
+      "mobileAsset": "assets/diagram-overviews/s04-07-mobile.svg",
+      "title": "A normalizer, an aggregator, and one integration owner",
+      "text": "Two independent work packages implement the status normalizer and report aggregator against a frozen interface. The coordinator reviews both handoffs and runs the combined program plus candidate checks. Acceptance requires valid input behavior, preservation and the fixture report total4, done2, doneMinutes55; a correct-looking total alone cannot pass. A failed or unverified boundary returns to its owner.",
+      "width": 624,
+      "height": 308,
+      "mobileWidth": 288,
+      "mobileHeight": 316,
+      "kind": "branch",
+      "layout": "parallel",
+      "fullAsset": "assets/diagrams/s04-07.svg",
+      "sourceHash": "56702bafd5fdd21630aeeea80237f04b907013d69df37d3375a20054a296bcf6",
+      "summary": {
+        "layout": "parallel",
+        "lead": "Shared outcome + frozen interface",
+        "branches": [
+          "A: status normalizer",
+          "B: report aggregator"
+        ],
+        "end": "Candidate checks pass\nTotal 4 · Done 2 · Minutes 55",
+        "note": "Return failed or unverified boundaries to their owner."
+      }
+    },
+    "s06-01": {
+      "asset": "assets/diagram-overviews/s06-01.svg",
+      "mobileAsset": "assets/diagram-overviews/s06-01-mobile.svg",
+      "title": "A hook is selected and interpreted at an event boundary",
+      "text": "A supported lifecycle event is matched against active definitions. Only eligible, trusted handlers execute. The event-specific result contract determines whether output adds context, provides feedback, or affects a pending operation.",
+      "width": 624,
+      "height": 304,
+      "mobileWidth": 288,
+      "mobileHeight": 316,
+      "kind": "flow",
+      "layout": "decision",
+      "fullAsset": "assets/diagrams/s06-01.svg",
+      "sourceHash": "75507cb3b0b02832cd56cda5e4782dc1734193708ba3df2984ff28541d6e0210",
+      "summary": {
+        "layout": "decision",
+        "question": "Event matches; handler trusted?",
+        "yes": "Run supported handler",
+        "no": "Do not execute it",
+        "end": "Interpret the event-specific result",
+        "join": "yes",
+        "note": "Observe context, feedback or control at its real boundary."
+      }
+    },
+    "s06-02": {
+      "asset": "assets/diagram-overviews/s06-02.svg",
+      "mobileAsset": "assets/diagram-overviews/s06-02-mobile.svg",
+      "title": "Active hook sources are additive",
+      "text": "User, trusted project, plugin, and managed sources can contribute definitions. A project definition does not automatically erase lower-level definitions. Source loading, matching, and handler trust are separate checks.",
+      "width": 624,
+      "height": 236,
+      "mobileWidth": 288,
+      "mobileHeight": 306,
+      "kind": "hierarchy",
+      "layout": "merge",
+      "fullAsset": "assets/diagrams/s06-02.svg",
+      "sourceHash": "5198f4be17bf56c96f8a3402d126283378dd0f6d6befade1c7b9b00d9b3de955",
+      "summary": {
+        "layout": "merge",
+        "branches": [
+          "User + trusted project",
+          "Active plugin",
+          "Managed policy"
+        ],
+        "end": "Add definitions; match + check trust",
+        "note": "A project definition does not erase the other sources."
+      }
+    },
+    "s06-03": {
+      "asset": "assets/diagram-overviews/s06-03.svg",
+      "mobileAsset": "assets/diagram-overviews/s06-03-mobile.svg",
+      "title": "Choose between a local command and an existing MCP tool",
+      "text": "A deterministic local check can use a command handler. A check that needs an already connected capability may use a supported MCP tool handler. These are alternatives. Both need explicit failure tests, and a preventive gate needs a synchronous supported decision path.",
+      "width": 624,
+      "height": 192,
+      "mobileWidth": 288,
+      "mobileHeight": 250,
+      "kind": "decision",
+      "layout": "comparison",
+      "fullAsset": "assets/diagrams/s06-03.svg",
+      "sourceHash": "551c42e23afccd02f50a217e0eba725cbeee3c12a80ece226fe6a2530e9ab69d",
+      "summary": {
+        "layout": "comparison",
+        "rows": [
+          [
+            "Local check",
+            "Command\nhandler"
+          ],
+          [
+            "Connected capability",
+            "Supported MCP-tool handler"
+          ]
+        ],
+        "note": "Preventive gate: test a supported synchronous decision."
+      }
+    },
+    "s06-04": {
+      "asset": "assets/diagram-overviews/s06-04.svg",
+      "mobileAsset": "assets/diagram-overviews/s06-04-mobile.svg",
+      "title": "A preventive decision must precede execution",
+      "text": "PreToolUse occurs before the operation. A denial prevents the pending action. An approval request occurs only on paths that require one. PostToolUse observes a completed operation and cannot undo it.",
+      "width": 624,
+      "height": 304,
+      "mobileWidth": 288,
+      "mobileHeight": 316,
+      "kind": "sequence",
+      "layout": "decision",
+      "fullAsset": "assets/diagrams/s06-04.svg",
+      "sourceHash": "ea5a36c84b89e37ce5ff59d2d351c255248bd1ea21b43f27ad5f5c7267c546e8",
+      "summary": {
+        "layout": "decision",
+        "question": "PreToolUse decision denies?",
+        "yes": "Pending tool does not run",
+        "no": "Approval if needed; execute",
+        "end": "PostToolUse observes the completed action",
+        "join": "no",
+        "note": "An observation after execution cannot undo the operation."
+      }
+    },
+    "s06-05": {
+      "asset": "assets/diagram-overviews/s06-05.svg",
+      "mobileAsset": "assets/diagram-overviews/s06-05-mobile.svg",
+      "title": "A handler must distinguish a valid request from malformed input",
+      "text": "A launch failure produces no handler decision. Once started, malformed input is handled as a denial at exit zero. A valid but out-of-scope event or tool produces an empty response with no policy decision. A matched valid patch is denied when a protected target matches, or produces no objection otherwise. Exit zero means the handler produced its response; the JSON and client policy determine the effect.",
+      "width": 624,
+      "height": 286,
+      "mobileWidth": 288,
+      "mobileHeight": 320,
+      "kind": "decision",
+      "layout": "matrix",
+      "fullAsset": "assets/diagrams/s06-05.svg",
+      "sourceHash": "790314d4275326e2cefad7e159b218e84587e37c0103dedd96fd6a1137d0902d",
+      "summary": {
+        "layout": "matrix",
+        "headers": [
+          "Handler input",
+          "Response"
+        ],
+        "rows": [
+          [
+            "Malformed input",
+            "Deny · exit 0"
+          ],
+          [
+            "Protected target",
+            "Deny · exit 0"
+          ],
+          [
+            "Unmatched / safe",
+            "No decision · exit 0"
+          ],
+          [
+            "Launch failure",
+            "No handler response"
+          ]
+        ],
+        "note": "The client interprets the response and its failure policy."
+      }
+    },
+    "s06-06": {
+      "asset": "assets/diagram-overviews/s06-06.svg",
+      "mobileAsset": "assets/diagram-overviews/s06-06-mobile.svg",
+      "title": "An explicit review can return pass, fail, or not verified",
+      "text": "Review criteria are matched to current evidence. A demonstrated failed criterion needs repair and a new check. Missing evidence is reported as not verified, with the smallest required handoff; retry only when new evidence or access arrives. A structural pass alone does not establish the quality judgment.",
+      "width": 624,
+      "height": 238,
+      "mobileWidth": 288,
+      "mobileHeight": 306,
+      "kind": "decision",
+      "layout": "state-branch",
+      "fullAsset": "assets/diagrams/s06-06.svg",
+      "sourceHash": "01a0be9956aec3ddc4baeefe80265a12e09dff1ad65c9493d356292d9b9ec82a",
+      "summary": {
+        "layout": "state-branch",
+        "lead": "Criteria + current evidence",
+        "branches": [
+          "Pass: show evidence",
+          "Fail: repair + recheck",
+          "Not verified: handoff"
+        ],
+        "note": "Retry a missing-evidence check only after new access or evidence."
+      }
+    },
+    "s06-07": {
+      "asset": "assets/diagram-overviews/s06-07.svg",
+      "mobileAsset": "assets/diagram-overviews/s06-07-mobile.svg",
+      "title": "Debug the first failing boundary",
+      "text": "Check discovery, trust and event matching, interpreter startup, then the output contract. Repair the earliest demonstrated failure before changing later stages. A valid JSON response is not proof that the event was delivered by a real client.",
+      "width": 624,
+      "height": 200,
+      "mobileWidth": 288,
+      "mobileHeight": 288,
+      "kind": "decision",
+      "layout": "chain",
+      "fullAsset": "assets/diagrams/s06-07.svg",
+      "sourceHash": "3a5334ea5cbbab0ef9d0cd5dab849f3eea52c584b12f9cd8cf22e6d3dc01a213",
+      "summary": {
+        "layout": "chain",
+        "nodes": [
+          "Discover definition",
+          "Trust + event match",
+          "Start interpreter",
+          "Validate result contract"
+        ],
+        "note": "Repair the first failing boundary; then observe client effect."
+      }
+    },
+    "s09-01": {
+      "asset": "assets/diagram-overviews/s09-01.svg",
+      "mobileAsset": "assets/diagram-overviews/s09-01-mobile.svg",
+      "title": "Choose the smallest workflow that meets the outcome",
+      "text": "Start from the required outcome, not a feature checklist. Complex decisions may need a plan; independent tasks may benefit from delegation; repeatable bounded tasks may use scripted execution. Every path returns to the same acceptance evidence.",
+      "width": 624,
+      "height": 286,
+      "mobileWidth": 288,
+      "mobileHeight": 320,
+      "kind": "decision",
+      "layout": "matrix",
+      "fullAsset": "assets/diagrams/s09-01.svg",
+      "sourceHash": "912f50b0ad225e93e9b69511bf73d033ae288743112cb44ae048d9ff81b58250",
+      "summary": {
+        "layout": "matrix",
+        "headers": [
+          "Task shape",
+          "Useful control"
+        ],
+        "rows": [
+          [
+            "Unresolved decisions",
+            "Inspect + plan"
+          ],
+          [
+            "Independent tasks",
+            "Delegate with owners"
+          ],
+          [
+            "Repeatable task",
+            "Script a proven contract"
+          ],
+          [
+            "Simple local change",
+            "Work directly"
+          ]
+        ],
+        "note": "Every path must prove the same required outcome."
+      }
+    },
+    "s09-02": {
+      "asset": "assets/diagram-overviews/s09-02.svg",
+      "mobileAsset": "assets/diagram-overviews/s09-02-mobile.svg",
+      "title": "Planning resolves decisions before implementation",
+      "text": "Inspect constraints, compare options, and make a concrete plan with acceptance checks. Resolve a material missing decision before implementation. Check the implemented result against the plan and update it when evidence changes.",
+      "width": 624,
+      "height": 200,
+      "mobileWidth": 288,
+      "mobileHeight": 288,
+      "kind": "cycle",
+      "layout": "loop",
+      "fullAsset": "assets/diagrams/s09-02.svg",
+      "sourceHash": "4836f9882c1fcfbcedcdb93363e57d8b51be16c73b3f45ef188a8c84444ccf78",
+      "summary": {
+        "layout": "loop",
+        "nodes": [
+          "Inspect constraints",
+          "Compare approaches",
+          "Plan + acceptance",
+          "Implement + verify"
+        ],
+        "note": "Resolve material decisions first; revise with new evidence."
+      }
+    },
+    "s09-03": {
+      "asset": "assets/diagram-overviews/s09-03.svg",
+      "mobileAsset": "assets/diagram-overviews/s09-03-mobile.svg",
+      "title": "A fair reasoning comparison changes one variable",
+      "text": "The baseline and candidate use the same task, fixtures, and success criteria. Compare observable correctness and effort, then retain or revert the supported setting. Do not infer correctness from longer output or a model label.",
+      "width": 624,
+      "height": 308,
+      "mobileWidth": 288,
+      "mobileHeight": 316,
+      "kind": "comparison",
+      "layout": "parallel",
+      "fullAsset": "assets/diagrams/s09-03.svg",
+      "sourceHash": "d9513820d4b7e39f4e80e4eb6287cbc8f83c022607c97a29401ff92474fa82ac",
+      "summary": {
+        "layout": "parallel",
+        "lead": "Same task + fixtures + criteria",
+        "branches": [
+          "Baseline run",
+          "One changed setting"
+        ],
+        "end": "Compare correctness + effort",
+        "note": "Keep or revert with evidence; verbosity is not correctness."
+      }
+    },
+    "s09-04": {
+      "asset": "assets/diagram-overviews/s09-04.svg",
+      "mobileAsset": "assets/diagram-overviews/s09-04-mobile.svg",
+      "title": "Automatic review operates at a permission boundary",
+      "text": "An operation within current scope may proceed under effective policy. An operation needing review follows the selected review path, if available. Rejection requires a materially safer alternative or the required user decision, not repeating the same action.",
+      "width": 624,
+      "height": 230,
+      "mobileWidth": 288,
+      "mobileHeight": 244,
+      "kind": "decision",
+      "layout": "decision",
+      "fullAsset": "assets/diagrams/s09-04.svg",
+      "sourceHash": "21844aca96619eb610b658122a7486f7307bc1d4a29a9f19b8753ab6a7c7660c",
+      "summary": {
+        "layout": "decision",
+        "question": "Operation within current policy?",
+        "yes": "Run + inspect result",
+        "no": "Review; stop if rejected",
+        "note": "Rejection needs a safer changed action or required input."
+      }
+    },
+    "s09-05": {
+      "asset": "assets/diagram-overviews/s09-05.svg",
+      "mobileAsset": "assets/diagram-overviews/s09-05-mobile.svg",
+      "title": "Create a recurring task, inspect a real run, then manage its state",
+      "text": "Prove the prompt manually, then use Scheduled to choose the project, prompt, cadence, time zone and environment. After saving the intended task, inspect its actual first run. Edit or pause it as needed; removal must be confirmed by its inactive state. Local execution needs the configured computer, app and project to remain available.",
+      "width": 624,
+      "height": 200,
+      "mobileWidth": 288,
+      "mobileHeight": 288,
+      "kind": "cycle",
+      "layout": "loop",
+      "fullAsset": "assets/diagrams/s09-05.svg",
+      "sourceHash": "2c0db80cfd406aac880dad683e1eb01eedb447b7ce20384a445fd23acaf6715d",
+      "summary": {
+        "layout": "loop",
+        "nodes": [
+          "Verify a manual task",
+          "Set project + cadence",
+          "Save in Scheduled",
+          "Inspect run; edit or pause"
+        ],
+        "note": "For local runs, the computer, app and project must be available."
+      }
+    },
+    "s09-06": {
+      "asset": "assets/diagram-overviews/s09-06.svg",
+      "mobileAsset": "assets/diagram-overviews/s09-06-mobile.svg",
+      "title": "Effective access is constrained by several boundaries",
+      "text": "Filesystem scope, network access, approval policy, and organization controls jointly constrain execution. Changing a setting label does not prove broader access or success. The task's own authorization remains an additional limit.",
+      "width": 624,
+      "height": 236,
+      "mobileWidth": 288,
+      "mobileHeight": 306,
+      "kind": "comparison",
+      "layout": "merge",
+      "fullAsset": "assets/diagrams/s09-06.svg",
+      "sourceHash": "94381c914e3e9d883a3405aad969662ec2269041dd3f084f9a3789e42b86e258",
+      "summary": {
+        "layout": "merge",
+        "branches": [
+          "Files + network scope",
+          "Approval + org controls",
+          "Task authorization"
+        ],
+        "end": "Effective allowed operation",
+        "note": "A setting label does not prove access; inspect actual behavior."
+      }
+    },
+    "s09-07": {
+      "asset": "assets/diagram-overviews/s09-07.svg",
+      "mobileAsset": "assets/diagram-overviews/s09-07-mobile.svg",
+      "title": "Headless success needs process and artifact checks",
+      "text": "Provide bounded inputs and scope, run the non-interactive task, capture process status and outputs, and verify the report's structure and facts. A zero exit code and a saved file are necessary evidence in some workflows but are not sufficient acceptance by themselves.",
+      "width": 624,
+      "height": 230,
+      "mobileWidth": 288,
+      "mobileHeight": 244,
+      "kind": "flow",
+      "layout": "decision",
+      "fullAsset": "assets/diagrams/s09-07.svg",
+      "sourceHash": "0982a51ecfa074f990e0a8850d4a591d19b89c9e5d6e664c8783d4d47f862ecc",
+      "summary": {
+        "layout": "decision",
+        "question": "Process + report + criteria pass?",
+        "yes": "Accept checked result",
+        "no": "Report failure or gap",
+        "note": "Run bounded codex exec; a saved file alone is not success."
+      }
+    },
+    "s07-01": {
+      "asset": "assets/diagram-overviews/s07-01.svg",
+      "mobileAsset": "assets/diagram-overviews/s07-01-mobile.svg",
+      "title": "A plugin packages capabilities with separate setup boundaries",
+      "text": "A plugin may package skills and optional MCP, hooks, or UI components. Package discovery does not prove each component is connected, trusted, or working. Verify the components actually included in the chosen package.",
+      "width": 624,
+      "height": 238,
+      "mobileWidth": 288,
+      "mobileHeight": 306,
+      "kind": "hierarchy",
+      "layout": "hierarchy",
+      "fullAsset": "assets/diagrams/s07-01.svg",
+      "sourceHash": "1b94f49b9d3b2aff7bd4ba70238ea8b3c5d2899c836923c87168c972eff56fba",
+      "summary": {
+        "layout": "hierarchy",
+        "lead": "Plugin package",
+        "branches": [
+          "Skills: discovery",
+          "MCP: connection",
+          "Hooks: trust + events"
+        ],
+        "note": "Optional UI needs its own supported-client check."
+      }
+    },
+    "s07-02": {
+      "asset": "assets/diagram-overviews/s07-02.svg",
+      "mobileAsset": "assets/diagram-overviews/s07-02-mobile.svg",
+      "title": "A multicomponent workflow still has one user outcome",
+      "text": "The user selects a fictional fixture. A skill supplies the procedure; the local MCP tool reviews only permitted fixture IDs and returns evidence or an explicit error. Applicable informational hooks have separate event and trust checks. The final explanation distinguishes observed local evidence from unverified client activation.",
+      "width": 624,
+      "height": 306,
+      "mobileWidth": 288,
+      "mobileHeight": 310,
+      "kind": "sequence",
+      "layout": "sequence",
+      "fullAsset": "assets/diagrams/s07-02.svg",
+      "sourceHash": "95bee416c9f7456f026086cbda8f9bb8b4aa259dd1400a6d40382da29d4bfebc",
+      "summary": {
+        "layout": "sequence",
+        "actors": [
+          "User",
+          "Skill + Codex",
+          "MCP tool"
+        ],
+        "messages": [
+          [
+            0,
+            1,
+            "Select fictional fixture"
+          ],
+          [
+            1,
+            2,
+            "Review permitted ID"
+          ],
+          [
+            2,
+            1,
+            "Evidence or explicit error"
+          ],
+          [
+            1,
+            0,
+            "Findings + limits"
+          ]
+        ],
+        "note": "Informational hooks have separate trust and event checks."
+      }
+    },
+    "s07-03": {
+      "asset": "assets/diagram-overviews/s07-03.svg",
+      "mobileAsset": "assets/diagram-overviews/s07-03-mobile.svg",
+      "title": "The manifest identifies a package; components have their own files",
+      "text": "The portable package root contains its manifest and components. Skill metadata lives in SKILL.md; optional MCP and hook configuration use their documented files. Validate the package and each referenced path rather than assuming a manifest makes every component executable.",
+      "width": 624,
+      "height": 238,
+      "mobileWidth": 288,
+      "mobileHeight": 306,
+      "kind": "hierarchy",
+      "layout": "hierarchy",
+      "fullAsset": "assets/diagrams/s07-03.svg",
+      "sourceHash": "5d40b9589e414716ede42318f9940de9f101603588df15c2bdbf76ef26cd5674",
+      "summary": {
+        "layout": "hierarchy",
+        "lead": "Portable package root",
+        "branches": [
+          "plugin.json: identity",
+          "skills/: procedure",
+          "MCP + hooks: config"
+        ],
+        "note": "Validate every referenced path and component contract."
+      }
+    },
+    "s07-04": {
+      "asset": "assets/diagram-overviews/s07-04.svg",
+      "mobileAsset": "assets/diagram-overviews/s07-04-mobile.svg",
+      "title": "A catalog points to packages without proving their setup",
+      "text": "A marketplace source supplies catalog entries. Each entry identifies a package location and policy. The client chooses an entry, then installation, authentication, hook trust, and behavior require their own applicable checks.",
+      "width": 624,
+      "height": 200,
+      "mobileWidth": 288,
+      "mobileHeight": 288,
+      "kind": "hierarchy",
+      "layout": "chain",
+      "fullAsset": "assets/diagrams/s07-04.svg",
+      "sourceHash": "3a9d13ea66542bbd80c9178e099e8da03cbbb3ae2aa6e7e8cec9dbe0bebd87c5",
+      "summary": {
+        "layout": "chain",
+        "nodes": [
+          "Inspect catalog entry",
+          "Choose package source",
+          "Complete required setup",
+          "Verify actual behavior"
+        ],
+        "note": "Catalog discovery does not prove installation or access."
+      }
+    },
+    "s07-05": {
+      "asset": "assets/diagram-overviews/s07-05.svg",
+      "mobileAsset": "assets/diagram-overviews/s07-05-mobile.svg",
+      "title": "Package, protocol, client, and outcome are distinct tests",
+      "text": "Offline structural checks, executable protocol tests, and real client discovery support different claims. Combine actual output with the acceptance rubric. A changed package returns to the affected tests before release readiness is assessed again.",
+      "width": 624,
+      "height": 200,
+      "mobileWidth": 288,
+      "mobileHeight": 288,
+      "kind": "cycle",
+      "layout": "loop",
+      "fullAsset": "assets/diagrams/s07-05.svg",
+      "sourceHash": "8ce28559d1acfccc3f6e31b74eb51561e000b47c68b7ff20174b89a42295c6b7",
+      "summary": {
+        "layout": "loop",
+        "nodes": [
+          "Manifest + paths",
+          "Handler + protocol",
+          "Real client if applicable",
+          "Task + failure rubric"
+        ],
+        "note": "Record the tested stages; repair and rerun affected checks."
+      }
+    },
+    "s07-06": {
+      "asset": "assets/diagram-overviews/s07-06.svg",
+      "mobileAsset": "assets/diagram-overviews/s07-06-mobile.svg",
+      "title": "Choose a plugin release channel and verify consumer use",
+      "text": "Test the exact package version and rehearse local installation, listing and removal. A repository marketplace is published as a reviewed commit and tag; workspace publishing has its own roles, and public-directory publication has separate eligibility and review. Verify the consumer's installed version and actual workflow, then retain a tested update, rollback and removal path. This hook-bearing lab is not public-directory eligible unchanged.",
+      "width": 624,
+      "height": 238,
+      "mobileWidth": 288,
+      "mobileHeight": 306,
+      "kind": "decision",
+      "layout": "fork",
+      "fullAsset": "assets/diagrams/s07-06.svg",
+      "sourceHash": "ef9266b9a89fc642e3883735cf7833898ddeddd998f7c0dbaffbaba1ea041b8f",
+      "summary": {
+        "layout": "fork",
+        "lead": "Choose a distribution channel",
+        "branches": [
+          "Repository marketplace",
+          "Workspace publishing",
+          "Public directory review"
+        ],
+        "note": "Verify the consumer’s installed version and actual workflow."
+      }
+    }
+  }
+}

@@ -1,0 +1,8 @@
+# Draft only. This file is not discovered as active Codex configuration.
+# Replace both paths after reviewing them on the intended host.
+[mcp_servers.practice_tasks]
+command = "/absolute/path/to/node"
+args = ["/absolute/path/to/mcp-workbench/server.cjs"]
+enabled_tools = ["list_tasks", "get_task", "read_task_snapshot"]
+
+

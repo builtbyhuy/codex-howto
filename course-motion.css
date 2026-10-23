@@ -1,0 +1,76 @@
+/* Original, opt-in motion. Authored content is visible before JavaScript mounts. */
+.motion-transcript {
+  position: absolute;
+  inline-size: 1px;
+  block-size: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+
+.session-demo [data-demo-input] { display: block; white-space: pre-wrap; overflow-wrap: anywhere; }
+.session-demo [data-demo-control] { min-inline-size: 10.8em; }
+.session-demo [data-demo-control]:disabled { cursor: default; }
+.session-demo[data-demo-ready="true"] [data-demo-step],
+.session-demo[data-demo-ready="true"] [data-demo-result] {
+  /* Visibility and opacity reserve the authored rows; the illustration never jumps. */
+  transition: opacity 320ms ease, transform 380ms cubic-bezier(.22, 1, .36, 1), background-color 260ms ease, border-color 260ms ease;
+}
+.session-demo[data-demo-ready="true"] [data-demo-visible="false"] {
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(6px);
+}
+.session-demo[data-demo-ready="true"] [data-demo-visible="true"] {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+.session-demo[data-demo-ready="true"] [data-demo-input][data-demo-typing="true"]::after {
+  content: "";
+  display: inline-block;
+  inline-size: 2px;
+  block-size: 1em;
+  margin-inline-start: 3px;
+  vertical-align: -.12em;
+  background: currentColor;
+  animation: course-caret 900ms steps(1, end) infinite;
+}
+.session-demo[data-motion-state="paused"] [data-demo-input]::after { animation-play-state: paused; }
+@keyframes course-caret { 0%, 45% { opacity: 1; } 46%, 100% { opacity: 0; } }
+
+[data-reveal-state] {
+  transition: opacity 420ms ease, transform 420ms cubic-bezier(.22, 1, .36, 1);
+}
+[data-reveal-state="pending"] { opacity: 0; transform: translateY(12px); }
+[data-reveal-state="visible"] { opacity: 1; transform: none; }
+[data-reveal-instant="true"] { transition: none; }
+[data-reveal-state="pending"]:focus-within { opacity: 1; transform: none; transition: none; }
+
+.motion-link { transition: color 180ms ease, border-color 180ms ease, background-color 180ms ease, box-shadow 250ms ease, transform 250ms ease; }
+.motion-chevron { transition: transform 280ms cubic-bezier(.22, 1, .36, 1); }
+[aria-expanded="true"] > .motion-chevron,
+details[open] > summary .motion-chevron,
+[data-state="open"] > .motion-chevron { transform: rotate(90deg); }
+.motion-progress { transition: stroke-dashoffset 650ms cubic-bezier(.22, 1, .36, 1), width 650ms cubic-bezier(.22, 1, .36, 1); }
+@media (hover: hover) and (pointer: fine) {
+  .motion-link:hover { transform: translateY(-1px); }
+  .motion-card { transition: transform 280ms cubic-bezier(.22, 1, .36, 1), box-shadow 280ms ease, border-color 220ms ease; }
+  .motion-card:hover { transform: translateY(-2px); }
+}
+.motion-link:active, .motion-card:active { transform: translateY(0); }
+
+@media (prefers-reduced-motion: reduce) {
+  .session-demo[data-demo-ready="true"] [data-demo-step],
+  .session-demo[data-demo-ready="true"] [data-demo-result],
+  [data-reveal-state], .motion-link, .motion-card, .motion-chevron, .motion-progress {
+    transition: none;
+    animation: none;
+  }
+  .session-demo [data-demo-input]::after { display: none; animation: none; }
+  [data-reveal-state="pending"] { opacity: 1; transform: none; }
+  .motion-link:hover, .motion-card:hover { transform: none; }
+}

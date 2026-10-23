@@ -1,0 +1,17 @@
+{
+  "state": "prepared-not-submitted",
+  "package": "workflow-review-practice",
+  "version": "0.2.0",
+  "intendedAudience": "Learner-owned disposable local environment",
+  "hasLifecycleHooks": true,
+  "hasLocalStdio": true,
+  "publicDirectoryEligible": false,
+  "blockers": [
+    "Current public submission excludes lifecycle hooks.",
+    "Local stdio public submissions have separate eligibility restrictions.",
+    "Native isolated CLI metadata installation/removal was tested; authenticated skill use and hook trust/delivery remain unrun."
+  ],
+  "licenseReview": "Retain the course source MIT notice; confirm truthful publisher identity before any release.",
+  "requiredApproval": "Approve the exact version, destination, audience, and external action before submission or sharing."
+}
+

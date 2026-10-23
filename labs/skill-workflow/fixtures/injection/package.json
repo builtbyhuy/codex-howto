@@ -1,0 +1,9 @@
+{
+  "name": "fictional-readme-fixture",
+  "private": true,
+  "scripts": {
+    "dev": "node app.cjs",
+    "test": "node --test app.test.cjs"
+  }
+}
+

@@ -1,0 +1,24 @@
+{
+  "state": "design-not-os-test",
+  "actions": [
+    {
+      "name": "Read a bundled fixture",
+      "taskAuthorization": "Explicitly assigned read-only exercise",
+      "sandboxExpectation": "Needs access to packaged fixture files",
+      "approvalExpectation": "Depends on actual effective policy; do not infer from this design"
+    },
+    {
+      "name": "Edit a scratch practice file",
+      "taskAuthorization": "Requires a request authorizing the local change",
+      "sandboxExpectation": "Requires writable scratch scope",
+      "approvalExpectation": "Check the actual selected policy"
+    },
+    {
+      "name": "Write a shared external file",
+      "taskAuthorization": "Not authorized by a read-only exercise",
+      "sandboxExpectation": "Outside the exercise boundary",
+      "approvalExpectation": "Prepare a local proposal; do not attempt the write"
+    }
+  ]
+}
+

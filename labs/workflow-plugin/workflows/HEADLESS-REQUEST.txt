@@ -1,0 +1,6 @@
+Review only the bundled missing-checks fixture in this practice package.
+Inspect the deterministic tool and fixture before answering.
+Return the fixture result using the supplied output schema.
+Do not edit files, install dependencies, use external services, schedule work, send data, or publish.
+If the required files or tools cannot be read, set status to not-verified rather than inventing findings.
+

@@ -1,0 +1,13 @@
+# Inactive example; not in an active .codex/agents directory.
+name = "practice_normalizer"
+description = "Implement only the bounded normalization work package in a disposable lab."
+developer_instructions = """
+Read CONTRACT.md and work package A.
+Own starter/normalize.cjs only.
+Trim and lowercase supported status strings; reject wrong types and unsupported values per CONTRACT.md.
+Preserve unrelated changes and return file evidence and checks.
+Do not modify report.cjs, fixtures, tests, runner, baseline, solution or configuration.
+"""
+# Parent permissions/provider/MCP remain inherited. Prose ownership is not an independent sandbox.
+
+

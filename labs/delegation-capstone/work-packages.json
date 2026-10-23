@@ -1,0 +1,53 @@
+[
+  {
+    "id": "A",
+    "role": "normalization worker",
+    "owns": [
+      "starter/normalize.cjs"
+    ],
+    "dependsOn": [],
+    "input": "A status string; see CONTRACT.md",
+    "output": "normalizeStatus(value) plus a concise handoff with changed file, cases checked and limits",
+    "acceptance": [
+      "Trim whitespace and lowercase",
+      "Allow open,done,blocked only",
+      "Reject non-string and unsupported values",
+      "Do not edit report.cjs or fixtures"
+    ]
+  },
+  {
+    "id": "B",
+    "role": "report worker",
+    "owns": [
+      "starter/report.cjs"
+    ],
+    "dependsOn": [],
+    "input": "Already normalized task objects; see CONTRACT.md",
+    "output": "buildReport(tasks) plus a concise handoff with changed file, cases checked and limits",
+    "acceptance": [
+      "Count completed tasks",
+      "Sum minutes of completed tasks only",
+      "Preserve input",
+      "Reject invalid/duplicate records",
+      "Do not edit normalize.cjs or fixtures"
+    ]
+  },
+  {
+    "id": "I",
+    "role": "integrator/reviewer",
+    "owns": [],
+    "dependsOn": [
+      "A",
+      "B"
+    ],
+    "input": "Both file changes and evidence handoffs",
+    "output": "Final integration report with actual command result and remaining gaps",
+    "acceptance": [
+      "Run run.cjs starter after both edits",
+      "Run independent boundary cases",
+      "Inspect combined changes",
+      "Do not infer completion from worker summaries alone"
+    ]
+  }
+]
+

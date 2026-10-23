@@ -1,0 +1,6 @@
+{"type":"thread.started","thread_id":"synthetic-course-thread"}
+{"type":"turn.started"}
+{"type":"item.started","item":{"id":"synthetic-command","type":"command_execution","command":"node --version","aggregated_output":"","status":"in_progress"}}
+{"type":"item.completed","item":{"id":"synthetic-command","type":"command_execution","command":"node --version","aggregated_output":"v22.0.0 (synthetic example, not a measured host version)","exit_code":0,"status":"completed"}}
+{"type":"item.completed","item":{"id":"synthetic-answer","type":"agent_message","text":"Orbit Notes is a fictional practice project. README.md does not define a verification command."}}
+{"type":"turn.completed","usage":{"input_tokens":120,"cached_input_tokens":0,"cache_write_input_tokens":0,"output_tokens":24,"reasoning_output_tokens":0}}

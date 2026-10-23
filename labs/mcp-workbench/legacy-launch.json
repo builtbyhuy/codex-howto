@@ -1,0 +1,6 @@
+{
+  "direction": "external application calls Codex",
+  "command": "codex",
+  "args": ["mcp-server"],
+  "intendedOutcome": "Summarize a local README"
+}

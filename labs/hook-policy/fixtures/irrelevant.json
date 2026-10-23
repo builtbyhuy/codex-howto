@@ -1,0 +1,10 @@
+{
+  "session_id": "fictional-policy-session",
+  "cwd": "/practice/taskboard",
+  "hook_event_name": "PreToolUse",
+  "tool_name": "mcp__fixture__read_note",
+  "tool_input": {
+    "command": "not a patch"
+  }
+}
+

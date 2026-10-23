@@ -1,0 +1,7 @@
+{
+  "scripts": {
+    "dev": "node app.cjs",
+    "check": "node --test"
+  }
+}
+

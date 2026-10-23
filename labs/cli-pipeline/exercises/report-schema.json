@@ -1,0 +1,11 @@
+{
+  "type": "object",
+  "properties": {
+    "project_name": { "type": "string" },
+    "documented_checks": { "type": "array", "items": { "type": "string" } },
+    "deployment_url": { "type": ["string", "null"] },
+    "unknowns": { "type": "array", "items": { "type": "string" } }
+  },
+  "required": ["project_name", "documented_checks", "deployment_url", "unknowns"],
+  "additionalProperties": false
+}

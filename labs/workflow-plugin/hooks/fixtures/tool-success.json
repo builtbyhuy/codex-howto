@@ -1,0 +1,19 @@
+{
+  "hook_event_name": "PostToolUse",
+  "tool_name": "mcp__workflowFixture__review_fixture_readme",
+  "tool_response": {
+    "isError": false,
+    "structuredContent": {
+      "fixture": "missing-checks",
+      "findings": [
+        {
+          "kind": "missing-verification",
+          "message": "Add a Verification section.",
+          "evidence": "No ## Verification heading was found."
+        }
+      ],
+      "ignoredInstructions": false
+    }
+  }
+}
+

@@ -1,0 +1,11 @@
+{
+  "state": "prepared-not-scheduled",
+  "work": "Summarize a manually selected fictional README fixture.",
+  "cadence": "Weekdays at 09:00",
+  "timezone": "Asia/Bangkok",
+  "environment": "Local scratch project with existing Node; actual scheduling requires the supported app.",
+  "scope": "Read bundled fixtures only; do not send, publish, or edit.",
+  "notification": "Notify on meaningful findings, failure, or required input; remain quiet only after a successful no-change check.",
+  "approval": "Obtain affirmative approval of this exact cadence, timezone, project, and action before creation."
+}
+

@@ -1,0 +1,10 @@
+{
+  "session_id": "fictional-policy-session",
+  "cwd": "/practice/taskboard",
+  "hook_event_name": "PreToolUse",
+  "tool_name": "apply_patch",
+  "tool_input": {
+    "command": "*** Begin Patch\n*** Add File: /practice/taskboard-copy/outside.txt\n+fictional content\n*** End Patch"
+  }
+}
+
