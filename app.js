@@ -1,5 +1,6 @@
 import {highlightView,highlightCode,renderReference,mountLearningTools} from './assets/atelier/learning-tools.mjs';
 import {mountStudy} from './assets/atelier/study.mjs';
+import {mountGuided} from './assets/atelier/guided/guided.mjs';
 import {lessonOutline} from './assets/atelier/lesson-outline.mjs';
 import {showDialog,installInteractions,arrive,disposeReader,mountReader} from './assets/atelier/interactions.mjs';
 import {validateCourse, sanitizeProgress, EDITION, PARTS} from './content-model.mjs';
@@ -30,6 +31,7 @@ const openModules = new Set();
 let modules = [], lessons = [], byId = new Map(), catalog, labCatalog=[], overviews={}, view = '';
 let diagramZoom=1, viewerFileText='', viewerRequest=0, studyRequest=0;
 let viewerPath='',viewerHistory=[];
+let guidedRequest=0,guidedController=null,guidedLessonId=null,pendingGuidedStep=0;
 let state = {lessons:{},last:null};
 let toastTimer;
 const copyRequests=new WeakMap();
@@ -152,7 +154,8 @@ function renderRail() {
   $('[data-nav="sources"]').classList.toggle('active', view==='sources');
   $('[data-nav="labs"]').classList.toggle('active',view==='labs');
   $('[data-nav="study"]').classList.toggle('active',view==='study');
-  $('#header-page').textContent = lessonView ? `Module ${view.slice(1,3)}` : view==='sources'?'Source library':view==='labs'?'Practice labs':view==='study'?'Focused study':'Overview';
+  $('[data-nav="learn"]').classList.toggle('active',view==='learn');
+  $('#header-page').textContent = lessonView ? `Module ${view.slice(1,3)}` : view==='sources'?'Source library':view==='labs'?'Practice labs':view==='study'?'Focused study':view==='learn'?'Interactive lessons':'Overview';
   $('.nav-count').textContent=lessons.length;
   syncStorageCopy();
 }
@@ -307,10 +310,22 @@ function route(force = false, trackVisit = true) {
   const aliases={path:'roadmap',practice:'get-started',resources:'vs-docs','lo-trinh':'roadmap','nguon':'sources','vi-sao':'why','tai-lieu':'vs-docs','bat-dau':'get-started','noi-dung':'main-content'};
   const path=aliases[rawPath] || rawPath.replace(/^bai\//,'lesson/');
   const params=new URLSearchParams(query||'');
+  const nextGuidedId=path.startsWith('learn/')?path.slice(6):null;
+  if(!nextGuidedId||nextGuidedId!==guidedLessonId||force){guidedRequest++;guidedController?.dispose();guidedController=null;guidedLessonId=null;document.body.classList.remove('guided-active');}
   const oldPart={'hieu':'understand','vi-du':'example','thuc-hanh':'practice','kiem-tra':'check'};
   const requestedPart=params.get('part')||params.get('phan'),part=oldPart[requestedPart]||requestedPart;
   if(drawerOpen) setDrawer(false,false);
   if(/^guide\/(en|vi|zh|ja|uk)$/.test(path)){renderTranslatedGuide(path.split('/')[1]);return;}
+  if(path.startsWith('learn/')){
+    disposeCourseMotion();stopTerminal();const l=byId.get(nextGuidedId);
+    if(!l){view='error';main.innerHTML='<div class="error-state"><h1>Lesson not found.</h1><p>Choose an existing interactive lesson. Your progress is unchanged.</p><a class="button" href="#learn/s01-01">Start the interactive course</a></div>';renderRail();scrollToPart();return;}
+    const requestedStep=Number(params.get('step')||0);pendingGuidedStep=Number.isInteger(requestedStep)&&requestedStep>=0&&requestedStep<=3?requestedStep:0;
+    if(guidedLessonId===l.id){guidedController?.setStage(pendingGuidedStep);return;}
+    const token=guidedRequest;guidedLessonId=l.id;view='learn';document.body.classList.add('guided-active');document.title=l.title+' · Interactive lesson — Howto codex';renderRail();
+    main.innerHTML='<div class="loading-state" role="status">Opening your interactive lesson… <a href="assets/reading/'+l.id+'.html">Read the complete lesson</a></div>';
+    const module=modules.find(m=>m.lessons.some(item=>item.id===l.id));
+    mountGuided(main,{lesson:l,module,modules,step:pendingGuidedStep,onStage:step=>{location.hash='learn/'+l.id+'?step='+step;},getStatus:status,onComplete:id=>{if(guidedLessonId!==id)return {saved:false};state.lessons[id]={...state.lessons[id],status:status(id)==='done'?'started':'done',updated:Date.now()};const saved=saveProgress();renderRail();return {saved};}},()=>token===guidedRequest&&guidedLessonId===l.id).then(controller=>{if(token!==guidedRequest||guidedLessonId!==l.id){controller?.dispose();return;}guidedController=controller;controller?.setStage(pendingGuidedStep,{focus:false});}).catch(()=>{if(token!==guidedRequest||guidedLessonId!==l.id)return;main.innerHTML='<div class="error-state"><h1>Interactive lesson unavailable.</h1><p>Reload to retry, or use the complete reading edition. Your progress is unchanged.</p><a class="button" href="assets/reading/'+l.id+'.html">Read this lesson</a></div>';});return;
+  }
   if(path.startsWith('lesson/')) {
     stopTerminal();
     const id=path.slice(7),l=byId.get(id);
@@ -459,6 +474,7 @@ document.addEventListener('keydown',event=>{
 window.addEventListener('hashchange',()=>route());
 function syncProgressView(){
  readProgress();
+ if(view==='learn')guidedController?.syncProgress();
  if(view==='home'){paintRoadmap();return;}
  const l=byId.get(view);
  if(l){const done=status(l.id)==='done',button=$('#complete-lesson');button.setAttribute('aria-pressed',String(done));button.textContent=done?'✓ Completed · Study again':'Mark lesson complete';button.classList.toggle('button-success',done);button.classList.toggle('button-solid',!done);$('#lesson-state-label').textContent=statusLabel(l.id);const answer=state.lessons[l.id]?.answer;for(const radio of main.querySelectorAll('.lesson-quiz input'))radio.checked=Number(radio.value)===answer;$('.quiz-feedback').innerHTML=Number.isInteger(answer)?quizFeedback(l,answer):'';}
