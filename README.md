@@ -8,6 +8,8 @@ The field-guide interface uses a light cool canvas, Fraunces display headings an
 
 **[Choose a dependency-aware path](LEARNING-ROADMAP.md)** · [Browse lessons on GitHub](CATALOG.md) · [Focused study and optional Codex coach](study/README.md) · [Website study sessions](https://builtbyhuy.github.io/codex-howto/#study)
 
+**[Learn by doing](https://builtbyhuy.github.io/codex-howto/#learn/s01-01):** explore an original interactive 3D workspace, inspect the actual course sources, try bounded module activities and check your reasoning. All sixty lessons have source-derived Understand / Inspect / Try / Check stages. Ten module activities are shared browser practice; they do not run Codex or certify practical skill. Text controls and source inspection also work without WebGL. Exercise drafts stay in this open tab; only your explicit completion choice updates course progress.
+
 Prerequisites: a browser for reading; existing Node.js 20+ for offline labs. Native Codex practice is optional and requires your own supported client/access. Outcomes: inspect source facts, make a bounded change, verify its result and explain recovery boundaries.
 
 ## Read, practise and keep your place
@@ -43,6 +45,7 @@ node scripts/build-study.cjs
 node scripts/build-study.cjs --check
 node tests/repo-level.cjs
 node tests/repo-level.cjs --controls
+node tests/guided-activities.cjs
 ~~~
 
 The generators use existing course data and no additional dependency. The home generator changes only the contents of the root main element; interactive application code remains separate.
