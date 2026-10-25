@@ -59,3 +59,7 @@ The learning structure and topic purposes were adapted from [Claude How-To](http
 Official product sources were checked on **21 October 2026**. Availability varies by client, version, platform, account and policy. Current scoped Chrome checks are described in the verification report. The 2.6 self-checks do not constitute user acceptance or a measured learning outcome; earlier 2.4 checks describe the previous presentation. The website now includes quick/full knowledge checks, local full-text search and a field reference. Full-course translations remain outside the English-course scope. This is a community course with no OpenAI affiliation, certification or guaranteed learning outcome.
 
 Read [content provenance](docs/content-provenance.md), [design sources](docs/design-sources.md), [verification and limits](docs/verification.md), [contributing](CONTRIBUTING.md) and [third-party notices](THIRD-PARTY-NOTICES.md). The original MIT copyright and all other bundled licenses are retained. Public availability does not grant a new blanket license over newly authored course content.
+
+## Structured data maintenance
+
+See [the current schema decisions, complete examples, local checks and limits](docs/structured-data/SCHEMA-2026-10-25.md). Run `node tests/structured-data.cjs`, `node tests/schema-current.cjs` and `node tests/schema-generator.cjs` from this source package. These checks require no new dependencies or account.

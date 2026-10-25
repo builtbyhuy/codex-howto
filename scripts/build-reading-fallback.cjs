@@ -50,7 +50,7 @@ function documentHTML(title, body, description, filename='index.html') {
   const url=origin+'assets/reading/'+filename;
   const items=[{name:'Howto codex',item:origin},{name:'Reading curriculum',item:origin+'assets/reading/index.html'}];
   if(filename!=='index.html')items.push({name:title,item:url});
-  const breadcrumb={'@context':'https://schema.org','@type':'BreadcrumbList',itemListElement:items.map((item,i)=>({'@type':'ListItem',position:i+1,...item}))};
+  const breadcrumb={'@context':'https://schema.org','@type':'BreadcrumbList','@id':url+'#breadcrumb',itemListElement:items.map((item,i)=>({'@type':'ListItem',position:i+1,...item}))};
   const json=JSON.stringify(breadcrumb).replace(/</g,'\\u003c');
   return `<!doctype html>
 <html lang="en">
@@ -171,12 +171,25 @@ for (const [name, html] of generated) {
     } else if (!fs.existsSync(target)) pendingLocalFiles.add(relative);
   }
 }
+// The authored home remains the source of its language and synopsis. Only its
+// existing JSON-LD block is regenerated; the readable snapshot/UI is untouched.
+const homePath=path.join(root,'index.html'),home=fs.readFileSync(homePath,'utf8');
+const homeLanguage=home.match(/<html\s+lang="([^"]+)"/i)?.[1];
+const homeDescription=home.match(/<meta\s+name="description"\s+content="([^"]*)"/i)?.[1];
+assert.ok(homeLanguage&&homeDescription,'Home language and description must come from authored HTML');
+const decodeMeta=value=>value.replace(/&quot;/g,'"').replace(/&#39;/g,"'").replace(/&lt;/g,'<').replace(/&gt;/g,'>').replace(/&amp;/g,'&');
+const homeWebsite={'@context':'https://schema.org','@type':'WebSite','@id':origin+'#website',name:'Howto codex',url:origin,inLanguage:homeLanguage,description:decodeMeta(homeDescription)};
+const homeBlocks=[...home.matchAll(/(<script type="application\/ld\+json">)([\s\S]*?)(<\/script>)/g)];
+assert.equal(homeBlocks.length,1,'Home must have one authored JSON-LD block to update');
+const generatedHome=home.replace(homeBlocks[0][0],()=>homeBlocks[0][1]+JSON.stringify(homeWebsite).replace(/</g,'\\u003c')+homeBlocks[0][3]);
 if (checkOnly) {
+  assert.equal(home,generatedHome,'Home structured data needs rebuilding');
   assert.equal(pendingLocalFiles.size, 0, 'Local dependencies missing: ' + [...pendingLocalFiles].join(', '));
   const actual = fs.readdirSync(outputDir).filter(file => file.endsWith('.html')).sort();
   assert.deepEqual(actual, [...generated.keys()].sort(), 'Generated fallback HTML inventory differs.');
   for (const [name, html] of generated) assert.equal(fs.readFileSync(path.join(outputDir, name), 'utf8'), html, 'Fallback needs rebuilding: ' + name);
 } else {
+  if(home!==generatedHome)fs.writeFileSync(homePath,generatedHome);
   fs.mkdirSync(outputDir, {recursive:true});
   for (const [name, html] of generated) fs.writeFileSync(path.join(outputDir, name), html);
 }
