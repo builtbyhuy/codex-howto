@@ -1,5 +1,6 @@
 import {highlightView,highlightCode,renderReference,mountLearningTools} from './assets/atelier/learning-tools.mjs';
 import {mountStudy} from './assets/atelier/study.mjs';
+import {siteMeta} from './assets/atelier/site-meta.mjs';
 import {mountGuided} from './assets/atelier/guided/guided.mjs';
 import {lessonOutline} from './assets/atelier/lesson-outline.mjs';
 import {showDialog,installInteractions,arrive,disposeReader,mountReader} from './assets/atelier/interactions.mjs';
@@ -340,7 +341,7 @@ function route(force = false, trackVisit = true) {
   if(path==='labs'){disposeCourseMotion();stopTerminal();view='labs';main.innerHTML=renderLabLibrary();highlightView(main);enterView();document.title='Practice labs — Howto codex';renderRail();scrollToPart();return;}
   if(!['','roadmap','why','vs-docs','get-started','languages','main-content'].includes(path)){stopTerminal();view='error';main.innerHTML='<div class="error-state"><h1>Page not found.</h1><p>The address may have changed.</p><a class="button" href="#path">Back to the learning path</a></div>';renderRail();return;}
   if(view!=='home'||force){stopTerminal();main.innerHTML=renderHome();view='home';renderRail();mountReferenceMotion(main,{entrance:!restoringHomePreview});restoringHomePreview=false;}
-  document.title='Howto codex — A practical field guide';renderRail();
+  document.title=siteMeta.title;renderRail();
   requestAnimationFrame(()=>{if(path==='main-content'){main.focus();return;}scrollToPart(path==='roadmap'&&/^level-(beginner|intermediate|advanced)$/.test(part||'')?part:path);});
 }
 function showAssessment() {

@@ -1,10 +1,10 @@
-# Howto codex — a practical field guide
+# Howto codex — OpenAI Codex guide
 
-An independent app-first Codex course: **10 modules, 60 detailed English lessons and 7 downloadable practice projects**. This source package is **version 2.6**. Publication status is verified separately; no visual equality with Claude How-To or measured learner outcome is claimed.
+An independent OpenAI Codex guide and hands-on course, hosted on GitHub: **10 modules, 60 detailed English lessons and 7 downloadable practice projects**. This source package is **version 2.6**. Publication status is verified separately; no visual equality with Claude How-To or measured learner outcome is claimed.
 
 The field-guide interface uses a light cool canvas, Fraunces display headings and Manrope body/UI text, JetBrains Mono code, restrained cobalt accents and a **Task → Change → Check** workbench. The workbench illustrates the bundled Orbit Notes task, reference change and six-check result. It never executes Codex or checks your local files.
 
-**[Open the course](https://builtbyhuy.github.io/codex-howto/)** · [Read all 60 lessons without JavaScript](assets/reading/index.html) · [First reading lesson](assets/reading/s01-01.html) · [Report a lesson problem](https://github.com/builtbyhuy/codex-howto/issues/new)
+**[Open the course](https://builtbyhuy.github.io/codex-howto/)** · [Read all 60 lessons without JavaScript](https://builtbyhuy.github.io/codex-howto/assets/reading/index.html) · [First reading lesson](https://builtbyhuy.github.io/codex-howto/assets/reading/s01-01.html) · [Report a lesson problem](https://github.com/builtbyhuy/codex-howto/issues/new)
 
 **[Choose a dependency-aware path](LEARNING-ROADMAP.md)** · [Browse lessons on GitHub](CATALOG.md) · [Focused study and optional Codex coach](study/README.md) · [Website study sessions](https://builtbyhuy.github.io/codex-howto/#study)
 
@@ -37,8 +37,9 @@ Open http://127.0.0.1:4173/ and keep the terminal running. No package installati
 After changing lesson data or the home renderer, regenerate and verify the static reading output:
 
 ~~~text
-node scripts/build-reading-fallback.cjs
+node scripts/build-seo.cjs
 node scripts/build-home-snapshot.mjs
+node scripts/build-reading-fallback.cjs
 node scripts/build-reading-fallback.cjs --check
 node scripts/build-home-snapshot.mjs --check
 node scripts/build-study.cjs
@@ -46,6 +47,11 @@ node scripts/build-study.cjs --check
 node tests/repo-level.cjs
 node tests/repo-level.cjs --controls
 node tests/guided-activities.cjs
+node tests/structured-data.cjs
+node tests/schema-current.cjs
+node tests/schema-generator.cjs
+node scripts/build-seo.cjs --check
+node tests/seo.cjs --controls
 ~~~
 
 The generators use existing course data and no additional dependency. The home generator changes only the contents of the root main element; interactive application code remains separate.
@@ -58,7 +64,7 @@ The learning structure and topic purposes were adapted from [Claude How-To](http
 
 Official product sources were checked on **21 October 2026**. Availability varies by client, version, platform, account and policy. Current scoped Chrome checks are described in the verification report. The 2.6 self-checks do not constitute user acceptance or a measured learning outcome; earlier 2.4 checks describe the previous presentation. The website now includes quick/full knowledge checks, local full-text search and a field reference. Full-course translations remain outside the English-course scope. This is a community course with no OpenAI affiliation, certification or guaranteed learning outcome.
 
-Read [content provenance](docs/content-provenance.md), [design sources](docs/design-sources.md), [verification and limits](docs/verification.md), [contributing](CONTRIBUTING.md) and [third-party notices](THIRD-PARTY-NOTICES.md). The original MIT copyright and all other bundled licenses are retained. Public availability does not grant a new blanket license over newly authored course content.
+Read [SEO and indexing notes](docs/seo/SEO.md), [content provenance](docs/content-provenance.md), [design sources](docs/design-sources.md), [verification and limits](docs/verification.md), [contributing](CONTRIBUTING.md) and [third-party notices](THIRD-PARTY-NOTICES.md). The original MIT copyright and all other bundled licenses are retained. Public availability does not grant a new blanket license over newly authored course content.
 
 ## Structured data maintenance
 
